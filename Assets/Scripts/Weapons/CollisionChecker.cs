@@ -24,9 +24,8 @@ namespace Saitama.Weapons
 				if (OnHit != null) {
 					OnHit.Invoke (hit, component);	
 				}
-				Physics.OverlapSphere(
+				//Physics.OverlapSphere(
 			}
 		}
 	}
 }
-
