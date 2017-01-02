@@ -45,12 +45,14 @@ public class ShipController : MonoBehaviour {
 	public float missleTimeBetweenExecute = 1000f;
 	[Header("Others")]
 	public Camera screenCamera;
-	public Transform ship;
+	public Transform shipComponent;
 	public RectTransform canvasUI;
 	public RectTransform crosshairUI;
 	public RectTransform targetLockerUI;
 	public RectTransform targetTrackerUI;
 
+	[NonSerialized]
+	public Ship ship;
 
 	Vector3 crosshairMinBound;
 	Vector3 crosshairMaxBound;
@@ -58,8 +60,7 @@ public class ShipController : MonoBehaviour {
 	Rigidbody rigid;
 	Vector3 mousePosition;
 
-	Ship _standardShip;
-	ShipControl _standardShipControl;
+	ShipControl _shipControl;
 	TargetLockerSystem _targetLocker;
 	GunPivotTrackerSystem _gunPivotTracker;
 	MachineGun _leftGun;
@@ -73,7 +74,7 @@ public class ShipController : MonoBehaviour {
 		rigid.freezeRotation = true;
 
 		// Assembly standard ship
-		_standardShip = ShipBuilder<StandardShip>.Assembly (this, new Dictionary<KeyValuePair<Type, string>, Component> {
+		ship = ShipBuilder<StandardShip>.Assembly (this, new Dictionary<KeyValuePair<Type, string>, Component> {
 			{ new KeyValuePair<Type, string> (typeof(MachineGun), "left"), gunLeft },
 			{ new KeyValuePair<Type, string> (typeof(MachineGun), "right"), gunRight },
 			{ new KeyValuePair<Type, string> (typeof(AirToAirMissleHandler), "left"), missleHandlerLeft },
@@ -88,7 +89,7 @@ public class ShipController : MonoBehaviour {
 			_ship.ShiftDistance = shiftDistance;
 			_ship.ShiftAngleLeft = shiftAngleLeft;
 			_ship.ShiftAngleRight = shiftAngleRight;
-			_ship.MonoComponent = ship;
+			_ship.MonoComponent = shipComponent;
 
 		}, delegate(StandardShip _ship, List<KeyValuePair<ICommonObject, string>> assembliedComponents){
 			var __leftGun = _ship.GetComponent<MachineGun> ("left");
@@ -142,17 +143,17 @@ public class ShipController : MonoBehaviour {
 			_rightMissleHomingSystem.CanvasUI = canvasUI;
 		});
 
-		_standardShipControl = _standardShip.GetComponent<ShipControl> ();
+		_shipControl = ship.GetComponent<ShipControl> ();
 
-		_standardShipControl.SmoothZToZero = smoothZToZero;
+		_shipControl.SmoothZToZero = smoothZToZero;
 
 		// The samples of input events below:
-		_standardShipControl.BalancedRollingInput += () => {
+		_shipControl.BalancedRollingInput += () => {
 			
 		};
 
 		// on accelerating input
-		_standardShipControl.AcceleratingInput += delegate (InputState inputState, Ship _ship) {
+		_shipControl.AcceleratingInput += delegate (InputState inputState, Ship _ship) {
 			switch(inputState){
 				case InputState.On:
 					
@@ -166,7 +167,7 @@ public class ShipController : MonoBehaviour {
 		};
 
 		// on breaking input
-		_standardShipControl.BreakingInput += delegate (InputState inputState, Ship _ship) {
+		_shipControl.BreakingInput += delegate (InputState inputState, Ship _ship) {
 			switch(inputState){
 				case InputState.On:
 					
@@ -180,7 +181,7 @@ public class ShipController : MonoBehaviour {
 		};
 
 		// on left rolling input
-		_standardShipControl.LeftRollingInput += delegate(InputState inputState, Ship _ship, float rollAngle) {
+		_shipControl.LeftRollingInput += delegate(InputState inputState, Ship _ship, float rollAngle) {
 			switch(inputState){
 				case InputState.HoldOn:
 					
@@ -194,7 +195,7 @@ public class ShipController : MonoBehaviour {
 		};
 
 		// on right rolling input
-		_standardShipControl.RightRollingInput += delegate(InputState inputState, Ship _ship, float rollAngle) {
+		_shipControl.RightRollingInput += delegate(InputState inputState, Ship _ship, float rollAngle) {
 			switch(inputState){
 				case InputState.HoldOn:
 					
@@ -207,7 +208,7 @@ public class ShipController : MonoBehaviour {
 			}
 		};
 
-		_standardShipControl.LeftShiftingInput += delegate(InputState inputState, Ship _ship) {
+		_shipControl.LeftShiftingInput += delegate(InputState inputState, Ship _ship) {
 			switch(inputState){
 			case InputState.On:
 				
@@ -220,7 +221,7 @@ public class ShipController : MonoBehaviour {
 			}
 		};
 
-		_standardShipControl.RightShiftingInput += delegate(InputState inputState, Ship _ship) {
+		_shipControl.RightShiftingInput += delegate(InputState inputState, Ship _ship) {
 			switch(inputState){
 			case InputState.On:
 				
@@ -233,8 +234,8 @@ public class ShipController : MonoBehaviour {
 			}
 		};
 
-		_leftGun = _standardShip.GetComponent<MachineGun> ("left");
-		_rightGun = _standardShip.GetComponent<MachineGun> ("right");
+		_leftGun = ship.GetComponent<MachineGun> ("left");
+		_rightGun = ship.GetComponent<MachineGun> ("right");
 
 		_leftGun.OnTriggerHold += () => {
 			
@@ -244,8 +245,8 @@ public class ShipController : MonoBehaviour {
 			
 		};
 
-		_leftMissleHandler = _standardShip.GetComponent<AirToAirMissleHandler> ("left");
-		_rightMissleHandler = _standardShip.GetComponent<AirToAirMissleHandler> ("right");
+		_leftMissleHandler = ship.GetComponent<AirToAirMissleHandler> ("left");
+		_rightMissleHandler = ship.GetComponent<AirToAirMissleHandler> ("right");
 
 		_leftMissleHandler.OnTriggerHold += () => {
 			
@@ -255,21 +256,21 @@ public class ShipController : MonoBehaviour {
 
 		};
 
-		_targetLocker = _standardShip.GetComponent<TargetLockerSystem> ();
+		_targetLocker = ship.GetComponent<TargetLockerSystem> ();
 		_targetLocker.MissleSlot = 2;
 		_targetLocker.PrepareTargetLockerUIs (targetLockerUI, canvasUI);
 
-		_gunPivotTracker = _standardShip.GetComponent<GunPivotTrackerSystem> ();
+		_gunPivotTracker = ship.GetComponent<GunPivotTrackerSystem> ();
 		_gunPivotTracker.SetGuns (_leftGun, _rightGun);
 	} 
 
 	void FixedUpdate () {
 		mousePosition = Utility.ScreenToWorldPoint(screenCamera);
 
-		_standardShipControl.Yaw(mousePosition);
-		_standardShipControl.Pitch(mousePosition);
-		_standardShipControl.Thrust();
-		_standardShipControl.Roll ();
+		_shipControl.Yaw(mousePosition);
+		_shipControl.Pitch(mousePosition);
+		_shipControl.Thrust();
+		_shipControl.Roll ();
 
 		_gunPivotTracker.RotateGunPivot ();
 
@@ -295,11 +296,11 @@ public class ShipController : MonoBehaviour {
 		_gunPivotTracker.LockTarget (
 			_gunPivotTracker.FindTargetsInCrosshair ("Target", 1600, 10.25f));
 
-		_standardShipControl.HandleInputEvents ();
+		_shipControl.HandleInputEvents ();
 	}
 
 	void RotateShip(){
-		if (ship.transform.eulerAngles.z < 90 || ship.transform.eulerAngles.z > 270) {
+		if (shipComponent.transform.eulerAngles.z < 90 || shipComponent.transform.eulerAngles.z > 270) {
 			var side = 0;
 			if(Input.GetAxis("Mouse X") > 0)
 				side = -1;
@@ -310,7 +311,7 @@ public class ShipController : MonoBehaviour {
 			
 			var rot = Quaternion.identity;
 			rot.eulerAngles = new Vector3 (.0f, .0f, Mathf.Abs (mousePosition.x * Time.fixedDeltaTime * rotationSpeed) * side);
-			ship.rotation *= rot;
+			shipComponent.rotation *= rot;
 		}
 	}
 }
