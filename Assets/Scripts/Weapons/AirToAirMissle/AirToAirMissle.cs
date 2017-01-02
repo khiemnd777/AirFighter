@@ -18,12 +18,10 @@ namespace Saitama.Weapons.AirToAirMissle
 		{
 			base.Init ();
 
-			_collisionChecker.OnHit = (hit, missle) => {
-				
-				//Debug.Log((missle.transform.position - hit.collider.gameObject.transform.position).magnitude);
-				Debug.Log((hit.point - missle.transform.position).magnitude);
-//				if(hit.point == missle.transform.position)
-//					Destroy(missle.gameObject);
+			_collisionChecker.OnHit = (missle, colliders) => {
+				for(var inx = 0; inx < colliders.Length; inx++){
+					Destroy(missle.gameObject);
+				}
 			};
 		}
 
@@ -45,7 +43,7 @@ namespace Saitama.Weapons.AirToAirMissle
 			yield return new WaitingForFixedUpdate();
 			while(missle != null){
 				var distance = Time.fixedDeltaTime * _missleSpeedOnExecute;
-				_collisionChecker.Check (missle, distance);
+				_collisionChecker.Check (missle, missle.transform.localScale.magnitude);
 				var pos = Vector3.forward;
 				pos = rigibody.rotation * pos;
 				rigibody.velocity = pos * distance;

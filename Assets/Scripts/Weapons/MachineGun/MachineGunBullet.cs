@@ -16,8 +16,10 @@ namespace Saitama.Weapons.MachineGun
 		{
 			base.Init ();
 
-			_collisionChecker.OnHit = (hit, bullet) => {
-				Destroy(bullet.gameObject);
+			_collisionChecker.OnHit = (bullet, colliders) => {
+				for(var inx = 0; inx < colliders.Length; inx++){
+					Destroy(bullet.gameObject);
+				}
 			};
 		}
 
@@ -38,8 +40,9 @@ namespace Saitama.Weapons.MachineGun
 			yield return new WaitingForFixedUpdate();
 			while(bullet != null){
 				var distance = speed * Time.fixedDeltaTime;
-				_collisionChecker.Check(bullet, distance);
 				bullet.transform.Translate (Vector3.forward * distance);
+				_collisionChecker.Check(bullet, distance / 2.0f);
+
 				yield return new WaitingForFixedUpdate();
 			}
 			yield return null;
