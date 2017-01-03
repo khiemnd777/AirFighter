@@ -7,9 +7,8 @@ namespace Saitama.Weapons
 	{
 		public Action OnTriggerHold;
 		public Action OnTriggerRelease;
-
-		protected ScoreManager _scoreManager;
 		protected LayerMask _targets;
+		protected int _level;
 
 		protected Weapon (MonoBehaviour mono) : base(mono)
 		{
@@ -17,7 +16,7 @@ namespace Saitama.Weapons
 		}
 
 		public LayerMask Targets { set { _targets = value; } }
-		public ScoreManager ScoreManager { set {_scoreManager = value; } }
+		public int Level { get { return _level; } set { _level = value; } }
 
 		public abstract void HoldTrigger ();
 

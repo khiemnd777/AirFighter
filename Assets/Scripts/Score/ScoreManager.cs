@@ -31,17 +31,8 @@ namespace Saitama {
 			}
 		}
 
-		public ScoreManager GetScoreManager(GameObject target){
-			var shipController = target.GetComponent<ShipController> ();
-			if (shipController != null) {
-				var scoreManager = shipController.ship.GetComponent<ScoreManager> ();
-				return scoreManager;
-			}
-			return null;
-		}
-
 		public void Hit(GameObject target, int damage){
-			var targetScoreManager = GetScoreManager (target);
+			var targetScoreManager = Utility.GetShipComponent<ScoreManager> (target);
 			if (targetScoreManager == null)
 				return;
 			targetScoreManager.Decrease (damage);

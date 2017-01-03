@@ -20,8 +20,8 @@ namespace Saitama.Weapons.MachineGun
 
 				if (Time.time > nextShotTime) { 
 					using (var bullet = InstantiateRawComponent<MachineGunBullet> ("", _targets)) {
+						bullet.Parent = this;
 						bullet.LifeTime = BulletLifeTime;
-						bullet.Gun = this;
 						var component = bullet.Start(_monoComponent.transform.position, _monoComponent.transform.rotation);
 						bullet.Fire (BulletSpeed, component);
 						nextShotTime = Time.time + TimeBetweenExecute / 1000f;

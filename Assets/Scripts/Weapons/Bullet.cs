@@ -5,14 +5,11 @@ namespace Saitama.Weapons
 {
 	public abstract class Bullet : Projectile
 	{
-		protected Gun _gun;
-
 		protected Bullet (MonoBehaviour mono) : base(mono)
 		{
 			
 		}
 
-		public Gun Gun { get { return _gun; } set { _gun = value; } }
 		public float LifeTime { get; set; }
 
 		public abstract Component Start (Vector3 position, Quaternion rotation);

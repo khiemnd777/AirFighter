@@ -20,9 +20,9 @@ namespace Saitama.Weapons.AirToAirMissle
 
 			_collisionChecker.OnHit = (missle, colliders) => {
 				for(var inx = 0; inx < colliders.Length; inx++){
-					var scoreManager = _parent.GetComponent<ScoreManager>();
-					if(scoreManager != null){
-						scoreManager.Hit(colliders[inx].gameObject, _damage);
+					if(Utility.HasShipComponent(colliders[inx].gameObject)){
+						var scoreManager = _parent.Parent.GetComponent<ScoreManager>();
+						scoreManager.Hit(colliders[inx].gameObject, _damage);	
 					}
 					Destroy(missle.gameObject);
 				}
@@ -64,4 +64,3 @@ namespace Saitama.Weapons.AirToAirMissle
 		}
 	}
 }
-

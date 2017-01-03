@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Saitama;
 
 public class Utility
 {
@@ -20,6 +21,15 @@ public class Utility
 		var realY = mousePosition.y * (Screen.width < Screen.height ? 1.0f : ((float)Screen.width / (float)Screen.height));
 
 		return new Vector3 (realX, realY, mousePosition.z);
+	}
+
+	public static T GetShipComponent<T>(GameObject gameObject) where T : ICommonObject{
+		var shipController = gameObject.GetComponent<ShipController> ();
+		return shipController.ship.GetComponent<T> ();
+	}
+
+	public static bool HasShipComponent(GameObject gameObject){
+		return gameObject.GetComponent<ShipController> () != null;
 	}
 
 	public static Quaternion RotatePrincipalAxes(Vector2 mousePosition, float rotationSpeed, float deltaTime){

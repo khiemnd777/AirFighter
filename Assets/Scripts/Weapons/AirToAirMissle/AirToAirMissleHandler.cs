@@ -33,6 +33,7 @@ namespace Saitama.Weapons.AirToAirMissle
 
 				if (Time.time > nextExecuteTime && !isExecuted) {
 					using (var missle = InstantiateRawComponent<AirToAirMissle> ("", _targets)) {
+						missle.Parent = this;
 						missle.LifeTime = LifeTime;
 						missle.Speed = Speed;
 						missle.MissleHandler = this;

@@ -63,7 +63,9 @@ namespace Saitama
 		}
 
 		public void SetComponents (IList<KeyValuePair<ICommonObject, string>> components){
-			_components.AddRange (components);
+			foreach (var component in components) {
+				SetComponent (component.Key, component.Value);
+			}
 		}
 
 		public void SetRawComponent(RawComponent rawComponent, string name = ""){
