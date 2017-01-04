@@ -15,6 +15,7 @@ public class Initialization : MonoBehaviour {
 		ShipBuilder<StandardShip>.GetAlready (typeof(ShipControl)
 			, typeof(TargetLockerSystem)
 			, typeof(GunPivotTrackerSystem)
+			, typeof(LevelManager)
 			, typeof(ScoreManager)
 			, new KeyValuePair<Type, string> (typeof(MachineGun), "left")
 			, new KeyValuePair<Type, string> (typeof(MachineGun), "right")

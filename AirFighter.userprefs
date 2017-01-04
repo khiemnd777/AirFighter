@@ -1,26 +1,8 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Controllers/ShipController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/LevelSystem/LevelManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/Weapons/AirToAirMissle/AirToAirMissle.cs" Line="26" Column="7" />
-      <File FileName="Assets/Scripts/Utility.cs" Line="25" Column="2" />
-      <File FileName="Assets/Scripts/Score/ScoreManager.cs" Line="42" Column="4" />
-      <File FileName="Assets/Scripts/Weapons/MachineGun/MachineGunBullet.cs" Line="25" Column="33" />
-      <File FileName="Assets/Scripts/Builders/ShipBuilders/ShipBuilder.cs" Line="70" Column="11" />
-      <File FileName="Assets/Scripts/Infrastructure/ICommonObject.cs" Line="18" Column="8" />
-      <File FileName="Assets/Scripts/Infrastructure/CommonObject.cs" Line="68" Column="5" />
-      <File FileName="Assets/Scripts/Weapons/AirToAirMissle/AirToAirMissleHandler.cs" Line="36" Column="16" />
-      <File FileName="Assets/Scripts/Weapons/MachineGun/MachineGun.cs" Line="12" Column="4" />
-      <File FileName="Assets/Scripts/Initialization.cs" Line="17" Column="17" />
-      <File FileName="Assets/Scripts/Infrastructure/TypeExtensions.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/CollisionChecker.cs" Line="21" Column="52" />
-      <File FileName="Assets/Scripts/Weapons/Missle.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/Projectile.cs" Line="17" Column="19" />
-      <File FileName="Assets/Scripts/Weapons/MissleHandler.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/Weapon.cs" Line="19" Column="60" />
-      <File FileName="Assets/Scripts/Weapons/Bullet.cs" Line="7" Column="3" />
-      <File FileName="Assets/Scripts/Weapons/Gun.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Controllers/ShipController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/LevelSystem/LevelManager.cs" Line="5" Column="20" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
