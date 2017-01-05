@@ -14,6 +14,10 @@ namespace Saitama{
 
 		public int Level { get { return _level; } }
 
+        public void InitLevel(Action<int> init){
+            init.Invoke(_level);
+        }
+
 		public void Update(){
 			if (IsMax())
 				return;

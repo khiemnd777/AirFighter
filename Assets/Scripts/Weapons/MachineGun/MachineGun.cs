@@ -14,7 +14,7 @@ namespace Saitama.Weapons.MachineGun
 
 		public override void IncreaseLevel (int level)
 		{
-			throw new System.NotImplementedException ();
+			//throw new System.NotImplementedException ();
 		}
 
 		public override void HoldTrigger (){

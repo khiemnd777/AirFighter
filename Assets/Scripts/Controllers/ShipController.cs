@@ -258,18 +258,27 @@ public class ShipController : MonoBehaviour {
 		};
 
 		_targetLocker = ship.GetComponent<TargetLockerSystem> ();
-		_targetLocker.MissleSlot = 2;
-		_targetLocker.PrepareTargetLockerUIs (targetLockerUI, canvasUI);
 
 		_gunPivotTracker = ship.GetComponent<GunPivotTrackerSystem> ();
 		_gunPivotTracker.SetGuns (_leftGun, _rightGun);
 
 		_levelManager = ship.GetComponent<LevelManager> ();
+        _levelManager.InitLevel((level) =>
+            {
+                _leftGun.IncreaseLevel(level);
+                _rightGun.IncreaseLevel(level);
+                _leftMissleHandler.IncreaseLevel(level);
+                _rightMissleHandler.IncreaseLevel(level);
+                _targetLocker.MissleSlot = _leftMissleHandler.Slot + _rightMissleHandler.Slot;
+                _targetLocker.PrepareTargetLockerUIs (targetLockerUI, canvasUI);
+            });
 		_levelManager.OnIncreased += (level) => {
 			_leftGun.IncreaseLevel(level);
 			_rightGun.IncreaseLevel(level);
 			_leftMissleHandler.IncreaseLevel(level);
 			_rightMissleHandler.IncreaseLevel(level);
+            _targetLocker.MissleSlot = _leftMissleHandler.Slot + _rightMissleHandler.Slot;
+            _targetLocker.PrepareTargetLockerUIs (targetLockerUI, canvasUI);
 		};
 	} 
 

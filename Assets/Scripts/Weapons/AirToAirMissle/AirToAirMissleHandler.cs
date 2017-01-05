@@ -20,7 +20,6 @@ namespace Saitama.Weapons.AirToAirMissle
             base.Init();
             _missleHomingSystem.MaxDegreesDelta = 20;
             SetComponent(_missleHomingSystem);
-            IncreaseLevel(3);
         }
 
         public void SetLockers(TargetLocker[] lockers)
@@ -74,7 +73,7 @@ namespace Saitama.Weapons.AirToAirMissle
                 
                 if (Time.time > _nextExecuteTime && !_isExecuted)
                 {
-                    for (var i = 0; i < _slot; i++)
+                    for (int i = 0; i < _slot; i++)
                     {
                         using (var missle = InstantiateRawComponent<AirToAirMissle>("", _targets))
                         {
@@ -85,7 +84,7 @@ namespace Saitama.Weapons.AirToAirMissle
                             missle.Damage = _damage;
                             missle.Level = _level;
                             missle.StartPosition = _monoComponent.transform.position + new Vector3(i * side, 0, 0);
-                            missle.StartRotation = _monoComponent.transform.rotation;
+                            missle.StartRotation = _monoComponent.transform.rotation * Quaternion.Euler(1, i * side, 1);
                             _missleHomingSystem.GoHome(missle);
                             _nextExecuteTime = Time.time + _timeBetweenExecute / 1000f;
                             _isExecuted = true; 
