@@ -6,6 +6,8 @@ namespace Saitama.Weapons
 	public abstract class Missle : Projectile
 	{
 		protected MissleHandler _missleHandler;
+		protected float _speed;
+		protected float _lifeTime;
 		
 		protected Missle (MonoBehaviour mono) : base(mono)
 		{
@@ -14,10 +16,18 @@ namespace Saitama.Weapons
 
 		public MissleHandler MissleHandler { get { return _missleHandler; } set { _missleHandler = value; } }
 
-		public float Speed { get; set; }
-		public float LifeTime { get; set; }
+		public float Speed { get{ return _speed; } set { _speed = value; } }
+		public float LifeTime { get{ return _lifeTime; } set{ _lifeTime = value; } }
 
-		public abstract Component Start (Vector3 position, Quaternion rotation);
+        public virtual Component Start (){
+            return Start(_startPosition, _startRotation);
+        }
+
+        public virtual Component Start(Vector3 position, Quaternion rotation){
+            var instantiated = Instantiate (_monoComponent, position, rotation) as Component;
+            Destroy (instantiated.gameObject, _lifeTime);
+            return instantiated;
+        }
 
 		public abstract void Fire (Component missle);
 	}

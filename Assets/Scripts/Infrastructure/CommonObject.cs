@@ -14,13 +14,17 @@ namespace Saitama
 		protected readonly MonoBehaviour _mono;
 		protected Component _monoComponent;
 		protected ICommonObject _parent;
+        protected string _name;
 
 		//private readonly ICoroutineHandler _coroutineHandler;
 		public ICommonObject Parent{get {return _parent;} set{_parent = value;}}
 
-		public bool IsActive{
-			get { return _isActive; }
-		}
+		public bool IsActive
+        {
+            get { return _isActive; }
+        }
+
+        public string Name { get { return _name; } set { _name = value; } }
 
 		public Component MonoComponent {
 			get { return _monoComponent; }
@@ -59,6 +63,7 @@ namespace Saitama
 			if (!(component is ICommonObject))
 				return;
 			component.Parent = this;
+            component.Name = name;
 			_components.Add (new KeyValuePair<ICommonObject, string>(component, name));
 		}
 

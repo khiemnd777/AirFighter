@@ -16,7 +16,7 @@ namespace Saitama.Weapons.MachineGun
 		{
 			base.Init ();
 
-			_collisionChecker.OnHit = (bullet, colliders) => {
+			_collisionChecker.OnHit += (bullet, colliders) => {
 				for(var inx = 0; inx < colliders.Length; inx++){
 					if(Utility.HasShipComponent(colliders[inx].gameObject)){
 						var scoreManager = _parent.Parent.GetComponent<ScoreManager>();
@@ -28,11 +28,9 @@ namespace Saitama.Weapons.MachineGun
 		}
 
 		public override Component Start(Vector3 position, Quaternion rotation){
-			var instantiatedBullet = Instantiate (_monoComponent, position, rotation) as Component;
-			instantiatedBullet.transform.Rotate (Random.Range (-.5f, .5f), Random.Range (-.5f, .5f), 0f);
-			Destroy (instantiatedBullet.gameObject, LifeTime);
-
-			return instantiatedBullet;
+            var bullet = base.Start(position, rotation);
+            bullet.transform.Rotate (Random.Range (-.5f, .5f), Random.Range (-.5f, .5f), 0f);
+            return bullet;
 		}
 
 		public override void Fire(float speed, Component bullet)

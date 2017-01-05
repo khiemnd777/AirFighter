@@ -18,7 +18,7 @@ namespace Saitama.Weapons.AirToAirMissle
 		{
 			base.Init ();
 
-			_collisionChecker.OnHit = (missle, colliders) => {
+			_collisionChecker.OnHit += (missle, colliders) => {
 				for(var inx = 0; inx < colliders.Length; inx++){
 					if(Utility.HasShipComponent(colliders[inx].gameObject)){
 						var scoreManager = _parent.Parent.GetComponent<ScoreManager>();
@@ -27,12 +27,6 @@ namespace Saitama.Weapons.AirToAirMissle
 					Destroy(missle.gameObject);
 				}
 			};
-		}
-
-		public override Component Start(Vector3 position, Quaternion rotation){
-			var instantiatedMissle = Instantiate (_monoComponent, position, rotation) as Component;
-			Destroy (instantiatedMissle.gameObject, LifeTime);
-			return instantiatedMissle;
 		}
 
 		public override void Fire(Component missle)

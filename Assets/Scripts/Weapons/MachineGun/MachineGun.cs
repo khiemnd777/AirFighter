@@ -12,6 +12,11 @@ namespace Saitama.Weapons.MachineGun
 			
 		}
 
+		public override void IncreaseLevel (int level)
+		{
+			throw new System.NotImplementedException ();
+		}
+
 		public override void HoldTrigger (){
 			if (Input.GetMouseButton (0)) {
 				if (OnTriggerHold != null) {
@@ -22,7 +27,10 @@ namespace Saitama.Weapons.MachineGun
 					using (var bullet = InstantiateRawComponent<MachineGunBullet> ("", _targets)) {
 						bullet.Parent = this;
 						bullet.LifeTime = BulletLifeTime;
-						var component = bullet.Start(_monoComponent.transform.position, _monoComponent.transform.rotation);
+						bullet.Level = _level;
+                        bullet.StartPosition = _monoComponent.transform.position;
+                        bullet.StartRotation = _monoComponent.transform.rotation;
+						var component = bullet.Start();
 						bullet.Fire (BulletSpeed, component);
 						nextShotTime = Time.time + TimeBetweenExecute / 1000f;
 					}

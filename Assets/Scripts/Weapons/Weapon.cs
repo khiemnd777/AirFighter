@@ -8,7 +8,8 @@ namespace Saitama.Weapons
 		public Action OnTriggerHold;
 		public Action OnTriggerRelease;
 		protected LayerMask _targets;
-		protected int _level;
+		protected int _level = Constants.MIN_LEVEL;
+		protected int _damage;
 
 		protected Weapon (MonoBehaviour mono) : base(mono)
 		{
@@ -17,6 +18,9 @@ namespace Saitama.Weapons
 
 		public LayerMask Targets { set { _targets = value; } }
 		public int Level { get { return _level; } set { _level = value; } }
+		public int Damage { get { return _damage; } set { _damage = value; } }
+
+        public abstract void IncreaseLevel(int level);
 
 		public abstract void HoldTrigger ();
 

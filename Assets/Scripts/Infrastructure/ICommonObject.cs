@@ -9,6 +9,7 @@ namespace Saitama
 		// Props
 		ICommonObject Parent {get;set;}
 		bool IsActive { get; }
+        string Name { get; set; }
 		Component MonoComponent { get; set;}
 
 		// Components

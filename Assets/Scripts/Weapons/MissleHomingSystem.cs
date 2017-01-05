@@ -20,8 +20,8 @@ namespace Saitama.Weapons{
 		public float MaxDegreesDelta{ get { return _maxDegreesDelta; } set { _maxDegreesDelta = value; } }
 
 		public void GoHome(Missle missle){
-			var missleHandler = missle.MissleHandler;
-			var missleComponent = missle.Start (missleHandler.MonoComponent.transform.position, missleHandler.MonoComponent.transform.rotation);
+			var missleHandler = missle.Parent;
+			var missleComponent = missle.Start ();
 			if (!_lockers.Any ()) {
 				missle.Fire (missleComponent);
 				return;

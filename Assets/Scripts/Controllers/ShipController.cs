@@ -67,6 +67,7 @@ public class ShipController : MonoBehaviour {
 	MachineGun _rightGun;
 	AirToAirMissleHandler _leftMissleHandler;
 	AirToAirMissleHandler _rightMissleHandler;
+	LevelManager _levelManager;
 	
 	void Start () {
 		var self = this;
@@ -262,6 +263,14 @@ public class ShipController : MonoBehaviour {
 
 		_gunPivotTracker = ship.GetComponent<GunPivotTrackerSystem> ();
 		_gunPivotTracker.SetGuns (_leftGun, _rightGun);
+
+		_levelManager = ship.GetComponent<LevelManager> ();
+		_levelManager.OnIncreased += (level) => {
+			_leftGun.IncreaseLevel(level);
+			_rightGun.IncreaseLevel(level);
+			_leftMissleHandler.IncreaseLevel(level);
+			_rightMissleHandler.IncreaseLevel(level);
+		};
 	} 
 
 	void FixedUpdate () {
@@ -290,6 +299,7 @@ public class ShipController : MonoBehaviour {
 	}
 
 	void Update(){
+		_levelManager.Update ();
 		_targetLocker.LockTargets(
 			_targetLocker.FindTargetsInCrosshair ("Target", 1600, crosshairUI, 25.375f));
 		
