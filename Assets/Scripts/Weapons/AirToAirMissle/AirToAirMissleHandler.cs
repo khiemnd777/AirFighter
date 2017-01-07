@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Saitama.Ships;
 
 namespace Saitama.Weapons.AirToAirMissle
 {
@@ -7,6 +8,7 @@ namespace Saitama.Weapons.AirToAirMissle
     {
         private float _nextExecuteTime;
         private bool _isExecuted;
+        private Ship _ship;
         private readonly MissleHomingSystem _missleHomingSystem;
 
         public AirToAirMissleHandler(MonoBehaviour mono)
@@ -20,6 +22,7 @@ namespace Saitama.Weapons.AirToAirMissle
             base.Init();
             _missleHomingSystem.MaxDegreesDelta = 20;
             SetComponent(_missleHomingSystem);
+            _ship = GetComponent<Ship>();
         }
 
         public void SetLockers(TargetLocker[] lockers)
@@ -73,19 +76,20 @@ namespace Saitama.Weapons.AirToAirMissle
                 
                 if (Time.time > _nextExecuteTime && !_isExecuted)
                 {
+                    var side = _name == "right" ? 1 : -1;
                     for (int i = 0; i < _slot; i++)
                     {
                         using (var missle = InstantiateRawComponent<AirToAirMissle>("", _targets))
                         {
-                            var side = _name == "right" ? 1 : -1;
                             missle.Parent = this;
                             missle.LifeTime = _lifeTime;
                             missle.Speed = _speed;
                             missle.Damage = _damage;
                             missle.Level = _level;
-                            missle.StartPosition = _monoComponent.transform.position + new Vector3(i * side, 0, 0);
+                            missle.StartPosition = _monoComponent.transform.position + Vector3.right * i * side;
                             missle.StartRotation = _monoComponent.transform.rotation * Quaternion.Euler(1, i * side, 1);
-                            _missleHomingSystem.GoHome(missle);
+                            var missleComponent = _missleHomingSystem.GoHome(missle);
+                            missleComponent.transform.SetParent(_monoComponent.transform);
                             _nextExecuteTime = Time.time + _timeBetweenExecute / 1000f;
                             _isExecuted = true; 
                         }   

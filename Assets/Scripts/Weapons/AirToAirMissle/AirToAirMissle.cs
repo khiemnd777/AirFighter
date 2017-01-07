@@ -39,6 +39,7 @@ namespace Saitama.Weapons.AirToAirMissle
 			var rigibody = missle.GetComponent<Rigidbody> ();
 
 			yield return new WaitingForFixedUpdate();
+            missle.transform.parent = null;
 			while(missle != null){
 				var distance = Time.fixedDeltaTime * _missleSpeedOnExecute;
 				_collisionChecker.Check (missle, missle.transform.localScale.magnitude);

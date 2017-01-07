@@ -1,20 +1,57 @@
 ﻿using System;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+using Saitama.Ships;
 
 namespace Saitama.Weapons.MachineGun
 {
 	public class MachineGun : Gun
 	{
 		private float nextShotTime;
+        private Ship _ship;
 
 		public MachineGun(MonoBehaviour mono) : base(mono){
 			
 		}
 
+        public override void Init()
+        {
+            base.Init();
+        }
+
 		public override void IncreaseLevel (int level)
 		{
-			//throw new System.NotImplementedException ();
+            _level = level;
+            switch (level)
+            {
+                default:
+                case 1:
+                    {
+                        _slot = 1;
+                        _lifeTime += 0;
+                        _damage += 0;
+                        _speed += 0;
+
+                    }
+                    break;
+                case 2:
+                    {
+                        _slot = 2;
+                        _lifeTime += 1;
+                        _damage += 10;
+                        _speed += 500;
+                    }
+                    break;
+                case 3:
+                    {
+                        _slot = 3;
+                        _lifeTime += 2;
+                        _damage += 10;
+                        _speed += 0;
+                    }
+                    break;
+
+            }
 		}
 
 		public override void HoldTrigger (){
@@ -22,18 +59,27 @@ namespace Saitama.Weapons.MachineGun
 				if (OnTriggerHold != null) {
 					OnTriggerHold.Invoke ();
 				}
-
-				if (Time.time > nextShotTime) { 
-					using (var bullet = InstantiateRawComponent<MachineGunBullet> ("", _targets)) {
-						bullet.Parent = this;
-						bullet.LifeTime = BulletLifeTime;
-						bullet.Level = _level;
-                        bullet.StartPosition = _monoComponent.transform.position;
-                        bullet.StartRotation = _monoComponent.transform.rotation;
-						var component = bullet.Start();
-						bullet.Fire (BulletSpeed, component);
-						nextShotTime = Time.time + TimeBetweenExecute / 1000f;
-					}
+                _ship = GetComponent<Ship>();
+                var side = _name == "right" ? 1 : -1;
+//                var angle = Quaternion.Angle(Quaternion.Euler(90,0,-180), _ship.MonoComponent.transform.localRotation);
+				if (Time.time > nextShotTime) {
+                    for (var i = 0; i < _slot; i++)
+                    {
+                        
+                        using (var bullet = InstantiateRawComponent<MachineGunBullet> ("", _targets)) {
+                            bullet.Parent = this;
+                            bullet.LifeTime = _lifeTime;
+                            bullet.Level = _level;
+                            bullet.Damage = _damage;
+                            bullet.StartPosition = _monoComponent.transform.position;
+                            bullet.StartRotation = _monoComponent.transform.rotation;
+                            var component = bullet.Start();
+                            component.transform.SetParent(_monoComponent.transform);
+                            component.transform.localPosition += (Vector3.right * i * side);
+                            bullet.Fire (_speed, component);
+                            nextShotTime = Time.time + TimeBetweenExecute / 1000f;
+                        }  
+                    }
 				}
 			}
 		}

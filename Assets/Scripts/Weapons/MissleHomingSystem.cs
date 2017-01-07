@@ -19,12 +19,12 @@ namespace Saitama.Weapons{
 
 		public float MaxDegreesDelta{ get { return _maxDegreesDelta; } set { _maxDegreesDelta = value; } }
 
-		public void GoHome(Missle missle){
+        public Component GoHome(Missle missle){
 			var missleHandler = missle.Parent;
 			var missleComponent = missle.Start ();
 			if (!_lockers.Any ()) {
 				missle.Fire (missleComponent);
-				return;
+                return missleComponent;
 			}
 			foreach (var locker in _lockers) {
 				if (locker.Target == null) {
@@ -35,9 +35,10 @@ namespace Saitama.Weapons{
 				StartCoroutine (Tracking (target, missleComponent));
 				missle.Fire (missleComponent);
 				StartCoroutine (Homing(target, missleComponent));
-				return;
+                return missleComponent;
 			}
 			missle.Fire (missleComponent);
+            return missleComponent;
 		}  
 
 		public void SetLockers(TargetLocker[] lockers){

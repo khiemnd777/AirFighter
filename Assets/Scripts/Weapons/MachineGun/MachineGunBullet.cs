@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Saitama.Ships;
 
 namespace Saitama.Weapons.MachineGun
 {
@@ -40,6 +41,7 @@ namespace Saitama.Weapons.MachineGun
 
 		IEnumerator Firing(float speed, Component bullet){
 			yield return new WaitingForFixedUpdate();
+            bullet.transform.parent = null;
 			while(bullet != null){
 				var distance = speed * Time.fixedDeltaTime;
 				bullet.transform.Translate (Vector3.forward * distance);

@@ -95,8 +95,8 @@ public class ShipController : MonoBehaviour {
 		}, delegate(StandardShip _ship, List<KeyValuePair<ICommonObject, string>> assembliedComponents){
 			var __leftGun = _ship.GetComponent<MachineGun> ("left");
 			__leftGun.Targets = bulletTargets;
-			__leftGun.BulletSpeed = bulletSpeed;
-			__leftGun.BulletLifeTime = bulletLifeTime;
+            __leftGun.Speed = bulletSpeed;
+            __leftGun.LifeTime = bulletLifeTime;
 			__leftGun.TimeBetweenExecute = bulletTimeBetweenExecute;
 			__leftGun.SetRawComponent(new RawComponent{
 				Type = typeof(MachineGunBullet),
@@ -106,8 +106,8 @@ public class ShipController : MonoBehaviour {
 
 			var __rightGun = _ship.GetComponent<MachineGun> ("right");
 			__rightGun.Targets = bulletTargets;
-			__rightGun.BulletSpeed = bulletSpeed;
-			__rightGun.BulletLifeTime = bulletLifeTime;
+            __rightGun.Speed = bulletSpeed;
+            __rightGun.LifeTime = bulletLifeTime;
 			__rightGun.TimeBetweenExecute = bulletTimeBetweenExecute;
 			__rightGun.SetRawComponent(new RawComponent{
 				Type = typeof(MachineGunBullet),
