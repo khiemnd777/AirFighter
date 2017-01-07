@@ -8,7 +8,6 @@ namespace Saitama.Weapons.MachineGun
 	public class MachineGun : Gun
 	{
 		private float nextShotTime;
-        private Ship _ship;
 
 		public MachineGun(MonoBehaviour mono) : base(mono){
 			
@@ -50,7 +49,6 @@ namespace Saitama.Weapons.MachineGun
                         _speed += 0;
                     }
                     break;
-
             }
 		}
 
@@ -59,13 +57,13 @@ namespace Saitama.Weapons.MachineGun
 				if (OnTriggerHold != null) {
 					OnTriggerHold.Invoke ();
 				}
-                _ship = GetComponent<Ship>();
                 var side = _name == "right" ? 1 : -1;
-//                var angle = Quaternion.Angle(Quaternion.Euler(90,0,-180), _ship.MonoComponent.transform.localRotation);
+
+                //var angle = Quaternion.Angle(Quaternion.Euler(90,0,-180), _ship.MonoComponent.transform.localRotation);
+                //var angle = Quaternion.AngleAxis(shipAngleY, Vector3.forward);
 				if (Time.time > nextShotTime) {
                     for (var i = 0; i < _slot; i++)
                     {
-                        
                         using (var bullet = InstantiateRawComponent<MachineGunBullet> ("", _targets)) {
                             bullet.Parent = this;
                             bullet.LifeTime = _lifeTime;

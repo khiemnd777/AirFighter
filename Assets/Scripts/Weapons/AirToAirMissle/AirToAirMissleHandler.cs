@@ -8,7 +8,6 @@ namespace Saitama.Weapons.AirToAirMissle
     {
         private float _nextExecuteTime;
         private bool _isExecuted;
-        private Ship _ship;
         private readonly MissleHomingSystem _missleHomingSystem;
 
         public AirToAirMissleHandler(MonoBehaviour mono)
@@ -22,7 +21,6 @@ namespace Saitama.Weapons.AirToAirMissle
             base.Init();
             _missleHomingSystem.MaxDegreesDelta = 20;
             SetComponent(_missleHomingSystem);
-            _ship = GetComponent<Ship>();
         }
 
         public void SetLockers(TargetLocker[] lockers)
@@ -86,10 +84,11 @@ namespace Saitama.Weapons.AirToAirMissle
                             missle.Speed = _speed;
                             missle.Damage = _damage;
                             missle.Level = _level;
-                            missle.StartPosition = _monoComponent.transform.position + Vector3.right * i * side;
+                            missle.StartPosition = _monoComponent.transform.position;
                             missle.StartRotation = _monoComponent.transform.rotation * Quaternion.Euler(1, i * side, 1);
                             var missleComponent = _missleHomingSystem.GoHome(missle);
                             missleComponent.transform.SetParent(_monoComponent.transform);
+                            missleComponent.transform.localPosition += (Vector3.right * i * side);
                             _nextExecuteTime = Time.time + _timeBetweenExecute / 1000f;
                             _isExecuted = true; 
                         }   
