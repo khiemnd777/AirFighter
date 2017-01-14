@@ -9,7 +9,7 @@ namespace Saitama.Weapons{
 		private GameObject _lockedTarget;
 		private readonly List<Gun> _guns;
 
-		public GunPivotTrackerSystem(MonoBehaviour mono) : base(mono){
+        public GunPivotTrackerSystem(MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent){
 			_guns = new List<Gun>();
 		}
 

@@ -10,8 +10,8 @@ namespace Saitama.Weapons.AirToAirMissle
         private bool _isExecuted;
         private readonly MissleHomingSystem _missleHomingSystem;
 
-        public AirToAirMissleHandler(MonoBehaviour mono)
-            : base(mono)
+        public AirToAirMissleHandler(MonoBehaviour mono, Component monoComponent)
+            : base(mono, monoComponent)
         {
             _missleHomingSystem = new MissleHomingSystem(mono);
         }

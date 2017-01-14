@@ -22,7 +22,7 @@ namespace Saitama.Builders.ShipBuilders
 		}
 
 		public override T Build(object mono, IDictionary<KeyValuePair<Type, string>, Component> monoComponents = null, Action<T> initiate = null, Action<T, List<KeyValuePair<ICommonObject, string>>> initiateComponents = null) {
-			_owner = (T)Activator.CreateInstance (typeof(T), mono);
+			_owner = (T)Activator.CreateInstance (typeof(T), mono, null);
 			_owner.Init ();
 			if (initiate != null) {
 				initiate.Invoke (_owner);
@@ -60,7 +60,7 @@ namespace Saitama.Builders.ShipBuilders
 				if(monoComponents != null && monoComponents.ContainsKey(controlType)){
 					monoComponent = monoComponents[controlType];
 				}
-				var component = (ICommonObject) Activator.CreateInstance(controlType.Key, mono);
+                var component = (ICommonObject) Activator.CreateInstance(controlType.Key, mono, monoComponent);
 				component.MonoComponent = monoComponent;
 				component.SetComponent(_owner);
 				component.Init();

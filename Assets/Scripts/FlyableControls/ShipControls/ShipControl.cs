@@ -42,7 +42,7 @@ namespace Saitama.FlyableControls.ShipControls
 		public event Action<InputState, Ship> LeftShiftingInput;
 		public event Action<InputState, Ship> RightShiftingInput;
 
-		public ShipControl (MonoBehaviour mono) : base(mono)
+        public ShipControl (MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent)
 		{
 			
 		}

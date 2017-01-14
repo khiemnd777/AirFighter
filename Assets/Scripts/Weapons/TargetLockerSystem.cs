@@ -8,7 +8,7 @@ namespace Saitama.Weapons{
 		private int _missleSlot;
 		private List<TargetLocker> _lockers;
 
-		public TargetLockerSystem(MonoBehaviour mono) : base(mono){
+        public TargetLockerSystem(MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent){
 			
 		}
 

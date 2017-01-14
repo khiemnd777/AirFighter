@@ -9,7 +9,7 @@ namespace Saitama {
 
 		private int _score;
 
-		public ScoreManager(MonoBehaviour mono) : base(mono){
+        public ScoreManager(MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent){
 			_score = Constants.DEFAULT_SCORE;
 		}
 

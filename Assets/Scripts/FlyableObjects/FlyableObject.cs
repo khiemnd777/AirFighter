@@ -8,7 +8,7 @@ namespace Saitama.FlyableObjects
 {
 	public abstract class FlyableObject : CommonObject, IFlyableObject
 	{
-		protected FlyableObject (MonoBehaviour mono) : base(mono)
+        protected FlyableObject (MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent)
 		{
 			
 		}

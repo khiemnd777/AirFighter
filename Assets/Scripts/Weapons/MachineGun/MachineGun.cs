@@ -9,7 +9,8 @@ namespace Saitama.Weapons.MachineGun
 	{
 		private float nextShotTime;
 
-		public MachineGun(MonoBehaviour mono) : base(mono){
+        public MachineGun(MonoBehaviour mono, Component monoComponent) 
+            : base(mono, monoComponent){
 			
 		}
 

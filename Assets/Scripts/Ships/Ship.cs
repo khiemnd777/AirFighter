@@ -9,7 +9,7 @@ namespace Saitama.Ships
 {
 	public abstract class Ship : FlyableObject, IShip
 	{
-		protected Ship (MonoBehaviour mono) : base(mono)
+        protected Ship (MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent)
 		{
 			
 		}

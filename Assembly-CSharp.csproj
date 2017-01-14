@@ -80,6 +80,9 @@
      <Compile Include="Assets\Scripts\Initialization.cs" />
      <Compile Include="Assets\Scripts\LevelSystem\LevelManager.cs" />
      <Compile Include="Assets\Scripts\LevelSystem\ScoreManager.cs" />
+     <Compile Include="Assets\Scripts\NPCs\Bosses\Boss.cs" />
+     <Compile Include="Assets\Scripts\NPCs\Bosses\IBoss.cs" />
+     <Compile Include="Assets\Scripts\NPCs\Bosses\XFisher.cs" />
      <Compile Include="Assets\Scripts\Ships\IShip.cs" />
      <Compile Include="Assets\Scripts\Ships\Ship.cs" />
      <Compile Include="Assets\Scripts\Ships\StandardShip.cs" />

@@ -8,7 +8,7 @@ namespace Saitama{
 		public Action<int> OnIncreased;
 		private int _level = Constants.MIN_LEVEL;
 
-		public LevelManager(MonoBehaviour mono) : base(mono){
+        public LevelManager(MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent){
 
 		}
 

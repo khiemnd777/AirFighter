@@ -7,7 +7,7 @@ namespace Saitama.Weapons
 	{
         protected float _lifeTime;
 
-		protected Bullet (MonoBehaviour mono) : base(mono)
+        protected Bullet (MonoBehaviour mono) : base(mono)
 		{
 			
 		}

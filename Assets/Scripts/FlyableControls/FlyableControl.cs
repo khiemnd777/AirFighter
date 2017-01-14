@@ -7,8 +7,8 @@ namespace Saitama.FlyableControls
 {
 	public abstract class FlyableControl : CommonObject, IFlyableControl
 	{
-		protected FlyableControl (MonoBehaviour mono) 
-			: base(mono)
+        protected FlyableControl (MonoBehaviour mono, Component monoComponent) 
+			: base(mono, monoComponent)
 		{
 			
 		}

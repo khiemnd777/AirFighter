@@ -11,7 +11,7 @@ namespace Saitama.Weapons
 		protected int _level = Constants.MIN_LEVEL;
 		protected int _damage;
 
-		protected Weapon (MonoBehaviour mono) : base(mono)
+        protected Weapon (MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent)
 		{
 			
 		}

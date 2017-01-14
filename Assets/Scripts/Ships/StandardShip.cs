@@ -7,8 +7,8 @@ namespace Saitama.Ships
 {
 	public class StandardShip : Ship
 	{
-		public StandardShip (MonoBehaviour mono)
-			: base(mono)
+        public StandardShip (MonoBehaviour mono, Component monoComponent)
+            : base(mono, monoComponent)
 		{
 			
 		}
