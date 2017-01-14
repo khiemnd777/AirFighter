@@ -1,24 +1,40 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/LevelSystem/LevelManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Weapons/Weapon.cs">
     <Files>
+      <File FileName="Assets/Scripts/NPCs/Bosses/Boss.cs" Line="22" Column="38" />
+      <File FileName="Assets/Scripts/NPCs/Bosses/XFisher.cs" Line="15" Column="13" />
+      <File FileName="Assets/Scripts/NPCs/Bosses/IBoss.cs" Line="9" Column="36" />
+      <File FileName="Assets/Scripts/Ships/IShip.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Ships/Ship.cs" Line="12" Column="74" />
+      <File FileName="Assets/Scripts/Ships/StandardShip.cs" Line="11" Column="39" />
+      <File FileName="Assets/Scripts/Utility.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Initialization.cs" Line="17" Column="55" />
+      <File FileName="Assets/Scripts/Weapons/Projectile.cs" Line="6" Column="56" />
+      <File FileName="Assets/Scripts/Weapons/TargetLocker.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Weapons/MissleHomingSystem.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/MachineGun/MachineGun.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/FlyableControls/ShipControls/ShipControl.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Controllers/ShipController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/MachineGun/MachineGunBullet.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/Missle.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/IProjectile.cs" Line="7" Column="27" />
+      <File FileName="Assets/Scripts/Weapons/TargetLockerSystem.cs" Line="12" Column="4" />
+      <File FileName="Assets/Scripts/FlyableObjects/FlyableObject.cs" Line="9" Column="68" />
+      <File FileName="Assets/Scripts/FlyableObjects/IFlyableObject.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/AirToAirMissle/AirToAirMissleHandler.cs" Line="15" Column="10" />
+      <File FileName="Assets/Scripts/Controllers/ShipController.cs" Line="288" Column="1" />
+      <File FileName="Assets/Scripts/FlyableControls/ShipControls/ShipControl.cs" Line="10" Column="34" />
+      <File FileName="Assets/Scripts/FlyableControls/FlyableControl.cs" Line="8" Column="44" />
+      <File FileName="Assets/Scripts/Builders/ShipBuilders/ShipBuilder.cs" Line="52" Column="4" />
+      <File FileName="Assets/Scripts/Infrastructure/CommonObject.cs" Line="12" Column="41" />
+      <File FileName="Assets/Scripts/FlyableControls/FlyableControlFactory.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/GunPivotTrackerSystem.cs" Line="11" Column="9" />
+      <File FileName="Assets/Scripts/LevelSystem/LevelManager.cs" Line="13" Column="4" />
+      <File FileName="Assets/Scripts/LevelSystem/ScoreManager.cs" Line="12" Column="100" />
+      <File FileName="Assets/Scripts/Weapons/Gun.cs" Line="13" Column="95" />
+      <File FileName="Assets/Scripts/Weapons/Bullet.cs" Line="10" Column="58" />
+      <File FileName="Assets/Scripts/Weapons/MachineGun/MachineGunBullet.cs" Line="11" Column="47" />
       <File FileName="Assets/Scripts/Weapons/CollisionChecker.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/Gun.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/Bullet.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Enums.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Constants.cs" Line="8" Column="32" />
-      <File FileName="Assets/Scripts/FlyableControls/FlyableControl.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Controllers/CameraController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/AirToAirMissle/AirToAirMissle.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Initialization.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/AirToAirMissle/AirToAirMissleHandler.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/LevelSystem/LevelManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/LevelSystem/ScoreManager.cs" Line="22" Column="21" />
+      <File FileName="Assets/Scripts/Weapons/MissleHandler.cs" Line="13" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/MachineGun/MachineGun.cs" Line="13" Column="13" />
+      <File FileName="Assets/Scripts/Weapons/Weapon.cs" Line="14" Column="98" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
