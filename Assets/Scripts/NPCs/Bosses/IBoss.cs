@@ -4,11 +4,9 @@ using Saitama.Ships;
 
 namespace Saitama.NPCs.Bosses
 {
-    public interface IBoss : IShip
+    public interface IBoss : IShip, IChasing, IRunningForLife
     {
-        GameObject[] FindTargets();
-        void Chase(GameObject target);
-        void RunForLife();
+        
     }
 }
 

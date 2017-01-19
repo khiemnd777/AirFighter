@@ -10,16 +10,16 @@ namespace Saitama.NPCs.Bosses
             
         }
 
-        public GameObject[] FindTargets()
-        {
-            return null;
+        public virtual void Chase(GameObject target){
+
         }
 
-        public void Chase(GameObject target){
+        public virtual void Chase(GameObject[] targets){
             
         }
 
-        public abstract void RunForLife();
-
+        public virtual void RunForLife(){
+            
+        }
     }
 }

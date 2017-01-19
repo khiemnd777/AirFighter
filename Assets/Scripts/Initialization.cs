@@ -25,18 +25,18 @@ public class Initialization : MonoBehaviour {
 			, new KeyValuePair<Type, string> (typeof(AirToAirMissleHandler), "right"));	
 
         // Assembly the X Fisher boss
-//        ShipBuilder<XFisher>.GetAlready(
-//            typeof(TargetLockerSystem)
-//            , typeof (GunPivotTrackerSystem)
-//            , new KeyValuePair<Type, string> (typeof(MachineGun), "1")
-//            , new KeyValuePair<Type, string> (typeof(MachineGun), "2")
-//            , new KeyValuePair<Type, string> (typeof(MachineGun), "3")
-//            , new KeyValuePair<Type, string> (typeof(MachineGun), "4")
-//            , new KeyValuePair<Type, string> (typeof(MachineGun), "5")
-//            , new KeyValuePair<Type, string>(typeof(AirToAirMissleHandler), "1")
-//            , new KeyValuePair<Type, string>(typeof(AirToAirMissleHandler), "2")
-//            , new KeyValuePair<Type, string>(typeof(AirToAirMissleHandler), "3")
-//            , new KeyValuePair<Type, string>(typeof(AirToAirMissleHandler), "4")
-//            , new KeyValuePair<Type, string>(typeof(AirToAirMissleHandler), "5"));
+        ShipBuilder<XFisher>.GetAlready(
+            typeof(TargetLockerSystem)
+            , typeof (GunPivotTrackerSystem)
+            , new KeyValuePair<Type, string> (typeof(MachineGun), "1")
+            , new KeyValuePair<Type, string> (typeof(MachineGun), "2")
+            , new KeyValuePair<Type, string> (typeof(MachineGun), "3")
+            , new KeyValuePair<Type, string> (typeof(MachineGun), "4")
+            , new KeyValuePair<Type, string> (typeof(MachineGun), "5")
+            , new KeyValuePair<Type, string> (typeof(AirToAirMissleHandler), "1")
+            , new KeyValuePair<Type, string> (typeof(AirToAirMissleHandler), "2")
+            , new KeyValuePair<Type, string> (typeof(AirToAirMissleHandler), "3")
+            , new KeyValuePair<Type, string> (typeof(AirToAirMissleHandler), "4")
+            , new KeyValuePair<Type, string> (typeof(AirToAirMissleHandler), "5"));
 	}
 }

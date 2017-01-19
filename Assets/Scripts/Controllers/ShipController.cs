@@ -290,8 +290,6 @@ public class ShipController : MonoBehaviour {
 		_shipControl.Thrust();
 		_shipControl.Roll ();
 
-		_gunPivotTracker.RotateGunPivot ();
-
 		_leftGun.HoldTrigger ();
 		_leftGun.ReleaseTrigger ();
 
@@ -312,8 +310,11 @@ public class ShipController : MonoBehaviour {
 		_targetLocker.LockTargets(
 			_targetLocker.FindTargetsInCrosshair ("Target", 1600, crosshairUI, 25.375f));
 		
-		_gunPivotTracker.LockTarget (
-			_gunPivotTracker.FindTargetsInCrosshair ("Target", 1600, 10.25f));
+        _gunPivotTracker.RotateGunPivot (
+            _gunPivotTracker.LockTargetsNearest (
+                _gunPivotTracker.FindTargetsInCrosshair ("Target", 1600, 10.25f)
+            )
+        );
 
 		_shipControl.HandleInputEvents ();
 	}

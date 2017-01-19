@@ -45,7 +45,7 @@ namespace Saitama.Weapons.MachineGun
 			while(bullet != null){
 				var distance = speed * Time.fixedDeltaTime;
 				bullet.transform.Translate (Vector3.forward * distance);
-				_collisionChecker.Check(bullet, distance / 2.0f);
+				_collisionChecker.Check(bullet, distance / 2.5f);
 
 				yield return new WaitingForFixedUpdate();
 			}

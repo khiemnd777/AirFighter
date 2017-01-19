@@ -7,12 +7,13 @@ namespace Saitama.Weapons{
 
 		private int _missleSlot;
 		private List<TargetLocker> _lockers;
-
+        private bool _useLockerUI;
         public TargetLockerSystem(MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent){
-			
+            _useLockerUI = true;
 		}
 
-		public int MissleSlot{ get { return _missleSlot; } set { _missleSlot = value; } }
+        public bool UseLockerUI { get { return _useLockerUI; } set { _useLockerUI = value; } }
+		public int MissleSlot { get { return _missleSlot; } set { _missleSlot = value; } }
 		public List<TargetLocker> Lockers { get { return _lockers; } }
 
 		public void PrepareTargetLockerUIs(RectTransform targetLockerUI, RectTransform canvasUI){
@@ -21,12 +22,20 @@ namespace Saitama.Weapons{
 			}
 			_lockers.Clear ();
 			for (var inx = 0; inx < _missleSlot; inx++) {
-				var lockerUI = Instantiate (targetLockerUI) as RectTransform;
-				lockerUI.SetParent (canvasUI.transform);
-				lockerUI.gameObject.SetActive (false);
-				_lockers.Add (new TargetLocker{
-					UI = lockerUI
-				});
+                if (_useLockerUI)
+                {
+                    var lockerUI = Instantiate(targetLockerUI) as RectTransform;
+                    lockerUI.SetParent(canvasUI.transform);
+                    lockerUI.gameObject.SetActive(false);
+                    _lockers.Add(new TargetLocker
+                        {
+                            UI = lockerUI
+                        });
+                }
+                else
+                {
+                    _lockers.Add(new TargetLocker());
+                }
 			}
 		}
 
@@ -50,6 +59,14 @@ namespace Saitama.Weapons{
 					&& sqrLen <= limit * limit;
 			});
 		}
+
+        public IEnumerable<GameObject> FindTargetsViaRadar(string tag, float limit){
+            var targets = GameObject.FindGameObjectsWithTag(tag);
+            return targets.Where(target=>{
+                var sqrLen = (target.transform.position - _mono.transform.position).sqrMagnitude;
+                return sqrLen <= limit * limit;
+            });
+        }
 
 		public GameObject[] FindTargetsInCrosshair(string tag, float limit, RectTransform crosshair, float border = .0f){
 			var ratio = crosshair.parent.localScale.x;
@@ -79,12 +96,14 @@ namespace Saitama.Weapons{
 			for (var inx = 0; inx < maxSlot && inx < _lockers.Count; inx++) {
 				var target = inx > targets.Length - 1 ? lastTarget : targets [inx];
 				var locker = _lockers [inx];
-				var targetScrPt = Camera.main.WorldToScreenPoint(target.transform.position);
+                if (_useLockerUI)
+                {
+                    var targetScrPt = Camera.main.WorldToScreenPoint(target.transform.position);
 
-				locker.UI.transform.position = new Vector3 (targetScrPt.x, targetScrPt.y, .0f);
-				locker.UI.gameObject.SetActive (true);
+                    locker.UI.transform.position = new Vector3 (targetScrPt.x, targetScrPt.y, .0f);
+                    locker.UI.gameObject.SetActive (true);
+                }
 				locker.Target = target;
-
 				lastTarget = target;
 			}
 		}

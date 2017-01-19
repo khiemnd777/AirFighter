@@ -9,11 +9,6 @@ namespace Saitama.NPCs.Bosses
         {
             
         }
-
-        public override void RunForLife()
-        {
-            
-        }
     }
 }
 

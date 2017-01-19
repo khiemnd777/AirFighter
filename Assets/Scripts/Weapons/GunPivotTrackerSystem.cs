@@ -5,15 +5,12 @@ using System.Collections.Generic;
 
 namespace Saitama.Weapons{
 	public class GunPivotTrackerSystem : CommonObject {
-
-		private GameObject _lockedTarget;
+        
 		private readonly List<Gun> _guns;
 
         public GunPivotTrackerSystem(MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent){
 			_guns = new List<Gun>();
 		}
-
-		public GameObject LockedTarget{ get { return _lockedTarget; } }
 
 		public void SetGuns(params Gun[] guns){
 			_guns.Clear ();
@@ -22,17 +19,26 @@ namespace Saitama.Weapons{
 			_guns.AddRange (guns);
 		}
 
-		public void RotateGunPivot(){
-			_guns.ForEach ((gun) => RotateGunPivot (gun));
+        public void RotateGunPivot(GameObject lockedTarget){
+            _guns.ForEach ((gun) => RotateGunPivot (gun, lockedTarget));
 		}
 
-		public void RotateGunPivot(Gun gun){
-			if (_lockedTarget == null) {
+        public void RotateGunPivot(GameObject[] lockedTargets){
+            _guns.ForEach((gun)=>
+                {
+                    var t = lockedTargets
+                        .OrderBy(target => (target.transform.position - gun.MonoComponent.transform.position).sqrMagnitude)
+                        .FirstOrDefault();
+                    RotateGunPivot(gun, t);
+                });
+        }
+
+        public void RotateGunPivot(Gun gun, GameObject lockedTarget){
+            if (lockedTarget == null) {
 				gun.MonoComponent.transform.localRotation = Quaternion.Euler (90.0f, 180.0f, 0.0f);
 				return;
 			}
-			var wantedRotation = Quaternion.LookRotation (_lockedTarget.transform.position - gun.MonoComponent.transform.position);
-
+            var wantedRotation = Quaternion.LookRotation (lockedTarget.transform.position - gun.MonoComponent.transform.position);
 			StartCoroutine(RotatingGunPivot(gun, wantedRotation));
 		}
 
@@ -67,8 +73,16 @@ namespace Saitama.Weapons{
 			return targets.ToArray();
 		}
 
-		public void LockTarget(GameObject[] targets){
-			_lockedTarget = targets.Length == 0 ? null : targets [0];
+        public GameObject LockTarget(GameObject[] targets){
+			return targets.Length == 0 ? null : targets [0];
 		}
+
+        public GameObject[] LockTargetsNearest(GameObject[] targets){
+            targets = targets
+                .OrderBy(target => (target.transform.position - _mono.transform.position).sqrMagnitude)
+                .Take(_guns.Count)
+                .ToArray();
+            return targets;
+        }
 	}
 }
