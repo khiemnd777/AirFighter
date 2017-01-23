@@ -317,6 +317,10 @@ public class ShipController : MonoBehaviour {
         );
 
 		_shipControl.HandleInputEvents ();
+
+        //Debug.Log(Vector3.Dot(Vector3.Cross(transform.forward, transform.up), GameObject.Find("Cube").transform.position));
+        //Debug.Log(Utility.Side(transform, GameObject.Find("Cube").transform));
+
 	}
 
 	void RotateShip(){

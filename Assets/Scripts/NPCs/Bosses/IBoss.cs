@@ -4,7 +4,7 @@ using Saitama.Ships;
 
 namespace Saitama.NPCs.Bosses
 {
-    public interface IBoss : IShip, IChasing, IRunningForLife
+    public interface IBoss : IShip, IChasing, IRunningForLife, IMovable
     {
         
     }

@@ -5,8 +5,14 @@ namespace Saitama.NPCs.Bosses
 {
     public abstract class Boss : Ship, IBoss
     {
+
+
         protected Boss(MonoBehaviour mono, Component monoComponent):base(mono, monoComponent)
         {
+            
+        }
+
+        public virtual void Move(){
             
         }
 

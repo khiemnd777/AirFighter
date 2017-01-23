@@ -84,6 +84,7 @@
      <Compile Include="Assets\Scripts\NPCs\Bosses\IBoss.cs" />
      <Compile Include="Assets\Scripts\NPCs\Bosses\XFisher.cs" />
      <Compile Include="Assets\Scripts\NPCs\IChasing.cs" />
+     <Compile Include="Assets\Scripts\NPCs\IMovable.cs" />
      <Compile Include="Assets\Scripts\NPCs\IRunningForLife.cs" />
      <Compile Include="Assets\Scripts\Ships\IShip.cs" />
      <Compile Include="Assets\Scripts\Ships\Ship.cs" />

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Saitama;
@@ -22,6 +23,42 @@ public class Utility
 
 		return new Vector3 (realX, realY, mousePosition.z);
 	}
+
+    public static GameObject[] FindTargetsViaRadar(string tag, Vector3 ownPosition, float limit){
+        var targets = GameObject.FindGameObjectsWithTag(tag);
+        targets = targets.Where(target =>{
+            var sqrLen = (target.transform.position - ownPosition).sqrMagnitude;
+            return sqrLen <= limit * limit;
+        }).ToArray();
+        return targets;
+    }
+
+    public static Vector3 ComputeAveragePosition(Vector3[] positions){
+        var average = Vector3.zero;
+        for (var i = 0; i < positions.Length; i++)
+        {
+            average += positions[i];
+        }
+        average = average / positions.Length;
+        return average;
+    }
+
+    public static int Side(Transform own, Transform target){
+        var targetDirection = target.position - own.position;
+        var ownForward = own.forward;
+        var ownUp = own.up;
+        var perp = Vector3.Cross(ownForward, targetDirection); // right vector
+        var side = Vector3.Dot(perp, ownUp);
+        if (side > 0f)
+        {
+            return 1; // side is right
+        }
+        else if (side < 0f)
+        {
+            return -1; // side is left
+        }
+        return 0; // side is front/back
+    }
 
 	public static T GetShipComponent<T>(GameObject gameObject) where T : ICommonObject{
 		var shipController = gameObject.GetComponent<ShipController> ();
