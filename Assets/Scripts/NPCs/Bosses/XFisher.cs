@@ -8,7 +8,7 @@ using Saitama.Ships;
 
 namespace Saitama.NPCs.Bosses
 {
-    public class XFisher : Boss, IChasing, IRunningForLife, IMovable
+    public class XFisher : Boss, IMovable
     {
         private Rigidbody _rigidbody;
 
@@ -23,7 +23,7 @@ namespace Saitama.NPCs.Bosses
             ComputeLevel();
         }
 
-        public override void Move()
+        public void Move()
         {
             // velocity
             var velocity = Utility.CalculateVelocity(_rigidbody.rotation, AmbientSpeed, Time.fixedDeltaTime);

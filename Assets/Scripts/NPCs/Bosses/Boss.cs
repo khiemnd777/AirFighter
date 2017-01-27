@@ -14,23 +14,7 @@ namespace Saitama.NPCs.Bosses
 
         public int Level { get { return _level; } }
 
-        public virtual void Move(){
-            
-        }
-
         public virtual void ComputeLevel(){
-            
-        }
-
-        public virtual void Chase(GameObject target){
-
-        }
-
-        public virtual void Chase(GameObject[] targets){
-            
-        }
-
-        public virtual void RunForLife(){
             
         }
     }
