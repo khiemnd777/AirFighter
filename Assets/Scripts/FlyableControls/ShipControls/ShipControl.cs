@@ -236,7 +236,6 @@ namespace Saitama.FlyableControls.ShipControls
 		public override void Pitch(Vector2 mousePosition) {
 			var pitch = Utility.CalculatePitch (mousePosition, _ship.RotationSpeed, Time.fixedDeltaTime);
 			_rigidbody.rotation *= pitch;
-
 		}
 
 		public override void Roll() {

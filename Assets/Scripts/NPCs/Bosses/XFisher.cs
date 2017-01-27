@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using System;
 using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using Saitama;
+using Saitama.Ships;
 
 namespace Saitama.NPCs.Bosses
 {
-    public class XFisher : Boss
+    public class XFisher : Boss, IChasing, IRunningForLife, IMovable
     {
         private Rigidbody _rigidbody;
 
@@ -16,6 +20,7 @@ namespace Saitama.NPCs.Bosses
         public override void Init()
         {
             _rigidbody = _mono.GetComponent<Rigidbody>();
+            ComputeLevel();
         }
 
         public override void Move()
@@ -42,6 +47,17 @@ namespace Saitama.NPCs.Bosses
                 var rotation = Quaternion.RotateTowards(_mono.transform.rotation, lookTo, Constants.DEFAULT_MAX_DEGREES_DELTA);
                 _rigidbody.MoveRotation(rotation);
             }
+        }
+
+        public override void ComputeLevel()
+        {
+            // level be computed via average level total of players
+            var targets = GameObject.FindGameObjectsWithTag("Flight");
+            var levelManagers = Utility.GetShipComponents<LevelManager>(targets);
+            var levels = levelManagers.Select(levelManager => levelManager.Level);
+            var level = levels.Sum();
+            level /= targets.Length;
+            _level = level;
         }
 
         private Vector3 DetectTargetsPosition(string tag, float limit){

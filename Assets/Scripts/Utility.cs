@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Saitama;
+using Saitama.Ships;
 
 public class Utility
 {
@@ -39,7 +40,7 @@ public class Utility
         {
             average += positions[i];
         }
-        average = average / positions.Length;
+        average /= positions.Length;
         return average;
     }
 
@@ -65,9 +66,26 @@ public class Utility
 		return shipController.ship.GetComponent<T> ();
 	}
 
+    public static T[] GetShipComponents<T>(GameObject[] gameObjects) where T:ICommonObject{
+        var ts = gameObjects
+            .Where(target => HasShipComponent(target))
+            .Select(target => target.GetComponent<ShipController>())
+            .Select(target => target.ship)
+            .Select(target => target.GetComponent<T>());
+        return ts.ToArray();
+    }
+
 	public static bool HasShipComponent(GameObject gameObject){
 		return gameObject.GetComponent<ShipController> () != null;
 	}
+
+    public static Ship[] ExtractShipComponent(GameObject[] gameObjects){
+        var ships = gameObjects
+            .Where(target => HasShipComponent(target))
+            .Select(target => target.GetComponent<ShipController>())
+            .Select(target => target.ship);
+        return ships.ToArray();
+    }
 
 	public static Quaternion RotatePrincipalAxes(Vector2 mousePosition, float rotationSpeed, float deltaTime){
 		var yaw = mousePosition.x * deltaTime * rotationSpeed;
