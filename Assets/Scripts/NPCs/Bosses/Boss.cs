@@ -19,5 +19,9 @@ namespace Saitama.NPCs.Bosses
         public virtual void ComputeLevel(){
             
         }
+
+        public virtual void ComputeHealth(){
+            
+        }
     }
 }

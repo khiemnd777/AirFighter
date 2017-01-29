@@ -10,7 +10,9 @@ namespace Saitama.NPCs.Bosses
 {
     public class XFisher : Boss, IMovable, IChasing, IRunningForLife
     {
-        private const float RUNNING_FOR_LIFE_HEALTH_VOLUMN = 10;
+        private const float RUNNING_FOR_LIFE_HEALTH_PERCENT = 20;
+        private const float DEFAULT_HEALTH = 99999;
+        private float _runningForLifeHealth;
 
         private Rigidbody _rigidbody;
 
@@ -24,16 +26,18 @@ namespace Saitama.NPCs.Bosses
             _rigidbody = _mono.GetComponent<Rigidbody>();
             // compute level at first time
             ComputeLevel();
+            // compute health at first time
+            ComputeHealth();
         }
 
         public void Chase(){
-            if (_health > RUNNING_FOR_LIFE_HEALTH_VOLUMN)
+            if (_health > _runningForLifeHealth)
             {
                 // compute velocity
                 ComputeVelocity();
 
                 // detect target position
-                var targetPosition = DetectTargetsPosition("Flight", 1600f);
+                var targetPosition = DetectTargetsPosition(Constants.PLAYER_TAG, 1600f);
                 if (targetPosition == Vector3.zero)
                 {
                     // if target position was zero, the NPC moves with zero rotation
@@ -62,7 +66,7 @@ namespace Saitama.NPCs.Bosses
         }
 
         public void RunForLife(){
-            if (_health <= RUNNING_FOR_LIFE_HEALTH_VOLUMN)
+            if (_health <= _runningForLifeHealth)
             {
                 // compute velocity
                 ComputeVelocity();
@@ -78,21 +82,31 @@ namespace Saitama.NPCs.Bosses
 
         public void Move()
         {
-            // chase
+            // chasing
             Chase();
-            // run for life
+            // running for life
             RunForLife();
         }
 
         public override void ComputeLevel()
         {
             // level be computed via average level total of players
-            var targets = GameObject.FindGameObjectsWithTag("Flight");
+            var targets = GameObject.FindGameObjectsWithTag(Constants.PLAYER_TAG);
             var levelManagers = Utility.GetShipComponents<LevelManager>(targets);
             var levels = levelManagers.Select(levelManager => levelManager.Level);
             var level = levels.Sum();
             level /= targets.Length;
             _level = level;
+        }
+
+        public override void ComputeHealth()
+        {
+            var targets = GameObject.FindGameObjectsWithTag(Constants.PLAYER_TAG);
+            var scoreManagers = Utility.GetShipComponents<ScoreManager>(targets);
+            var scores = scoreManagers.Select(scoreManager => scoreManager.Score);
+            var score = scores.Sum();
+            _health = score <= DEFAULT_HEALTH ? DEFAULT_HEALTH : score;
+            _runningForLifeHealth = _health * RUNNING_FOR_LIFE_HEALTH_PERCENT / 100;
         }
 
         private void ComputeVelocity(){

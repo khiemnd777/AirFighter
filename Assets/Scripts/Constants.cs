@@ -13,5 +13,6 @@ public class Constants
     public const float AREA_LIMIT_Z = 5000f; // ±LIMIT and zero is center
     public const float DISTANCE_IMPACT_AREA_LIMIT = 500;
     public const float DEFAULT_MAX_DEGREES_DELTA = 40;
+    public const string PLAYER_TAG = "Flight";
 }
 
