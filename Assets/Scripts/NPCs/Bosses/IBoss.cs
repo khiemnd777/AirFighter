@@ -7,6 +7,7 @@ namespace Saitama.NPCs.Bosses
     public interface IBoss : IShip
     {
         int Level { get; }
+        float Health { get; set; }
         void ComputeLevel();
     }
 }
