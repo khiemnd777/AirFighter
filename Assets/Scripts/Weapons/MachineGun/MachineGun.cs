@@ -17,6 +17,15 @@ namespace Saitama.Weapons.MachineGun
         public override void Init()
         {
             base.Init();
+
+            EventEmitter
+                .Static
+                .RemoveListener("bullet-hit", this, "BulletHit")
+                .On("bullet-hit", this, "BulletHit");
+        }
+
+        public void BulletHit(Component bullet){
+            Debug.Log(bullet);
         }
 
 		public override void IncreaseLevel (int level)

@@ -7,6 +7,6 @@ namespace Saitama.Ships
 {
 	public interface IShip : IFlyableObject
 	{
-		
+        EventEmitter EventEmitter { get; }
 	}
 }

@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scripts\Controllers\MouseController.cs" />
      <Compile Include="Assets\Scripts\Controllers\ShipController.cs" />
      <Compile Include="Assets\Scripts\Enums.cs" />
+     <Compile Include="Assets\Scripts\Extensions\ShipExtensions.cs" />
      <Compile Include="Assets\Scripts\Flight.cs" />
      <Compile Include="Assets\Scripts\FlyableControls\FlyableControl.cs" />
      <Compile Include="Assets\Scripts\FlyableControls\FlyableControlFactory.cs" />
@@ -72,6 +73,7 @@
      <Compile Include="Assets\Scripts\Infrastructure\Coroutines\InputUntil.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\Coroutines\WaitingFor.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\Coroutines\WaitingForFixedUpdate.cs" />
+     <Compile Include="Assets\Scripts\Infrastructure\EventEmitter.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\ICloneable.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\ICommonObject.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\RawComponent.cs" />
@@ -92,6 +94,7 @@
      <Compile Include="Assets\Scripts\Utility.cs" />
      <Compile Include="Assets\Scripts\Weapons\AirToAirMissle\AirToAirMissle.cs" />
      <Compile Include="Assets\Scripts\Weapons\AirToAirMissle\AirToAirMissleHandler.cs" />
+     <Compile Include="Assets\Scripts\Weapons\AttackerIdentifier.cs" />
      <Compile Include="Assets\Scripts\Weapons\Bullet.cs" />
      <Compile Include="Assets\Scripts\Weapons\CollisionChecker.cs" />
      <Compile Include="Assets\Scripts\Weapons\Gun.cs" />

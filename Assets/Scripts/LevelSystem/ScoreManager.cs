@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using Saitama.Extensions;
 
 namespace Saitama {
 	public class ScoreManager : CommonObject {
@@ -32,7 +33,7 @@ namespace Saitama {
 		}
 
 		public void Hit(GameObject target, int damage){
-			var targetScoreManager = Utility.GetShipComponent<ScoreManager> (target);
+            var targetScoreManager = target.GetShipComponent<ScoreManager>(); // Utility.GetShipComponent<ScoreManager> (target);
 			if (targetScoreManager == null)
 				return;
 			targetScoreManager.Decrease (damage);

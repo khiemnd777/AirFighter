@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Saitama.Infrastructure
+namespace Saitama
 {
 	public class Singleton<T>: Singleton {
 		static T instance;

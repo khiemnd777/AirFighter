@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using Saitama.Infrastructure;
 using Saitama.FlyableObjects;
 
 namespace Saitama.FlyableControls

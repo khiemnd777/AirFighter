@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Saitama.Ships;
+using Saitama.Extensions;
 
 namespace Saitama.Weapons.MachineGun
 {
@@ -19,10 +20,13 @@ namespace Saitama.Weapons.MachineGun
 
 			_collisionChecker.OnHit += (bullet, colliders) => {
 				for(var inx = 0; inx < colliders.Length; inx++){
-					if(Utility.HasShipComponent(colliders[inx].gameObject)){
+                    if(colliders[inx].gameObject.HasShipComponent()){
 						var scoreManager = _parent.Parent.GetComponent<ScoreManager>();
 						scoreManager.Hit(colliders[inx].gameObject, _damage);	
 					}
+                    EventEmitter
+                        .Static
+                        .Emit("bullet-hit", bullet);
 					Destroy(bullet.gameObject);
 				}
 			};

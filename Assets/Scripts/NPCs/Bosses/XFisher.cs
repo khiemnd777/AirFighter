@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Saitama;
+using Saitama.Extensions;
 using Saitama.Ships;
 
 namespace Saitama.NPCs.Bosses
@@ -92,7 +93,7 @@ namespace Saitama.NPCs.Bosses
         {
             // level be computed via average level total of players
             var targets = GameObject.FindGameObjectsWithTag(Constants.PLAYER_TAG);
-            var levelManagers = Utility.GetShipComponents<LevelManager>(targets);
+            var levelManagers = targets.GetShipComponents<LevelManager>();
             var levels = levelManagers.Select(levelManager => levelManager.Level);
             var level = levels.Sum();
             level /= targets.Length;
@@ -102,7 +103,7 @@ namespace Saitama.NPCs.Bosses
         public override void ComputeHealth()
         {
             var targets = GameObject.FindGameObjectsWithTag(Constants.PLAYER_TAG);
-            var scoreManagers = Utility.GetShipComponents<ScoreManager>(targets);
+            var scoreManagers = targets.GetShipComponents<ScoreManager>();
             var scores = scoreManagers.Select(scoreManager => scoreManager.Score);
             var score = scores.Sum();
             _health = score <= DEFAULT_HEALTH ? DEFAULT_HEALTH : score;

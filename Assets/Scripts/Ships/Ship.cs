@@ -9,10 +9,14 @@ namespace Saitama.Ships
 {
 	public abstract class Ship : FlyableObject, IShip
 	{
+        protected EventEmitter _eventEmitter;
+        
         protected Ship (MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent)
 		{
-			
+            _eventEmitter = new EventEmitter();
 		}
+
+        public EventEmitter EventEmitter { get { return _eventEmitter; } }
 
 		public float AmbientSpeed { get; set; }
 		public float AmbientMaxSpeed{ get; set; }
