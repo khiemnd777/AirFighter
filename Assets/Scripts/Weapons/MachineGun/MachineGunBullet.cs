@@ -26,7 +26,7 @@ namespace Saitama.Weapons.MachineGun
 					}
                     EventEmitter
                         .Static
-                        .Emit("bullet-hit", bullet);
+                        .Emit(AttackerIdentifier.IDENTIFY, _mono.gameObject);
 					Destroy(bullet.gameObject);
 				}
 			};

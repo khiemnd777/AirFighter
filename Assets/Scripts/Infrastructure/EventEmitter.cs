@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Collections.Generic;
 
 namespace Saitama
@@ -39,7 +41,17 @@ namespace Saitama
             {
                 foreach (var f in subscribedMethods)
                 {
-                    var method = f.Key.GetType().GetMethod(f.Value);
+                    var types = parameters
+                        .Select(p => p.GetType())
+                        .ToArray();
+                    var method = f.Key
+                        .GetType()
+                        .GetMethod(f.Value
+                            , BindingFlags.Public | BindingFlags.Instance
+                            , null
+                            , CallingConventions.Any
+                            , types
+                            , null);
                     method.Invoke(f.Key, parameters);
                 }
             }

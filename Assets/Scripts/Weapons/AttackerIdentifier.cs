@@ -8,6 +8,8 @@ namespace Saitama.Weapons
 {
     public class AttackerIdentifier : CommonObject
     {
+        public const string IDENTIFY = "attacker-identifier-identify";
+
         private List<GameObject> _attackers;
 
         public AttackerIdentifier(MonoBehaviour mono, Component monoComponent) : base (mono, monoComponent)
@@ -19,13 +21,23 @@ namespace Saitama.Weapons
         {
             EventEmitter
                 .Static
-                .On("attacker-identifier-identify", this, "Identify");
+                .On(IDENTIFY, this, "Identify");
         }
 
         public GameObject[] Attackers { get { return _attackers.ToArray(); } }
 
-        public void Identify(GameObject attacker, GameObject target){
-            _attackers.Add(attacker);
+        public void Identify(GameObject attacker)
+        {
+            Debug.Log(1); 
+        }
+
+        public void Identify(GameObject attacker, GameObject target)
+        {
+            Debug.Log(2);
+            if (_mono.gameObject.GetInstanceID() == target.GetInstanceID())
+            {
+                _attackers.Add(attacker);   
+            }
         }
     }
 }

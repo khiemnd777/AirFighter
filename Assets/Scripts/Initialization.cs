@@ -15,6 +15,7 @@ public class Initialization : MonoBehaviour {
 	void Awake(){
         // Assembly the standard ship
 		ShipBuilder<StandardShip>.GetAlready (typeof(ShipControl)
+            , typeof(AttackerIdentifier)
 			, typeof(TargetLockerSystem)
 			, typeof(GunPivotTrackerSystem)
 			, typeof(LevelManager)
@@ -26,7 +27,8 @@ public class Initialization : MonoBehaviour {
 
         // Assembly the X Fisher boss
         ShipBuilder<XFisher>.GetAlready(
-            typeof(TargetLockerSystem)
+            typeof(AttackerIdentifier)
+            , typeof(TargetLockerSystem)
             , typeof (GunPivotTrackerSystem)
             , new KeyValuePair<Type, string> (typeof(MachineGun), "1")
             , new KeyValuePair<Type, string> (typeof(MachineGun), "2")
