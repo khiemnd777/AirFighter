@@ -5,6 +5,8 @@ using Saitama.Extensions;
 namespace Saitama {
 	public class ScoreManager : CommonObject {
 
+        public const string HIT = "score-manager-hit";
+
 		public Action OnDecreasing;
 		public Action OnIncreasing;
 
@@ -13,6 +15,13 @@ namespace Saitama {
         public ScoreManager(MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent){
 			_score = Constants.DEFAULT_SCORE;
 		}
+
+        public override void Init()
+        {
+            EventEmitter
+                .Static
+                .On(HIT, this, "Hit");
+        }
 
 		public int Score{
 			get { return _score; }
@@ -33,7 +42,7 @@ namespace Saitama {
 		}
 
 		public void Hit(GameObject target, int damage){
-            var targetScoreManager = target.GetShipComponent<ScoreManager>(); // Utility.GetShipComponent<ScoreManager> (target);
+            var targetScoreManager = target.GetShipComponent<ScoreManager>();
 			if (targetScoreManager == null)
 				return;
 			targetScoreManager.Decrease (damage);
@@ -41,5 +50,11 @@ namespace Saitama {
 			var score = damage < targetScore ? damage : targetScore;
 			Increase (score);
 		}
+
+        public void Hit(GameObject own, GameObject target, int damage){
+            if (own.GetInstanceID() != _mono.gameObject.GetInstanceID())
+                return;
+            Hit(target, damage);
+        }
 	}
 }

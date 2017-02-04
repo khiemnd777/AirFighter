@@ -23,13 +23,14 @@ namespace Saitama
         public EventEmitter On(string eventName, object listenerObject, string listenerMethod)
         {
             List<KeyValuePair<object, string>> subscribedMethods;
+            var newListener = new KeyValuePair<object, string>(listenerObject, listenerMethod);
             if (this._events.TryGetValue(eventName, out subscribedMethods))
             {
-                subscribedMethods.Add(new KeyValuePair<object, string>(listenerObject, listenerMethod));
+                subscribedMethods.Add(newListener);
             }
             else
             {
-                this._events.Add(eventName, new List<KeyValuePair<object, string>> { new KeyValuePair<object, string>(listenerObject, listenerMethod) });
+                this._events.Add(eventName, new List<KeyValuePair<object, string>> { newListener });
             }
             return this;
         }
@@ -39,20 +40,20 @@ namespace Saitama
             List<KeyValuePair<object, string>> subscribedMethods;
             if (this._events.TryGetValue(eventName, out subscribedMethods))
             {
-                foreach (var f in subscribedMethods)
-                {
-                    var types = parameters
-                        .Select(p => p.GetType())
-                        .ToArray();
-                    var method = f.Key
+                var types = parameters
+                    .Select(p => p.GetType())
+                    .ToArray();
+                foreach (var subcriber in subscribedMethods)
+                {   
+                    subcriber.Key
                         .GetType()
-                        .GetMethod(f.Value
+                        .GetMethod(subcriber.Value
                             , BindingFlags.Public | BindingFlags.Instance
                             , null
                             , CallingConventions.Any
                             , types
-                            , null);
-                    method.Invoke(f.Key, parameters);
+                            , null)
+                        .Invoke(subcriber.Key, parameters);
                 }
             }
             return this;

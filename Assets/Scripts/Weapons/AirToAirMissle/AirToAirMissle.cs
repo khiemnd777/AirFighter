@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Saitama.Extensions;
 
 namespace Saitama.Weapons.AirToAirMissle
 {
@@ -20,10 +21,20 @@ namespace Saitama.Weapons.AirToAirMissle
 
 			_collisionChecker.OnHit += (missle, colliders) => {
 				for(var inx = 0; inx < colliders.Length; inx++){
-					if(Utility.HasShipComponent(colliders[inx].gameObject)){
-						var scoreManager = _parent.Parent.GetComponent<ScoreManager>();
-						scoreManager.Hit(colliders[inx].gameObject, _damage);	
-					}
+                    var target = colliders[inx];
+//                    if(colliders[inx].gameObject.HasShipComponent()){
+//                        var scoreManager = _mono.GetShipComponent<ScoreManager>();
+//						scoreManager.Hit(colliders[inx].gameObject, _damage);	
+//					}
+
+                    EventEmitter
+                        .Static
+                        .Emit(ScoreManager.HIT, _mono.gameObject, target.gameObject, _damage);
+
+                    EventEmitter
+                        .Static
+                        .Emit(AttackerIdentifier.IDENTIFY, _mono.gameObject, target.gameObject);
+                    
 					Destroy(missle.gameObject);
 				}
 			};

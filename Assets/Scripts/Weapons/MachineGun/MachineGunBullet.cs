@@ -20,13 +20,20 @@ namespace Saitama.Weapons.MachineGun
 
 			_collisionChecker.OnHit += (bullet, colliders) => {
 				for(var inx = 0; inx < colliders.Length; inx++){
-                    if(colliders[inx].gameObject.HasShipComponent()){
-						var scoreManager = _parent.Parent.GetComponent<ScoreManager>();
-						scoreManager.Hit(colliders[inx].gameObject, _damage);	
-					}
+                    var target = colliders[inx];
+//                    if(target.gameObject.HasShipComponent()){
+//                        var scoreManager = _mono.GetShipComponent<ScoreManager>();
+//                        scoreManager.Hit(target.gameObject, _damage);	
+//					}
+
                     EventEmitter
                         .Static
-                        .Emit(AttackerIdentifier.IDENTIFY, _mono.gameObject);
+                        .Emit(ScoreManager.HIT, _mono.gameObject, target.gameObject, _damage);
+
+                    EventEmitter
+                        .Static
+                        .Emit(AttackerIdentifier.IDENTIFY, _mono.gameObject, target.gameObject);
+                    
 					Destroy(bullet.gameObject);
 				}
 			};

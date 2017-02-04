@@ -17,6 +17,8 @@ namespace Saitama.Weapons
             _attackers = new List<GameObject>();
         }
 
+        public GameObject[] Attackers { get { return _attackers.ToArray(); } }
+
         public override void Init()
         {
             EventEmitter
@@ -24,20 +26,13 @@ namespace Saitama.Weapons
                 .On(IDENTIFY, this, "Identify");
         }
 
-        public GameObject[] Attackers { get { return _attackers.ToArray(); } }
-
-        public void Identify(GameObject attacker)
-        {
-            Debug.Log(1); 
-        }
-
         public void Identify(GameObject attacker, GameObject target)
         {
-            Debug.Log(2);
-            if (_mono.gameObject.GetInstanceID() == target.GetInstanceID())
-            {
-                _attackers.Add(attacker);   
-            }
+            if (_mono.gameObject.GetInstanceID() != target.GetInstanceID())
+                return;
+            if (_attackers.Contains(attacker))
+                return;
+            _attackers.Add(attacker);
         }
     }
 }
