@@ -8,6 +8,7 @@ namespace Saitama.NPCs.Bosses
     {
         int Level { get; }
         float Health { get; set; }
+        float OriginalHealth { get; set; }
         void ComputeLevel();
         void ComputeHealth();
     }

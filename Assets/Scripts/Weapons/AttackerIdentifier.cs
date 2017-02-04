@@ -10,14 +10,14 @@ namespace Saitama.Weapons
     {
         public const string IDENTIFY = "attacker-identifier-identify";
 
-        private List<GameObject> _attackers;
+        private IDictionary<GameObject, float> _attackers;
 
         public AttackerIdentifier(MonoBehaviour mono, Component monoComponent) : base (mono, monoComponent)
         {
-            _attackers = new List<GameObject>();
+            _attackers = new Dictionary<GameObject, float>();
         }
 
-        public GameObject[] Attackers { get { return _attackers.ToArray(); } }
+        public IDictionary<GameObject, float> Attackers { get { return _attackers; } }
 
         public override void Init()
         {
@@ -26,13 +26,26 @@ namespace Saitama.Weapons
                 .On(IDENTIFY, this, "Identify");
         }
 
-        public void Identify(GameObject attacker, GameObject target)
+        public IDictionary<GameObject, float> GetAttackers(){
+            return _attackers.Where(a => a.Key != null).ToDictionary(a => a.Key, a => a.Value);
+        }
+
+        public virtual void Identify(GameObject attacker, float damage){
+            Identify(attacker, _mono.gameObject, damage);
+        }
+
+        public virtual void Identify(GameObject attacker, GameObject target, float damage)
         {
             if (_mono.gameObject.GetInstanceID() != target.GetInstanceID())
                 return;
-            if (_attackers.Contains(attacker))
-                return;
-            _attackers.Add(attacker);
+            if (!_attackers.Any(a => a.Key.GetInstanceID() == attacker.GetInstanceID()))
+            {
+                _attackers.Add(new KeyValuePair<GameObject, float>(attacker, damage));
+            }
+            else
+            {
+                _attackers[attacker] += damage;
+            }
         }
     }
 }

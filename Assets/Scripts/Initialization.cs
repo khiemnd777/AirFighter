@@ -15,6 +15,7 @@ public class Initialization : MonoBehaviour {
 	void Awake(){
         // Assembly the standard ship
 		ShipBuilder<StandardShip>.GetAlready (typeof(ShipControl)
+            , typeof(AttackerIdentifier)
 			, typeof(TargetLockerSystem)
 			, typeof(GunPivotTrackerSystem)
 			, typeof(LevelManager)

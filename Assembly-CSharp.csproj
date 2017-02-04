@@ -76,6 +76,7 @@
      <Compile Include="Assets\Scripts\Infrastructure\EventEmitter.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\ICloneable.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\ICommonObject.cs" />
+     <Compile Include="Assets\Scripts\Infrastructure\IDead.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\RawComponent.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\Singleton.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\TypeExtensions.cs" />

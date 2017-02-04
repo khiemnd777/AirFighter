@@ -46,13 +46,10 @@ namespace Saitama {
 			if (targetScoreManager == null)
 				return;
 			targetScoreManager.Decrease (damage);
-			var targetScore = targetScoreManager.Score;
-			var score = damage < targetScore ? damage : targetScore;
-			Increase (score);
 		}
 
-        public void Hit(GameObject own, GameObject target, int damage){
-            if (own.GetInstanceID() != _mono.gameObject.GetInstanceID())
+        public void Hit(GameObject by, GameObject target, int damage){
+            if (by.GetInstanceID() != _mono.gameObject.GetInstanceID())
                 return;
             Hit(target, damage);
         }

@@ -23,7 +23,7 @@ namespace Saitama.Extensions
 
         public static T[] GetShipComponents<T>(this GameObject[] gameObjects) where T : ICommonObject{
             var ts = gameObjects
-                .Where(target => HasShipComponent(target))
+                .Where(target => IsShip(target))
                 .Select(target => target.GetComponent<ShipController>())
                 .Select(target => target.ship)
                 .Select(target => target.GetComponent<T>());
@@ -40,17 +40,17 @@ namespace Saitama.Extensions
                 .ToArray());
         }
 
-        public static bool HasShipComponent(this GameObject gameObject){
+        public static bool IsShip(this GameObject gameObject){
             return gameObject.GetComponent<ShipController> () != null;
         }
 
-        public static bool HasShipComponent(this MonoBehaviour mono){
+        public static bool IsShip(this MonoBehaviour mono){
             return mono.gameObject.GetComponent<ShipController> () != null;
         }
 
         public static Ship[] ExtractShipComponent(this GameObject[] gameObjects){
             var ships = gameObjects
-                .Where(target => HasShipComponent(target))
+                .Where(target => IsShip(target))
                 .Select(target => target.GetComponent<ShipController>())
                 .Select(target => target.ship);
             return ships.ToArray();

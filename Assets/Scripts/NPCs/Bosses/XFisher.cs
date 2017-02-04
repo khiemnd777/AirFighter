@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Saitama;
+using Saitama.Weapons;
 using Saitama.Extensions;
 using Saitama.Ships;
 
@@ -83,10 +84,33 @@ namespace Saitama.NPCs.Bosses
 
         public void Move()
         {
+            // die
+            Die();
             // chasing
             Chase();
             // running for life
             RunForLife();
+        }
+
+        public override void Die()
+        {
+            if (_health <= 0)
+            {
+                var attackerIdentifier = _mono.GetShipComponent<AttackerIdentifier>();
+                if (attackerIdentifier != null)
+                {
+                    var attackers = attackerIdentifier.GetAttackers();
+                    var sum = attackers.Select(a => a.Value).Sum();
+                    for (var i = 0; i < attackers.Count; i++)
+                    {
+                        var attacker = attackers.ElementAt(i);
+                        var score = _originalHealth * (attacker.Value * sum / 100);
+                        var scoreManager = attacker.Key.GetShipComponent<ScoreManager>();
+                        scoreManager.Increase(Convert.ToInt32(score));
+                    }
+                }
+            }
+            base.Die();
         }
 
         public override void ComputeLevel()
@@ -106,7 +130,7 @@ namespace Saitama.NPCs.Bosses
             var scoreManagers = targets.GetShipComponents<ScoreManager>();
             var scores = scoreManagers.Select(scoreManager => scoreManager.Score);
             var score = scores.Sum();
-            _health = score <= DEFAULT_HEALTH ? DEFAULT_HEALTH : score;
+            _originalHealth = _health = score <= DEFAULT_HEALTH ? DEFAULT_HEALTH : score;
             _runningForLifeHealth = _health * RUNNING_FOR_LIFE_HEALTH_PERCENT / 100;
         }
 
