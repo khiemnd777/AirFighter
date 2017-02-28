@@ -45,7 +45,15 @@ namespace Saitama.Extensions
         }
 
         public static bool IsShip(this MonoBehaviour mono){
-            return mono.gameObject.GetComponent<ShipController> () != null;
+            return IsShip(mono.gameObject);
+        }
+
+        public static bool IsBoss(this GameObject gameObject){
+            return gameObject.GetComponent<BossController> () != null;
+        }
+
+        public static bool IsBoss(this MonoBehaviour mono){
+            return IsBoss(mono.gameObject);
         }
 
         public static Ship[] ExtractShipComponent(this GameObject[] gameObjects){
@@ -54,6 +62,24 @@ namespace Saitama.Extensions
                 .Select(target => target.GetComponent<ShipController>())
                 .Select(target => target.ship);
             return ships.ToArray();
+        }
+
+        public static int GetScore(this GameObject gameObject){
+            var scoreManager = GetShipComponent<ScoreManager>(gameObject);
+            return scoreManager.Score;
+        }
+
+        public static int GetScore(this MonoBehaviour mono){
+            return GetScore(mono.gameObject);
+        }
+
+        public static int GetOriginalScore(this GameObject gameObject){
+            var scoreManager = GetShipComponent<ScoreManager>(gameObject);
+            return scoreManager.OriginalScore;
+        }
+
+        public static int GetOriginalScore(this MonoBehaviour mono){
+            return GetOriginalScore(mono.gameObject);
         }
     }
 }

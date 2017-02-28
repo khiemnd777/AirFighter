@@ -20,14 +20,14 @@ namespace Saitama.Builders.ShipBuilders
 			_components = new List<KeyValuePair<Type, string>> ();
 		}
 
-		public override T Build(object mono, IDictionary<KeyValuePair<Type, string>, Component> monoComponents = null, Action<T> initiate = null, Action<T, List<KeyValuePair<ICommonObject, string>>> initiateComponents = null) {
+		public override T Build(object mono, Action<T> initiate = null, Action<T, List<KeyValuePair<ICommonObject, string>>> initiateComponents = null) {
 			_owner = (T)Activator.CreateInstance (typeof(T), mono, null);
 			_owner.Init ();
 			if (initiate != null) {
 				initiate.Invoke (_owner);
 			}
 			// Assembly components belong to owner
-			var assembliedComponents = AssemblyComponents (mono, monoComponents);
+			var assembliedComponents = AssemblyComponents (mono);
 			if (initiateComponents != null) {
 				initiateComponents.Invoke (_owner, assembliedComponents);
 			}
@@ -50,17 +50,12 @@ namespace Saitama.Builders.ShipBuilders
 			}
 		}
 
-		private List<KeyValuePair<ICommonObject, string>> AssemblyComponents(object mono, IDictionary<KeyValuePair<Type, string>, Component> monoComponents = null){
+		private List<KeyValuePair<ICommonObject, string>> AssemblyComponents(object mono){
 			if (!_components.Any ())
 				return null;
 			
 			var components = _components.Select (controlType => {
-				Component monoComponent = null;
-				if(monoComponents != null && monoComponents.ContainsKey(controlType)){
-					monoComponent = monoComponents[controlType];
-				}
-                var component = (ICommonObject) Activator.CreateInstance(controlType.Key, mono, monoComponent);
-				component.MonoComponent = monoComponent;
+                var component = (ICommonObject) Activator.CreateInstance(controlType.Key, mono);
 				component.SetComponent(_owner);
 				component.Init();
 				return new KeyValuePair<ICommonObject, string> (component, controlType.Value);

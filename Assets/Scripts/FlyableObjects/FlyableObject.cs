@@ -6,9 +6,9 @@ using Saitama.FlyableControls;
 
 namespace Saitama.FlyableObjects
 {
-	public abstract class FlyableObject : CommonObject, IFlyableObject
+	public abstract class FlyableObject : Updater, IFlyableObject
 	{
-        protected FlyableObject (MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent)
+        protected FlyableObject (MonoBehaviour mono) : base(mono)
 		{
 			
 		}

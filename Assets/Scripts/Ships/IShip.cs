@@ -5,7 +5,7 @@ using Saitama.FlyableObjects;
 
 namespace Saitama.Ships
 {
-    public interface IShip : IFlyableObject, IDead
+    public interface IShip : IFlyableObject, IDead, IUpdatable
 	{
         EventEmitter EventEmitter { get; }
 	}

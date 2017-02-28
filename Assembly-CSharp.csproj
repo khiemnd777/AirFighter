@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\Builders\IBuilder.cs" />
      <Compile Include="Assets\Scripts\Builders\ShipBuilders\ShipBuilder.cs" />
      <Compile Include="Assets\Scripts\Constants.cs" />
+     <Compile Include="Assets\Scripts\Controllers\BossController.cs" />
      <Compile Include="Assets\Scripts\Controllers\CameraController.cs" />
      <Compile Include="Assets\Scripts\Controllers\MouseController.cs" />
      <Compile Include="Assets\Scripts\Controllers\ShipController.cs" />
@@ -77,9 +78,13 @@
      <Compile Include="Assets\Scripts\Infrastructure\ICloneable.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\ICommonObject.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\IDead.cs" />
+     <Compile Include="Assets\Scripts\Infrastructure\ITransformable.cs" />
+     <Compile Include="Assets\Scripts\Infrastructure\IUpdatable.cs" />
+     <Compile Include="Assets\Scripts\Infrastructure\MonoController.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\RawComponent.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\Singleton.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\TypeExtensions.cs" />
+     <Compile Include="Assets\Scripts\Infrastructure\Updater.cs" />
      <Compile Include="Assets\Scripts\Initialization.cs" />
      <Compile Include="Assets\Scripts\LevelSystem\LevelManager.cs" />
      <Compile Include="Assets\Scripts\LevelSystem\ScoreManager.cs" />
@@ -91,7 +96,8 @@
      <Compile Include="Assets\Scripts\NPCs\IRunningForLife.cs" />
      <Compile Include="Assets\Scripts\Ships\IShip.cs" />
      <Compile Include="Assets\Scripts\Ships\Ship.cs" />
-     <Compile Include="Assets\Scripts\Ships\StandardShip.cs" />
+     <Compile Include="Assets\Scripts\Ships\StandardShip\StandardShip.cs" />
+     <Compile Include="Assets\Scripts\Ships\StandardShip\StandardShipController.cs" />
      <Compile Include="Assets\Scripts\Utility.cs" />
      <Compile Include="Assets\Scripts\Weapons\AirToAirMissle\AirToAirMissle.cs" />
      <Compile Include="Assets\Scripts\Weapons\AirToAirMissle\AirToAirMissleHandler.cs" />
@@ -110,6 +116,7 @@
      <Compile Include="Assets\Scripts\Weapons\Projectile.cs" />
      <Compile Include="Assets\Scripts\Weapons\TargetLocker.cs" />
      <Compile Include="Assets\Scripts\Weapons\TargetLockerSystem.cs" />
+     <Compile Include="Assets\Scripts\Weapons\TargetTrackerSystem.cs" />
      <Compile Include="Assets\Scripts\Weapons\Weapon.cs" />
      <Compile Include="Assets\test.cs" />
  <Reference Include="UnityEngine.Analytics">

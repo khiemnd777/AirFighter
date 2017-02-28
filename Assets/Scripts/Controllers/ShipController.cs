@@ -75,12 +75,7 @@ public class ShipController : MonoBehaviour {
 		rigid.freezeRotation = true;
 
 		// Assembly standard ship
-		ship = ShipBuilder<StandardShip>.Assembly (this, new Dictionary<KeyValuePair<Type, string>, Component> {
-			{ new KeyValuePair<Type, string> (typeof(MachineGun), "left"), gunLeft },
-			{ new KeyValuePair<Type, string> (typeof(MachineGun), "right"), gunRight },
-			{ new KeyValuePair<Type, string> (typeof(AirToAirMissleHandler), "left"), missleHandlerLeft },
-			{ new KeyValuePair<Type, string> (typeof(AirToAirMissleHandler), "right"), missleHandlerRight }
-		}, delegate(StandardShip _ship) {
+		ship = ShipBuilder<StandardShip>.Assembly (this, delegate(StandardShip _ship) {
 			_ship.AmbientSpeed = ambientSpeed;
 			_ship.AmbientMaxSpeed = ambientMaxSpeed;
 			_ship.AmbientMinSpeed = ambientMinSpeed;
@@ -90,7 +85,6 @@ public class ShipController : MonoBehaviour {
 			_ship.ShiftDistance = shiftDistance;
 			_ship.ShiftAngleLeft = shiftAngleLeft;
 			_ship.ShiftAngleRight = shiftAngleRight;
-			_ship.MonoComponent = shipComponent;
 
 		}, delegate(StandardShip _ship, List<KeyValuePair<ICommonObject, string>> assembliedComponents){
 			var __leftGun = _ship.GetComponent<MachineGun> ("left");
@@ -125,10 +119,7 @@ public class ShipController : MonoBehaviour {
 				Mono = self,
 				MonoComponent = missle
 			});
-			var _leftMissleHomingSystem = __leftMissleHandler.GetComponent<MissleHomingSystem>();
-			_leftMissleHomingSystem.TargetTrackerUI = targetTrackerUI;
-			_leftMissleHomingSystem.CanvasUI = canvasUI;
-
+			
 			var __rightMissleHandler = _ship.GetComponent<AirToAirMissleHandler>("right");
 			__rightMissleHandler.Targets = missleTargets;
 			__rightMissleHandler.Speed = missleSpeed;
@@ -139,9 +130,7 @@ public class ShipController : MonoBehaviour {
 				Mono = self,
 				MonoComponent = missle
 			});
-			var _rightMissleHomingSystem = __rightMissleHandler.GetComponent<MissleHomingSystem>();
-			_rightMissleHomingSystem.TargetTrackerUI = targetTrackerUI;
-			_rightMissleHomingSystem.CanvasUI = canvasUI;
+			
 		});
 
 		_shipControl = ship.GetComponent<ShipControl> ();
@@ -270,7 +259,7 @@ public class ShipController : MonoBehaviour {
                 _leftMissleHandler.IncreaseLevel(level);
                 _rightMissleHandler.IncreaseLevel(level);
                 _targetLocker.MissleSlot = _leftMissleHandler.Slot + _rightMissleHandler.Slot;
-                _targetLocker.PrepareTargetLockerUIs (targetLockerUI, canvasUI);
+                _targetLocker.PrepareTargetLockerUIs ();
             });
 		_levelManager.OnIncreased += (level) => {
 			_leftGun.IncreaseLevel(level);
@@ -278,7 +267,7 @@ public class ShipController : MonoBehaviour {
 			_leftMissleHandler.IncreaseLevel(level);
 			_rightMissleHandler.IncreaseLevel(level);
             _targetLocker.MissleSlot = _leftMissleHandler.Slot + _rightMissleHandler.Slot;
-            _targetLocker.PrepareTargetLockerUIs (targetLockerUI, canvasUI);
+            _targetLocker.PrepareTargetLockerUIs ();
 		};
 	} 
 
@@ -296,11 +285,9 @@ public class ShipController : MonoBehaviour {
 		_rightGun.HoldTrigger ();
 		_rightGun.ReleaseTrigger ();
 
-		_leftMissleHandler.SetLockers (_targetLocker.Lockers.ToArray());
 		_leftMissleHandler.HoldTrigger ();
 		_leftMissleHandler.ReleaseTrigger ();
 
-		_rightMissleHandler.SetLockers (_targetLocker.Lockers.ToArray());
 		_rightMissleHandler.HoldTrigger ();
 		_rightMissleHandler.ReleaseTrigger ();
 	}
@@ -308,7 +295,7 @@ public class ShipController : MonoBehaviour {
 	void Update(){
 		_levelManager.Update ();
 		_targetLocker.LockTargets(
-			_targetLocker.FindTargetsInCrosshair ("Target", 1600, crosshairUI, 25.375f));
+			_targetLocker.FindTargetsInCrosshair ("Target", 1600, 25.375f));
 		
         _gunPivotTracker.RotateGunPivot (
             _gunPivotTracker.LockTargetsNearest (
@@ -317,10 +304,6 @@ public class ShipController : MonoBehaviour {
         );
 
 		_shipControl.HandleInputEvents ();
-
-        //Debug.Log(Vector3.Dot(Vector3.Cross(transform.forward, transform.up), GameObject.Find("Cube").transform.position));
-        //Debug.Log(Utility.Side(transform, GameObject.Find("Cube").transform));
-
 	}
 
 	void RotateShip(){

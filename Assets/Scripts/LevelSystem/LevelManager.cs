@@ -8,7 +8,7 @@ namespace Saitama{
 		public Action<int> OnIncreased;
 		private int _level = Constants.MIN_LEVEL;
 
-        public LevelManager(MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent){
+        public LevelManager(MonoBehaviour mono) : base(mono){
 
 		}
 
@@ -36,6 +36,10 @@ namespace Saitama{
 		public bool IsMax(){
 			return _level == Constants.MAX_LEVEL;
 		}
+
+        public virtual void ComputeLevel(int level){
+            _level = level;
+        }
 
 		public int GetUpgradedScoreByLevel(int currentLevel){
 			var next = Constants.DEFAULT_SCORE;

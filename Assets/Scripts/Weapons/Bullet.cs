@@ -6,26 +6,12 @@ namespace Saitama.Weapons
 	public abstract class Bullet : Projectile
 	{
         protected float _lifeTime;
+        protected float _speed;
+        protected LayerMask _targets;
 
-        protected Bullet (MonoBehaviour mono) : base(mono)
-		{
-			
-		}
-
+        public LayerMask Targets { get{ return _targets; } set { _targets = value; } }
         public float LifeTime { get{ return _lifeTime; } set { _lifeTime = value; } }
-
-        public virtual Component Start (){
-            return Start(_startPosition, _startRotation);
-        }
-
-        public virtual Component Start (Vector3 position, Quaternion rotation){
-            var instantiatedBullet = Instantiate (_monoComponent, position, rotation) as Component;
-            Destroy (instantiatedBullet.gameObject, _lifeTime);
-
-            return instantiatedBullet;
-        }
-
-        public abstract void Fire(float speed, Component bullet);
+        public float Speed { get { return _speed; } set { _speed = value; } }
 	}
 }
 

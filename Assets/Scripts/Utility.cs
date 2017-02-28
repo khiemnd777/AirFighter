@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Saitama;
 using Saitama.Ships;
+using Saitama.Weapons;
+using Saitama.Extensions;
 
 public class Utility
 {
@@ -25,6 +27,14 @@ public class Utility
 		return new Vector3 (realX, realY, mousePosition.z);
 	}
 
+    public static T GetMonoComponent<T>(string name){
+        return GameObject.Find(name).GetComponent<T>();
+    }
+
+    public static T GetResource<T>(string path) where T : UnityEngine.Object{
+        return (T) Resources.Load(path, typeof(T));
+    }
+
     public static GameObject[] FindTargetsViaRadar(string tag, Vector3 ownPosition, float limit){
         var targets = GameObject.FindGameObjectsWithTag(tag);
         targets = targets.Where(target =>{
@@ -42,6 +52,20 @@ public class Utility
         }
         average /= positions.Length;
         return average;
+    }
+
+    public static void SplitPoints(AttackerIdentifier attackerIdentifier, float originalScore) {
+        if (attackerIdentifier == null)
+            return;
+        var attackers = attackerIdentifier.GetAttackers();
+        var sum = attackerIdentifier.Sum();
+        for (var i = 0; i < attackers.Count; i++)
+        {
+            var attacker = attackers.ElementAt(i);
+            var scoreManager = attacker.Key.GetShipComponent<ScoreManager>();
+            var score = scoreManager.ComputeScoreViaPercent(sum, attacker.Value, originalScore);
+            scoreManager.Increase(Mathf.CeilToInt(score));
+        }
     }
 
     public static int Side(Transform own, Transform target){

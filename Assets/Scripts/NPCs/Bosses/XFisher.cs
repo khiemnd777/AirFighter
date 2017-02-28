@@ -12,13 +12,13 @@ namespace Saitama.NPCs.Bosses
 {
     public class XFisher : Boss, IMovable, IChasing, IRunningForLife
     {
-        private const float RUNNING_FOR_LIFE_HEALTH_PERCENT = 20;
-        private const float DEFAULT_HEALTH = 99999;
-        private float _runningForLifeHealth;
+        private const int RUNNING_FOR_LIFE_HEALTH_PERCENT = 20;
+        private const int DEFAULT_HEALTH = 99999;
+        private int _runningForLifeHealth;
 
         private Rigidbody _rigidbody;
 
-        public XFisher(MonoBehaviour mono, Component monoComponent) : base (mono, monoComponent)
+        public XFisher(MonoBehaviour mono) : base (mono)
         {
             
         }
@@ -26,6 +26,10 @@ namespace Saitama.NPCs.Bosses
         public override void Init()
         {
             _rigidbody = _mono.GetComponent<Rigidbody>();
+        }
+
+        public override void Setup()
+        {
             // compute level at first time
             ComputeLevel();
             // compute health at first time
@@ -33,7 +37,7 @@ namespace Saitama.NPCs.Bosses
         }
 
         public void Chase(){
-            if (_health > _runningForLifeHealth)
+            if (_mono.GetScore() > _runningForLifeHealth)
             {
                 // compute velocity
                 ComputeVelocity();
@@ -68,7 +72,7 @@ namespace Saitama.NPCs.Bosses
         }
 
         public void RunForLife(){
-            if (_health <= _runningForLifeHealth)
+            if (_mono.GetScore() <= _runningForLifeHealth)
             {
                 // compute velocity
                 ComputeVelocity();
@@ -84,6 +88,8 @@ namespace Saitama.NPCs.Bosses
 
         public void Move()
         {
+            if (_isDead)
+                return;
             // die
             Die();
             // chasing
@@ -94,44 +100,36 @@ namespace Saitama.NPCs.Bosses
 
         public override void Die()
         {
-            if (_health <= 0)
+            if (_mono.GetScore() <= 0)
             {
                 var attackerIdentifier = _mono.GetShipComponent<AttackerIdentifier>();
-                if (attackerIdentifier != null)
-                {
-                    var attackers = attackerIdentifier.GetAttackers();
-                    var sum = attackers.Select(a => a.Value).Sum();
-                    for (var i = 0; i < attackers.Count; i++)
-                    {
-                        var attacker = attackers.ElementAt(i);
-                        var score = _originalHealth * (attacker.Value * sum / 100);
-                        var scoreManager = attacker.Key.GetShipComponent<ScoreManager>();
-                        scoreManager.Increase(Convert.ToInt32(score));
-                    }
-                }
+                Utility.SplitPoints(attackerIdentifier, _mono.GetOriginalScore());
             }
             base.Die();
         }
 
-        public override void ComputeLevel()
+        public void ComputeLevel()
         {
             // level be computed via average level total of players
             var targets = GameObject.FindGameObjectsWithTag(Constants.PLAYER_TAG);
-            var levelManagers = targets.GetShipComponents<LevelManager>();
-            var levels = levelManagers.Select(levelManager => levelManager.Level);
-            var level = levels.Sum();
-            level /= targets.Length;
-            _level = level;
+            var targetLevelManagers = targets.GetShipComponents<LevelManager>();
+            var levels = targetLevelManagers.Select(l => l.Level);
+            var sum = levels.Sum();
+            sum /= targets.Length;
+            var levelManager = _mono.GetShipComponent<LevelManager>();
+            levelManager.ComputeLevel(sum);
         }
 
-        public override void ComputeHealth()
+        public void ComputeHealth()
         {
             var targets = GameObject.FindGameObjectsWithTag(Constants.PLAYER_TAG);
-            var scoreManagers = targets.GetShipComponents<ScoreManager>();
-            var scores = scoreManagers.Select(scoreManager => scoreManager.Score);
-            var score = scores.Sum();
-            _originalHealth = _health = score <= DEFAULT_HEALTH ? DEFAULT_HEALTH : score;
-            _runningForLifeHealth = _health * RUNNING_FOR_LIFE_HEALTH_PERCENT / 100;
+            var targetScoreManagers = targets.GetShipComponents<ScoreManager>();
+            var scores = targetScoreManagers.Select(t => t.Score);
+            var sum = scores.Sum();
+            var scoreManager = _mono.GetShipComponent<ScoreManager>();
+            var score = sum <= DEFAULT_HEALTH ? DEFAULT_HEALTH : sum;
+            _runningForLifeHealth = score * RUNNING_FOR_LIFE_HEALTH_PERCENT / 100;
+            scoreManager.ComputeScore(score);
         }
 
         private void ComputeVelocity(){

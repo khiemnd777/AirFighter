@@ -8,9 +8,18 @@ namespace Saitama.Weapons{
         
 		private readonly List<Gun> _guns;
 
-        public GunPivotTrackerSystem(MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent){
+        public GunPivotTrackerSystem(MonoBehaviour mono) : base(mono){
 			_guns = new List<Gun>();
 		}
+
+        public override void Init()
+        {
+            base.Init();
+
+            RequireMany<Gun>(g => {
+                SetGuns(g);
+            });
+        }
 
 		public void SetGuns(params Gun[] guns){
 			_guns.Clear ();
@@ -27,7 +36,7 @@ namespace Saitama.Weapons{
             _guns.ForEach((gun)=>
                 {
                     var t = lockedTargets
-                        .OrderBy(target => (target.transform.position - gun.MonoComponent.transform.position).sqrMagnitude)
+                        .OrderBy(target => (target.transform.position - gun.Transform.position).sqrMagnitude)
                         .FirstOrDefault();
                     RotateGunPivot(gun, t);
                 });
@@ -35,10 +44,10 @@ namespace Saitama.Weapons{
 
         public void RotateGunPivot(Gun gun, GameObject lockedTarget){
             if (lockedTarget == null) {
-				gun.MonoComponent.transform.localRotation = Quaternion.Euler (90.0f, 180.0f, 0.0f);
+				gun.Transform.localRotation = Quaternion.Euler (90.0f, 180.0f, 0.0f);
 				return;
 			}
-            var wantedRotation = Quaternion.LookRotation (lockedTarget.transform.position - gun.MonoComponent.transform.position);
+            var wantedRotation = Quaternion.LookRotation (lockedTarget.transform.position - gun.Transform.position);
 			StartCoroutine(RotatingGunPivot(gun, wantedRotation));
 		}
 
@@ -46,7 +55,7 @@ namespace Saitama.Weapons{
 			var percent = .0f;
 			while (percent <= 1f) {
 				percent += Time.deltaTime;
-				gun.MonoComponent.transform.rotation = Quaternion.Lerp (gun.MonoComponent.transform.rotation, wantedRotation, percent);
+				gun.Transform.rotation = Quaternion.Lerp (gun.Transform.rotation, wantedRotation, percent);
 				yield return new WaitForFixedUpdate ();
 			}
 			yield return null;

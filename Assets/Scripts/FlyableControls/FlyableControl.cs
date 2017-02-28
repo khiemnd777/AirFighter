@@ -5,10 +5,10 @@ using Saitama.FlyableObjects;
 
 namespace Saitama.FlyableControls
 {
-	public abstract class FlyableControl : CommonObject, IFlyableControl
+    public abstract class FlyableControl : Updater, IFlyableControl
 	{
-        protected FlyableControl (MonoBehaviour mono, Component monoComponent) 
-			: base(mono, monoComponent)
+        protected FlyableControl (MonoBehaviour mono) 
+			: base(mono)
 		{
 			
 		}

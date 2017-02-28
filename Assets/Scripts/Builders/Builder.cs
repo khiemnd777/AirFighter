@@ -15,7 +15,7 @@ namespace Saitama.Builders
 
 		public T Owner{ get { return _owner; } }
 
-		public abstract T Build(object mono, IDictionary<KeyValuePair<Type, string>, Component> monoComponents = null, Action<T> initiate = null, Action<T, List<KeyValuePair<ICommonObject, string>>> initiateComponents = null);
+		public abstract T Build(object mono, Action<T> initiate = null, Action<T, List<KeyValuePair<ICommonObject, string>>> initiateComponents = null);
 
 		public abstract void Register(params object[] types);
 
@@ -27,13 +27,13 @@ namespace Saitama.Builders
 			GetInstance().Register (types);
 		}
 
-		public static T Assembly(MonoBehaviour mono, IDictionary<KeyValuePair<Type, string>, Component> monoComponents = null, Action<T> initiate = null, Action<T, List<KeyValuePair<ICommonObject, string>>> initiateComponents = null) {
+		public static T Assembly(MonoBehaviour mono, Action<T> initiate = null, Action<T, List<KeyValuePair<ICommonObject, string>>> initiateComponents = null) {
 			var instance = GetInstance ();
 			if (instance.Owner != null) {
 				return (T) instance.Owner.Clone ();
 			}
 
-			return GetInstance().Build (mono, monoComponents, initiate, initiateComponents);
+			return GetInstance().Build (mono, initiate, initiateComponents);
 		}
 	}
 }

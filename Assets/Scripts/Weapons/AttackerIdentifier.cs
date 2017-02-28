@@ -12,7 +12,7 @@ namespace Saitama.Weapons
 
         private IDictionary<GameObject, float> _attackers;
 
-        public AttackerIdentifier(MonoBehaviour mono, Component monoComponent) : base (mono, monoComponent)
+        public AttackerIdentifier(MonoBehaviour mono) : base (mono)
         {
             _attackers = new Dictionary<GameObject, float>();
         }
@@ -28,6 +28,10 @@ namespace Saitama.Weapons
 
         public IDictionary<GameObject, float> GetAttackers(){
             return _attackers.Where(a => a.Key != null).ToDictionary(a => a.Key, a => a.Value);
+        }
+
+        public float Sum(){
+            return _attackers.Select(a => a.Value).Sum();
         }
 
         public virtual void Identify(GameObject attacker, float damage){

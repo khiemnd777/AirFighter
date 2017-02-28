@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
@@ -45,15 +46,17 @@ namespace Saitama
                     .ToArray();
                 foreach (var subcriber in subscribedMethods)
                 {   
-                    subcriber.Key
+                    var method = subcriber.Key
                         .GetType()
                         .GetMethod(subcriber.Value
                             , BindingFlags.Public | BindingFlags.Instance
                             , null
                             , CallingConventions.Any
                             , types
-                            , null)
+                            , null);
+                    method
                         .Invoke(subcriber.Key, parameters);
+                    method = null;
                 }
             }
             return this;

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Saitama.FlyableControls;
 using Saitama.FlyableControls.ShipControls;
@@ -12,9 +13,10 @@ namespace Saitama.Ships
         protected EventEmitter _eventEmitter;
         protected bool _isDead;
         
-        protected Ship (MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent)
+        protected Ship (MonoBehaviour mono) : base(mono)
 		{
             _eventEmitter = new EventEmitter();
+            _isDead = false;
 		}
 
         public EventEmitter EventEmitter { get { return _eventEmitter; } }
@@ -29,7 +31,6 @@ namespace Saitama.Ships
 		public float ShiftDistance { get; set; }
 		public float ShiftAngleLeft { get; set; }
 		public float ShiftAngleRight { get; set; }
-		public Component InnerShip { get; set; }
 
         public virtual void Die(){
             _isDead = true;

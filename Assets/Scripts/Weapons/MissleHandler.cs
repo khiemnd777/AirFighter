@@ -10,7 +10,7 @@ namespace Saitama.Weapons
 		protected float _lifeTime;
 		protected float _timeBetweenExecute;
 
-        protected MissleHandler (MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent)
+        protected MissleHandler (MonoBehaviour mono) : base(mono)
 		{
 			
 		}

@@ -2,7 +2,7 @@
 
 namespace Saitama.Weapons
 {
-	public interface IProjectile : ICommonObject
+    public interface IProjectile
 	{
 		int Damage { get; set; }
 	}

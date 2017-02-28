@@ -19,3 +19,5 @@
 /Users/kandy/Projects/AirFighter/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/kandy/Projects/AirFighter/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/kandy/Projects/AirFighter/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/kandy/Projects/AirFighter/Temp/bin/Debug/UnityEngine.Advertisements.dll
+/Users/kandy/Projects/AirFighter/Temp/bin/Debug/UnityEngine.Purchasing.dll

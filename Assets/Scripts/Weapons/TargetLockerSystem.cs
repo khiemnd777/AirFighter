@@ -3,12 +3,15 @@ using System.Linq;
 using System.Collections.Generic;
 
 namespace Saitama.Weapons{
-	public class TargetLockerSystem : CommonObject {
+    public class TargetLockerSystem : CommonObject {
+        private RectTransform _targetLockerUI;
+        private RectTransform _canvasUI;
+        private RectTransform _crosshair;
 
 		private int _missleSlot;
 		private List<TargetLocker> _lockers;
         private bool _useLockerUI;
-        public TargetLockerSystem(MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent){
+        public TargetLockerSystem(MonoBehaviour mono) : base(mono){
             _useLockerUI = true;
 		}
 
@@ -16,7 +19,38 @@ namespace Saitama.Weapons{
 		public int MissleSlot { get { return _missleSlot; } set { _missleSlot = value; } }
 		public List<TargetLocker> Lockers { get { return _lockers; } }
 
-		public void PrepareTargetLockerUIs(RectTransform targetLockerUI, RectTransform canvasUI){
+        public override void Init()
+        {
+            base.Init();
+
+            _targetLockerUI = GetMonoResource<RectTransform>("Prefabs/Target locker");
+            _canvasUI = GetMonoComponent<RectTransform>("Canvas");
+            _crosshair = GetMonoComponent<RectTransform>("Canvas/Crosshair");
+
+            RequireMany<MissleHandler>(missleHandlers =>
+                {   
+                    _missleSlot = missleHandlers.Length;   
+                });
+            
+            PrepareTargetLockerUIs();
+        }
+
+        public GameObject GetTarget(){
+            if (!_lockers.Any())
+                return null;
+            foreach (var locker in _lockers)
+            {
+                if (locker.Target == null)
+                    continue;
+                var target = locker.Target;
+                locker.Target = null;
+
+                return target;
+            }
+            return null;
+        }
+
+		public void PrepareTargetLockerUIs(){
 			if (_lockers == null) {
 				_lockers = new List<TargetLocker> ();
 			}
@@ -24,8 +58,8 @@ namespace Saitama.Weapons{
 			for (var inx = 0; inx < _missleSlot; inx++) {
                 if (_useLockerUI)
                 {
-                    var lockerUI = Instantiate(targetLockerUI) as RectTransform;
-                    lockerUI.SetParent(canvasUI.transform);
+                    var lockerUI = Instantiate(_targetLockerUI) as RectTransform;
+                    lockerUI.SetParent(_canvasUI.transform);
                     lockerUI.gameObject.SetActive(false);
                     _lockers.Add(new TargetLocker
                         {
@@ -68,11 +102,11 @@ namespace Saitama.Weapons{
             });
         }
 
-		public GameObject[] FindTargetsInCrosshair(string tag, float limit, RectTransform crosshair, float border = .0f){
-			var ratio = crosshair.parent.localScale.x;
-			var sizeDelta = new Vector2 (crosshair.rect.width * ratio,  crosshair.rect.height * ratio);
-			var crosshairMinBound = crosshair.transform.position - (new Vector3(sizeDelta.x, sizeDelta.y) / 2);
-			var crosshairMaxBound = crosshair.transform.position + (new Vector3(sizeDelta.x, sizeDelta.y) / 2);
+		public GameObject[] FindTargetsInCrosshair(string tag, float limit, float border = .0f){
+			var ratio = _crosshair.parent.localScale.x;
+			var sizeDelta = new Vector2 (_crosshair.rect.width * ratio,  _crosshair.rect.height * ratio);
+			var crosshairMinBound = _crosshair.transform.position - (new Vector3(sizeDelta.x, sizeDelta.y) / 2);
+			var crosshairMaxBound = _crosshair.transform.position + (new Vector3(sizeDelta.x, sizeDelta.y) / 2);
 			return FindTargetsInCrosshair (tag, limit, crosshairMinBound, crosshairMaxBound, border);
 		}
 

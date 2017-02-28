@@ -16,13 +16,5 @@ namespace Saitama.FlyableControls.ShipControls
 		IEnumerator ShiftLeftLinear (float timer);
 		IEnumerator ShiftRightLinear (float timer);
 		IEnumerator ShiftToNormalPositionLinear (float timer);
-
-		event Action BalancedRollingInput;
-		event Action<InputState, Ship> AcceleratingInput;
-		event Action<InputState, Ship> BreakingInput;
-		event Action<InputState, Ship, float> LeftRollingInput;
-		event Action<InputState, Ship, float> RightRollingInput;
-		event Action<InputState, Ship> LeftShiftingInput;
-		event Action<InputState, Ship> RightShiftingInput;
 	}
 }

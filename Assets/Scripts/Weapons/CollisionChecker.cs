@@ -3,18 +3,18 @@ using System;
 
 namespace Saitama.Weapons
 {
-	public class CollisionChecker
+    public class CollisionChecker
 	{
 		public Action<Component, Collider[]> OnHit;
 
 		private LayerMask _targets;
 
-		public CollisionChecker (LayerMask targets)
+        public CollisionChecker (LayerMask targets)
 		{
 			_targets = targets;
 		}
 
-		public void Check (Component component, float radius = 1.0f, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Collide)
+        public virtual void Check (Component component, float radius = 1.0f, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Collide)
 		{
 			var transform = component.transform;
 			if (OnHit != null) {

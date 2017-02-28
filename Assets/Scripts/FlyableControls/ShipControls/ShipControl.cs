@@ -10,8 +10,8 @@ namespace Saitama.FlyableControls.ShipControls
 	public class ShipControl : FlyableControl, IShipControl
 	{
 		private Rigidbody _rigidbody;
-		private Transform _transform;
 		private Ship _ship;
+        private Transform _shipModel;
 
 		private float keepAmbientSpeed = 0f;
 		private float keepAmbientMaxSpeed = 0f;
@@ -34,15 +34,15 @@ namespace Saitama.FlyableControls.ShipControls
 			set { smoothZToZero = value; } 
 		}
 
-		public event Action BalancedRollingInput;
-		public event Action<InputState, Ship> AcceleratingInput;
-		public event Action<InputState, Ship> BreakingInput;
-		public event Action<InputState, Ship, float> LeftRollingInput;
-		public event Action<InputState, Ship, float> RightRollingInput;
-		public event Action<InputState, Ship> LeftShiftingInput;
-		public event Action<InputState, Ship> RightShiftingInput;
+		public Action BalancedRollingInput;
+		public Action<InputState, Ship> AcceleratingInput;
+		public Action<InputState, Ship> BreakingInput;
+		public Action<InputState, Ship, float> LeftRollingInput;
+		public Action<InputState, Ship, float> RightRollingInput;
+		public Action<InputState, Ship> LeftShiftingInput;
+		public Action<InputState, Ship> RightShiftingInput;
 
-        public ShipControl (MonoBehaviour mono, Component monoComponent) : base(mono, monoComponent)
+        public ShipControl (MonoBehaviour mono) : base(mono)
 		{
 			
 		}
@@ -51,20 +51,32 @@ namespace Saitama.FlyableControls.ShipControls
 			keepAmbientSpeed = _ship.AmbientSpeed;
 			keepRotationSpeed = _ship.RotationSpeed;
 			// keep the original position of inner ship
-			shipAnchorPosition = _monoComponent.transform.localPosition;
+            shipAnchorPosition = _shipModel.localPosition;
 			// keep the original rotation of inner ship
-			shipAnchorRotation = _monoComponent.transform.localRotation;
+            shipAnchorRotation = _shipModel.localRotation;
 
 			shiftingState = ShiftingState.Normal;
 			speedControllerState = SpeedControllerState.Normal;
 		}
 
+        void OnePunch(){
+            var mousePosition = Utility.ScreenToWorldPoint(GetMonoComponent<Camera>("Screen camera"));
+            Yaw(mousePosition);
+            Pitch(mousePosition);
+            Thrust();
+            Roll (); 
+        }
+
+        void TwoPunch(){
+            HandleInputEvents();
+        }
+
 		public override void Init ()
 		{
 			_rigidbody = _mono.GetComponent<Rigidbody> ();
 			_transform = _mono.transform;
-			_ship = GetComponent<Ship>();
-			_monoComponent = _ship.MonoComponent;
+            _ship = (Ship) _parent;
+            _shipModel = GetChildMonoComponent<Transform>("Ship");
 
 			this.InitKeptValues ();
 		}
@@ -347,8 +359,8 @@ namespace Saitama.FlyableControls.ShipControls
 			var wantedRotation = shipAnchorRotation * Quaternion.AngleAxis (_ship.ShiftAngleLeft, -Vector3.up);
 			while (percent <= 1f && shiftingState == ShiftingState.Left) {
 				percent += Time.deltaTime * timer;
-				_monoComponent.transform.localPosition = Vector3.Lerp (_monoComponent.transform.localPosition, wantedPosition, percent);
-				_monoComponent.transform.localRotation = Quaternion.Lerp (_monoComponent.transform.localRotation, wantedRotation, percent);
+                _shipModel.localPosition = Vector3.Lerp (_shipModel.localPosition, wantedPosition, percent);
+                _shipModel.localRotation = Quaternion.Lerp (_shipModel.localRotation, wantedRotation, percent);
 				yield return new WaitForEndOfFrame ();
 			}
 			yield return null;
@@ -360,8 +372,8 @@ namespace Saitama.FlyableControls.ShipControls
 			var wantedRotation = shipAnchorRotation * Quaternion.AngleAxis (_ship.ShiftAngleRight, -Vector3.up);
 			while (percent <= 1f && shiftingState == ShiftingState.Right) {
 				percent += Time.deltaTime * timer;
-				_monoComponent.transform.localPosition = Vector3.Lerp (_monoComponent.transform.localPosition, wantedPosition, percent);
-				_monoComponent.transform.localRotation = Quaternion.Lerp (_monoComponent.transform.localRotation, wantedRotation, percent);
+                _shipModel.localPosition = Vector3.Lerp (_shipModel.localPosition, wantedPosition, percent);
+                _shipModel.localRotation = Quaternion.Lerp (_shipModel.localRotation, wantedRotation, percent);
 				yield return new WaitForEndOfFrame ();
 			}
 			yield return null;
@@ -373,13 +385,13 @@ namespace Saitama.FlyableControls.ShipControls
 				percent += Time.deltaTime * timer;
 				switch (shiftingState) {
 				case ShiftingState.ReleaseLeft:
-					_monoComponent.transform.localPosition = Vector3.Lerp (_monoComponent.transform.localPosition, shipAnchorPosition, percent);
-					_monoComponent.transform.localRotation = Quaternion.Lerp (_monoComponent.transform.localRotation, shipAnchorRotation, percent);
+                        _shipModel.localPosition = Vector3.Lerp (_shipModel.localPosition, shipAnchorPosition, percent);
+                        _shipModel.localRotation = Quaternion.Lerp (_shipModel.localRotation, shipAnchorRotation, percent);
 					yield return new WaitForEndOfFrame ();
 					break;
 				case ShiftingState.ReleaseRight:
-					_monoComponent.transform.localPosition = Vector3.Lerp (_monoComponent.transform.localPosition, shipAnchorPosition, percent);
-					_monoComponent.transform.localRotation = Quaternion.Lerp (_monoComponent.transform.localRotation, shipAnchorRotation, percent);
+                        _shipModel.localPosition = Vector3.Lerp (_shipModel.localPosition, shipAnchorPosition, percent);
+                        _shipModel.localRotation = Quaternion.Lerp (_shipModel.localRotation, shipAnchorRotation, percent);
 					yield return new WaitForEndOfFrame ();
 					break;
 				default:

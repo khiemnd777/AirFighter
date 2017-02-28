@@ -1,98 +1,68 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Saitama.Ships;
 
 namespace Saitama.Weapons.AirToAirMissle
 {
     public class AirToAirMissleHandler : MissleHandler
     {
+        public static string Prefab = "Prefabs/Missle projectile";
+
         private float _nextExecuteTime;
         private bool _isExecuted;
-        private readonly MissleHomingSystem _missleHomingSystem;
 
-        public AirToAirMissleHandler(MonoBehaviour mono, Component monoComponent)
-            : base(mono, monoComponent)
+        public AirToAirMissleHandler(MonoBehaviour mono)
+            : base(mono)
         {
-            _missleHomingSystem = new MissleHomingSystem(mono);
+            
         }
 
         public override void Init()
         {
             base.Init();
-            _missleHomingSystem.MaxDegreesDelta = 20;
-            SetComponent(_missleHomingSystem);
-        }
 
-        public void SetLockers(TargetLocker[] lockers)
-        {
-            _missleHomingSystem.SetLockers(lockers);
-        }
-
-        public override void IncreaseLevel(int level)
-        {
-            _level = level;
-            switch (level)
-            {
-                default:
-                case 1:
-                    {
-                        _slot = 1;
-                        _lifeTime += 0;
-                        _damage += 0;
-                        _speed += 0;
-
-                    }
-                    break;
-                case 2:
-                    {
-                        _slot = 2;
-                        _lifeTime += 1;
-                        _damage += 10;
-                        _speed += 500;
-                    }
-                    break;
-                case 3:
-                    {
-                        _slot = 3;
-                        _lifeTime += 2;
-                        _damage += 10;
-                        _speed += 0;
-                    }
-                    break;
-
-            }
+            _speed = 15000f;
+            _lifeTime = 10f;
+            _timeBetweenExecute = 1000f;
         }
 
         public override void HoldTrigger()
         {
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButtonDown(1))
             {
-                if (OnTriggerHold != null)
-                {
-                    OnTriggerHold.Invoke();
-                }
-                
                 if (Time.time > _nextExecuteTime && !_isExecuted)
                 {
-                    var side = _name == "right" ? 1 : -1;
-                    for (int i = 0; i < _slot; i++)
+                    if (OnTriggerHold != null)
                     {
-                        using (var missle = InstantiateRawComponent<AirToAirMissle>("", _targets))
-                        {
-                            missle.Parent = this;
-                            missle.LifeTime = _lifeTime;
-                            missle.Speed = _speed;
-                            missle.Damage = _damage;
-                            missle.Level = _level;
-                            missle.StartPosition = _monoComponent.transform.position;
-                            missle.StartRotation = _monoComponent.transform.rotation * Quaternion.Euler(1, i * side, 1);
-                            var missleComponent = _missleHomingSystem.GoHome(missle);
-                            missleComponent.transform.SetParent(_monoComponent.transform);
-                            missleComponent.transform.localPosition += (Vector3.right * i * side);
-                            _nextExecuteTime = Time.time + _timeBetweenExecute / 1000f;
-                            _isExecuted = true; 
-                        }   
+                        OnTriggerHold.Invoke();
                     }
+
+                    var missle = RequireMono<AirToAirMissle>(
+                                     _transform.position
+                        , _transform.rotation
+                        , _transform
+                        , typeof(MissleHomingSystem));
+                    
+                    missle.Speed = _speed;
+                    missle.Damage = _damage;
+                    missle.Targets = _targets;
+                    Destroy(missle.gameObject, _lifeTime);
+
+                    Require<TargetLockerSystem>(tls =>
+                        {
+                            var mhs = missle.GetComponent<MissleHomingSystem>();
+                            mhs.Target = tls.GetTarget();
+
+                            Require<TargetTrackerSystem>(tts =>
+                                {
+                                    tts.Track(missle, mhs.Target);
+                                });
+                        });
+
+                    _nextExecuteTime = Time.time + _timeBetweenExecute / 1000f;
+                    _isExecuted = true;
+
                 }
             }
         }
