@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Saitama
@@ -46,6 +47,12 @@ namespace Saitama
 		void SetComponents (IList<KeyValuePair<ICommonObject, string>> components);
 
         void RemoveComponent(ICommonObject component, string name = "");
+
+        // Utilities
+        IEnumerator OnLoadingPercent(Action<float> act, float deltaTime = 1f);
+        IEnumerator OnLoadingPercent(Action<float> act, Func<bool> cond, float deltaTime = 1f);
+        IEnumerator OnLoadingPercent(Action<float> act, Action post, float deltaTime = 1f);
+        IEnumerator OnLoadingPercent(Action<float> act, Action pre, Action post, float deltaTime = 1f);
 
 		// Raw components
 		void SetRawComponent (RawComponent rawComponent, string name = "");

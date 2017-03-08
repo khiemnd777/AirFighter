@@ -7,14 +7,14 @@ namespace Saitama.Ships
     public class StandardShipController : MonoController
     {
         public static string Prefab = "Prefabs/Flight";
-        
+
         [Header("Ambient speed")]
-        public float ambientSpeed = 2000.0f;
-        public float ambientMaxSpeed = 2850.0f;
-        public float ambientMinSpeed = 950.0f;
+        public float ambientSpeed = 90.0f;
+        public float ambientMaxSpeed = 250.0f;
+        public float ambientMinSpeed = 45.0f;
         [Header("Rotation")]
         public float rotationSpeed = Constants.RotationSpeed;
-        public float shiftedRotationExtraSpeed = 250.0f;
+        public float shiftedRotationExtraSpeed = 1.5f;
         public float rollSpeed = 25.0f;
         public float smoothZToZero = 100f;
         [Header("Shifting")]

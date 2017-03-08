@@ -12,6 +12,8 @@ namespace Saitama.FlyableControls.ShipControls
 		private Rigidbody _rigidbody;
 		private Ship _ship;
         private Transform _shipModel;
+        private JoystickController _joystickController;
+        private AccessoryController _accessoryController;
 
 		private float keepAmbientSpeed = 0f;
 		private float keepAmbientMaxSpeed = 0f;
@@ -28,6 +30,13 @@ namespace Saitama.FlyableControls.ShipControls
 
 		private bool isKeptLeftShifting;
 		private bool isKeptRightShifting;
+
+        private bool isSwitchToZero;
+
+        private bool isAccelerating;
+        private bool isAccelrated;
+        private bool isBreaking;
+        private bool isBroke;
 
 		public float SmoothZToZero { 
 			get { return smoothZToZero; } 
@@ -47,6 +56,18 @@ namespace Saitama.FlyableControls.ShipControls
 			
 		}
 
+        public override void Init ()
+        {
+            _rigidbody = _mono.GetComponent<Rigidbody> ();
+            _joystickController = GetMonoComponent<JoystickController>("SmartphoneController/JoystickController");
+            _accessoryController = GetMonoComponent<AccessoryController>("SmartphoneController/AccessoryController");
+            _transform = _mono.transform;
+            _ship = (Ship) _parent;
+            _shipModel = GetChildMonoComponent<Transform>("Ship");
+
+            this.InitKeptValues ();
+        }
+
 		private void InitKeptValues(){
 			keepAmbientSpeed = _ship.AmbientSpeed;
 			keepRotationSpeed = _ship.RotationSpeed;
@@ -60,26 +81,16 @@ namespace Saitama.FlyableControls.ShipControls
 		}
 
         void OnePunch(){
-            var mousePosition = Utility.ScreenToWorldPoint(GetMonoComponent<Camera>("Screen camera"));
-            Yaw(mousePosition);
-            Pitch(mousePosition);
+            var touchPosition = new Vector2(_joystickController.Horizontal, _joystickController.Vertical);
+            Yaw(touchPosition);
+            Pitch(touchPosition);
             Thrust();
-            Roll (); 
+            //Roll ();
         }
 
         void TwoPunch(){
             HandleInputEvents();
         }
-
-		public override void Init ()
-		{
-			_rigidbody = _mono.GetComponent<Rigidbody> ();
-			_transform = _mono.transform;
-            _ship = (Ship) _parent;
-            _shipModel = GetChildMonoComponent<Transform>("Ship");
-
-			this.InitKeptValues ();
-		}
 
 		public override void HandleInputEvents(){
 			// on balanced rolling
@@ -89,40 +100,96 @@ namespace Saitama.FlyableControls.ShipControls
 				}
 				StartCoroutine(BalanceRollingLinear(smoothZToZero/ 100f));
 			}
+            // on normal moving
+            if(_accessoryController.TimeHoldDown >= 0.5f){
+                if (isBreaking)
+                {
+                    isBreaking = false;
+                    speedControllerState = SpeedControllerState.ReleaseBreaking;
+                    if (BreakingInput != null) {
+                        BreakingInput.Invoke (InputState.Off, _ship);
+                    }
+                    StartCoroutine (ShiftToNormalSpeedLinear (1f));
+                }
+                if (isAccelerating)
+                {
+                    isAccelerating = false;
+                    speedControllerState = SpeedControllerState.ReleaseAccelerating;
+                    if (AcceleratingInput != null) {
+                        AcceleratingInput.Invoke (InputState.Off, _ship);
+                    }
+                    StartCoroutine (ShiftToNormalSpeedLinear (1f));
+                }
+            }
 			// on accelerating
-			if (Input.GetKeyDown (KeyCode.W)) {
-				speedControllerState = SpeedControllerState.Accelerating;
-				if (AcceleratingInput != null) {	
-					AcceleratingInput.Invoke (InputState.On, _ship);
-				}
-				StartCoroutine (AccelerateLinear (1f));
-			}
-			// on shifting to normal speed after accelerating
-			if (Input.GetKeyUp (KeyCode.W)) {
-				speedControllerState = SpeedControllerState.ReleaseAccelerating;
-				if (AcceleratingInput != null) {
-					AcceleratingInput.Invoke (InputState.Off, _ship);
-				}
-				StartCoroutine (ShiftToNormalSpeedLinear (1f));
-			}
+            if (_accessoryController.isSwipingUp)
+            {
+                if (!isAccelerating)
+                {
+                    StopCoroutine("ShiftToNormalSpeedLinear");
+                    isAccelerating = true;
+                    isBreaking = false;
+                    speedControllerState = SpeedControllerState.Accelerating;
+                    if (AcceleratingInput != null)
+                    {    
+                        AcceleratingInput.Invoke(InputState.On, _ship);
+                    }
+                    StartCoroutine(AccelerateLinear(1f));
+                }
+//                if (isBreaking && !isNormalSpeed)
+//                {
+//                    isAccelerating = false;
+//                    isBreaking = false;
+//                    speedControllerState = SpeedControllerState.ReleaseBreaking;
+//                    if (BreakingInput != null) {
+//                        BreakingInput.Invoke (InputState.Off, _ship);
+//                    }
+//                    StartCoroutine (ShiftToNormalSpeedLinear (1f));
+//                }
+            }
 			// on breaking
-			if (Input.GetKeyDown (KeyCode.S)) {
-				speedControllerState = SpeedControllerState.Breaking;
-				if (BreakingInput != null) {
-					BreakingInput.Invoke (InputState.On, _ship);
-				}
-				StartCoroutine (BreakLinear (1f));
-			}
-			// on shifting to normal speed after breaking
-			if (Input.GetKeyUp (KeyCode.S)) {
-				speedControllerState = SpeedControllerState.ReleaseBreaking;
-				if (BreakingInput != null) {
-					BreakingInput.Invoke (InputState.Off, _ship);
-				}
-				StartCoroutine (ShiftToNormalSpeedLinear (1f));
-			}
+            if (_accessoryController.isSwipingDown)
+            {
+                if (!isBreaking)
+                {
+                    StopCoroutine("ShiftToNormalSpeedLinear");
+                    isBreaking = true;
+                    isAccelerating = false;
+                    speedControllerState = SpeedControllerState.Breaking;
+                    if (BreakingInput != null) {
+                        BreakingInput.Invoke (InputState.On, _ship);
+                    }
+                    StartCoroutine (BreakLinear (1f));
+                }
+//                if (isAccelerating && !isNormalSpeed)
+//                {
+//                    isAccelerating = false;
+//                    isBreaking = false;
+//                    isNormalSpeed = true;
+//                    speedControllerState = SpeedControllerState.ReleaseAccelerating;
+//                    if (AcceleratingInput != null) {
+//                        AcceleratingInput.Invoke (InputState.Off, _ship);
+//                    }
+//                    StartCoroutine (ShiftToNormalSpeedLinear (1f));
+//                }
+            }
+//			if (Input.GetKeyDown (KeyCode.S)) {
+//				speedControllerState = SpeedControllerState.Breaking;
+//				if (BreakingInput != null) {
+//					BreakingInput.Invoke (InputState.On, _ship);
+//				}
+//				StartCoroutine (BreakLinear (1f));
+//			}
+//			// on shifting to normal speed after breaking
+//			if (Input.GetKeyUp (KeyCode.S)) {
+//				speedControllerState = SpeedControllerState.ReleaseBreaking;
+//				if (BreakingInput != null) {
+//					BreakingInput.Invoke (InputState.Off, _ship);
+//				}
+//				StartCoroutine (ShiftToNormalSpeedLinear (1f));
+//			}
 			// on rolling left with state is hold on
-			if (Input.GetKey (KeyCode.Q)) {	
+			if (Input.GetKey (KeyCode.Q)) {
 				rollAngle = Time.fixedDeltaTime * _ship.RollSpeed;
 				if (LeftRollingInput != null) {
 					LeftRollingInput.Invoke (InputState.HoldOn, _ship, rollAngle);
@@ -150,57 +217,120 @@ namespace Saitama.FlyableControls.ShipControls
 				}
 			}
 
-			StartCoroutine (new WaitWhile (() => {
-				if(Input.GetKey(KeyCode.A)){
-					if(shiftingState == ShiftingState.Left || isKeptRightShifting)
-						return false;
-					shiftingState = ShiftingState.Left;
-					isKeptLeftShifting = true;
-					_ship.RotationSpeed = keepRotationSpeed + _ship.ShiftedRotationExtraSpeed;
-					if(LeftShiftingInput != null){
-						LeftShiftingInput.Invoke(InputState.On, _ship);
-					}
-					StartCoroutine(ShiftLeftLinear(.5f));
-				}
-				if(Input.GetKeyUp(KeyCode.A)){
-					if(isKeptRightShifting)
-						return false;
-					shiftingState = ShiftingState.ReleaseLeft;
-					isKeptLeftShifting = false;
-					_ship.RotationSpeed = keepRotationSpeed;
-					if(LeftShiftingInput != null){
-						LeftShiftingInput.Invoke(InputState.Off, _ship);
-					}
-					StartCoroutine(ShiftToNormalPositionLinear(.5f));
-				}
-				return false;
-			}));
+            if (_accessoryController.isSwipingLeft)
+            {
+                if (_accessoryController.Horizontal < -0.9f)
+                {
+                    if (!(shiftingState == ShiftingState.Left || isKeptRightShifting))
+                    {
+                        shiftingState = ShiftingState.Left;
+                        isKeptLeftShifting = true;
+                        _ship.RotationSpeed = keepRotationSpeed + _ship.ShiftedRotationExtraSpeed;
+                        if (LeftShiftingInput != null)
+                        {
+                            LeftShiftingInput.Invoke(InputState.On, _ship);
+                        }
+                        StartCoroutine(ShiftLeftLinear(.5f)); 
+                    }
+                }  
+            }
+            else
+            {
+                if (!isKeptRightShifting)
+                {
+                    shiftingState = ShiftingState.ReleaseLeft;
+                    isKeptLeftShifting = false;
+                    _ship.RotationSpeed = keepRotationSpeed;
+                    if(LeftShiftingInput != null){
+                        LeftShiftingInput.Invoke(InputState.Off, _ship);
+                    }
+                    StartCoroutine(ShiftToNormalPositionLinear(.5f));   
+                }
+            }
 
-			StartCoroutine (new WaitWhile (() => {
-				if(Input.GetKey(KeyCode.D)){
-					if(shiftingState == ShiftingState.Right || isKeptLeftShifting)
-						return false;
-					shiftingState = ShiftingState.Right;
-					isKeptRightShifting = true;
-					_ship.RotationSpeed = keepRotationSpeed + _ship.ShiftedRotationExtraSpeed;
-					if(RightShiftingInput != null){
-						RightShiftingInput.Invoke(InputState.On, _ship);
-					}
-					StartCoroutine(ShiftRightLinear(.5f));
-				}
-				if(Input.GetKeyUp(KeyCode.D)){
-					if(isKeptLeftShifting)
-						return false;
-					shiftingState = ShiftingState.ReleaseRight;
-					isKeptRightShifting = false;
-					_ship.RotationSpeed = keepRotationSpeed;
-					if(RightShiftingInput != null){
-						RightShiftingInput.Invoke(InputState.Off, _ship);
-					}
-					StartCoroutine(ShiftToNormalPositionLinear(.5f));
-				}
-				return false;
-			}));
+            if (_accessoryController.isSwipingRight)
+            {
+                if (_accessoryController.Horizontal > .9f)
+                {
+                    if (!(shiftingState == ShiftingState.Right || isKeptLeftShifting))
+                    {
+                        shiftingState = ShiftingState.Right;
+                        isKeptRightShifting = true;
+                        _ship.RotationSpeed = keepRotationSpeed + _ship.ShiftedRotationExtraSpeed;
+                        if(RightShiftingInput != null){
+                            RightShiftingInput.Invoke(InputState.On, _ship);
+                        }
+                        StartCoroutine(ShiftRightLinear(.5f));      
+                    }
+                }
+            }
+            else
+            {
+                if (!isKeptLeftShifting)
+                {
+                    shiftingState = ShiftingState.ReleaseRight;
+                    isKeptRightShifting = false;
+                    _ship.RotationSpeed = keepRotationSpeed;
+                    if(RightShiftingInput != null){
+                        RightShiftingInput.Invoke(InputState.Off, _ship);
+                    }
+                    StartCoroutine(ShiftToNormalPositionLinear(.5f));
+                }
+            }
+//			StartCoroutine (new WaitWhile (() => {
+//				if(Input.GetKey(KeyCode.A)){
+//					if(shiftingState == ShiftingState.Left || isKeptRightShifting)
+//						return false;
+//					shiftingState = ShiftingState.Left;
+//					isKeptLeftShifting = true;
+//					_ship.RotationSpeed = keepRotationSpeed + _ship.ShiftedRotationExtraSpeed;
+//					if(LeftShiftingInput != null){
+//						LeftShiftingInput.Invoke(InputState.On, _ship);
+//					}
+//					StartCoroutine(ShiftLeftLinear(.5f));
+//				}
+//				if(Input.GetKeyUp(KeyCode.A)){
+//					if(isKeptRightShifting)
+//						return false;
+//					shiftingState = ShiftingState.ReleaseLeft;
+//					isKeptLeftShifting = false;
+//					_ship.RotationSpeed = keepRotationSpeed;
+//					if(LeftShiftingInput != null){
+//						LeftShiftingInput.Invoke(InputState.Off, _ship);
+//					}
+//					StartCoroutine(ShiftToNormalPositionLinear(.5f));
+//				}
+//				return false;
+//			}));
+//
+//			StartCoroutine (new WaitWhile (() => {
+//				if(Input.GetKey(KeyCode.D)){
+//					if(shiftingState == ShiftingState.Right || isKeptLeftShifting)
+//						return false;
+//					shiftingState = ShiftingState.Right;
+//					isKeptRightShifting = true;
+//					_ship.RotationSpeed = keepRotationSpeed + _ship.ShiftedRotationExtraSpeed;
+//					if(RightShiftingInput != null){
+//						RightShiftingInput.Invoke(InputState.On, _ship);
+//					}
+//					StartCoroutine(ShiftRightLinear(.5f));
+//				}
+//				if(Input.GetKeyUp(KeyCode.D)){
+//					if(isKeptLeftShifting)
+//						return false;
+//					shiftingState = ShiftingState.ReleaseRight;
+//					isKeptRightShifting = false;
+//					_ship.RotationSpeed = keepRotationSpeed;
+//					if(RightShiftingInput != null){
+//						RightShiftingInput.Invoke(InputState.Off, _ship);
+//					}
+//					StartCoroutine(ShiftToNormalPositionLinear(.5f));
+//				}
+//				return false;
+//			}));
+
+
+
 //			// on left turning with state is on
 //			StartCoroutine (new InputUntil (Input.GetKeyDown (KeyCode.A), () => {
 ////				if(shiftingState == ShiftingState.Right)
@@ -236,17 +366,17 @@ namespace Saitama.FlyableControls.ShipControls
 		}
 
 		public override void Thrust() {
-			var velocity = Utility.CalculateVelocity(_rigidbody.rotation, _ship.AmbientSpeed, Time.fixedDeltaTime);
+			var velocity = Utility.CalculateVelocity(_rigidbody.rotation, _ship.AmbientSpeed);
 			_rigidbody.velocity = velocity;
 		}
 
-		public override void Yaw(Vector2 mousePosition) {
-			var yaw = Utility.CalculateYaw (mousePosition, _ship.RotationSpeed, Time.fixedDeltaTime);
+		public override void Yaw(Vector2 position) {
+			var yaw = Utility.CalculateYaw (position, _ship.RotationSpeed);
 			_rigidbody.rotation *= yaw;
 		}
 
-		public override void Pitch(Vector2 mousePosition) {
-			var pitch = Utility.CalculatePitch (mousePosition, _ship.RotationSpeed, Time.fixedDeltaTime);
+		public override void Pitch(Vector2 position) {
+			var pitch = Utility.CalculatePitch (position, _ship.RotationSpeed);
 			_rigidbody.rotation *= pitch;
 		}
 
@@ -260,8 +390,9 @@ namespace Saitama.FlyableControls.ShipControls
 		}
 
 		public void Accelerate(float delta) {
-			var deltaIncrement = (_ship.AmbientMaxSpeed - keepAmbientSpeed) * delta;
-			_ship.AmbientSpeed = keepAmbientSpeed + deltaIncrement;
+            var d = Mathf.Max(_ship.AmbientSpeed, keepAmbientSpeed);
+			var deltaIncrement = (_ship.AmbientMaxSpeed - d) * delta;
+            _ship.AmbientSpeed = d + deltaIncrement;
 			keepAmbientMaxSpeed = _ship.AmbientSpeed;
 		}
 
@@ -271,15 +402,15 @@ namespace Saitama.FlyableControls.ShipControls
 			while (percent <= 1 && speedControllerState == SpeedControllerState.Accelerating) {
 				percent += Time.deltaTime * timer;
 				Accelerate (percent);
-				yield return new WaitForEndOfFrame();
+                yield return new WaitForFixedUpdate();
 			}
-
 			yield return null;
 		}
 
 		public void Break(float delta) {
-			var deltaDecrement = (keepAmbientSpeed - _ship.AmbientMinSpeed) * delta;
-			_ship.AmbientSpeed = keepAmbientSpeed - deltaDecrement;
+            var d = Mathf.Max(_ship.AmbientSpeed, keepAmbientSpeed);
+			var deltaDecrement = (d - _ship.AmbientMinSpeed) * delta;
+			_ship.AmbientSpeed = d - deltaDecrement;
 			keepAmbientMinSpeed = _ship.AmbientSpeed;
 		}
 
@@ -289,21 +420,20 @@ namespace Saitama.FlyableControls.ShipControls
 			while (percent <= 1 && speedControllerState == SpeedControllerState.Breaking) {
 				percent += Time.deltaTime * timer;
 				Break (percent);
-				yield return new WaitForEndOfFrame();
+                yield return new WaitForFixedUpdate();
 			}
-
 			yield return null;
 		}
 
 		public void ShiftToNormalSpeed (float delta)
 		{
 			switch (speedControllerState) {
-			case SpeedControllerState.ReleaseAccelerating:
-					var maxSpeed = Mathf.Min (keepAmbientMaxSpeed, _ship.AmbientMaxSpeed);
-					var deltaIncrement = (maxSpeed - keepAmbientSpeed) * delta;
-					_ship.AmbientSpeed = _ship.AmbientSpeed > keepAmbientSpeed ? maxSpeed - deltaIncrement : keepAmbientSpeed;
+                case SpeedControllerState.ReleaseAccelerating:
+                    var maxSpeed = Mathf.Min(keepAmbientMaxSpeed, _ship.AmbientMaxSpeed);
+                    var deltaIncrement = (maxSpeed - keepAmbientSpeed) * delta;
+                    _ship.AmbientSpeed = _ship.AmbientSpeed > keepAmbientSpeed ? maxSpeed - deltaIncrement : keepAmbientSpeed;
 					break;
-			case SpeedControllerState.ReleaseBreaking:
+                case SpeedControllerState.ReleaseBreaking:
 					var minSpeed = Mathf.Max (keepAmbientMinSpeed, _ship.AmbientMinSpeed);
 			    	var deltaDecrement = (keepAmbientSpeed - minSpeed) * delta;
 					_ship.AmbientSpeed = _ship.AmbientSpeed < keepAmbientSpeed ? minSpeed + deltaDecrement : keepAmbientSpeed;
@@ -318,26 +448,23 @@ namespace Saitama.FlyableControls.ShipControls
 
 		public IEnumerator ShiftToNormalSpeedLinear(float timer){
 			var percent = .0f;
-			while (percent <= 1f) {
+            while (percent <= 1f) {
 				percent += Time.deltaTime * timer;
 				switch (speedControllerState) {
-				case SpeedControllerState.ReleaseAccelerating:
+                    case SpeedControllerState.ReleaseAccelerating:
 					ShiftToNormalSpeed (percent);
-					yield return new WaitForEndOfFrame();
+                        yield return null;
 					break;
-				case SpeedControllerState.ReleaseBreaking:
+                    case SpeedControllerState.ReleaseBreaking:
 					ShiftToNormalSpeed (percent);
-					yield return new WaitForEndOfFrame();
+                        yield return null;
 					break;
 				default:
 					percent = 2f;
 					break;
-				}	
+				}
 			}
-
-			//if(_ship.AmbientSpeed == keepAmbientSpeed)
-				//speedControllerState = SpeedControllerState.Normal;
-
+            //speedControllerState = SpeedControllerState.Normal;
 			yield return null;
 		}
 
@@ -358,10 +485,10 @@ namespace Saitama.FlyableControls.ShipControls
 			var wantedPosition = shipAnchorPosition + Vector3.left * _ship.ShiftDistance;
 			var wantedRotation = shipAnchorRotation * Quaternion.AngleAxis (_ship.ShiftAngleLeft, -Vector3.up);
 			while (percent <= 1f && shiftingState == ShiftingState.Left) {
-				percent += Time.deltaTime * timer;
+                percent += Time.fixedDeltaTime * timer;
                 _shipModel.localPosition = Vector3.Lerp (_shipModel.localPosition, wantedPosition, percent);
                 _shipModel.localRotation = Quaternion.Lerp (_shipModel.localRotation, wantedRotation, percent);
-				yield return new WaitForEndOfFrame ();
+                yield return null;
 			}
 			yield return null;
 		}
@@ -371,10 +498,10 @@ namespace Saitama.FlyableControls.ShipControls
 			var wantedPosition = shipAnchorPosition + Vector3.right * _ship.ShiftDistance;
 			var wantedRotation = shipAnchorRotation * Quaternion.AngleAxis (_ship.ShiftAngleRight, -Vector3.up);
 			while (percent <= 1f && shiftingState == ShiftingState.Right) {
-				percent += Time.deltaTime * timer;
+                percent += Time.fixedDeltaTime * timer;
                 _shipModel.localPosition = Vector3.Lerp (_shipModel.localPosition, wantedPosition, percent);
                 _shipModel.localRotation = Quaternion.Lerp (_shipModel.localRotation, wantedRotation, percent);
-				yield return new WaitForEndOfFrame ();
+                yield return null;
 			}
 			yield return null;
 		}

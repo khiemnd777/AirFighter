@@ -82,30 +82,6 @@ namespace Saitama.Ships
                 });
             base.Die();
         }
-
-        public override void Update(){
-            base.Update();
-
-            Require<LevelManager>(lv =>
-                {
-                    lv.Update();
-                });
-            
-            Require<TargetLockerSystem>(tls =>
-                {
-                    tls.LockTargets(
-                        tls.FindTargetsInCrosshair ("Target", 1600, 25.375f));
-                });
-            
-            Require<GunPivotTrackerSystem>(gpts =>
-                {
-                    gpts.RotateGunPivot (
-                        gpts.LockTargetsNearest (
-                            gpts.FindTargetsInCrosshair ("Target", 1600, 10.25f)
-                        )
-                    ); 
-                });
-        }
 	}
 }
 

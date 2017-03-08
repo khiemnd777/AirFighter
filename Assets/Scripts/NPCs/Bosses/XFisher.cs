@@ -47,10 +47,10 @@ namespace Saitama.NPCs.Bosses
                 if (targetPosition == Vector3.zero)
                 {
                     // if target position was zero, the NPC moves with zero rotation
-                    var yaw = Utility.CalculateYaw (Vector2.zero, RotationSpeed, Time.fixedDeltaTime);
+                    var yaw = Utility.CalculateYaw (Vector2.zero, RotationSpeed);
                     _rigidbody.rotation *= yaw;
 
-                    var pitch = Utility.CalculatePitch (Vector2.zero, RotationSpeed, Time.fixedDeltaTime);
+                    var pitch = Utility.CalculatePitch (Vector2.zero, RotationSpeed);
                     _rigidbody.rotation *= pitch;    
                 }
                 else
@@ -78,10 +78,10 @@ namespace Saitama.NPCs.Bosses
                 ComputeVelocity();
 
                 // the NPC should be moved straigth when it was near death
-                var yaw = Utility.CalculateYaw(Vector2.zero, RotationSpeed, Time.fixedDeltaTime);
+                var yaw = Utility.CalculateYaw(Vector2.zero, RotationSpeed);
                 _rigidbody.rotation *= yaw;
 
-                var pitch = Utility.CalculatePitch(Vector2.zero, RotationSpeed, Time.fixedDeltaTime);
+                var pitch = Utility.CalculatePitch(Vector2.zero, RotationSpeed);
                 _rigidbody.rotation *= pitch;
             }
         }
@@ -133,7 +133,7 @@ namespace Saitama.NPCs.Bosses
         }
 
         private void ComputeVelocity(){
-            var velocity = Utility.CalculateVelocity(_rigidbody.rotation, AmbientSpeed, Time.fixedDeltaTime);
+            var velocity = Utility.CalculateVelocity(_rigidbody.rotation, AmbientSpeed);
             _rigidbody.velocity = velocity;
         }
 

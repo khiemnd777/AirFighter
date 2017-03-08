@@ -3,7 +3,8 @@ using System;
 using Saitama;
 
 namespace Saitama{
-	public class LevelManager : CommonObject {
+    public class LevelManager : Updater
+    {
 		
 		public Action<int> OnIncreased;
 		private int _level = Constants.MIN_LEVEL;
@@ -14,11 +15,14 @@ namespace Saitama{
 
 		public int Level { get { return _level; } }
 
+        void TwoPunch(){
+            Upgrade();
+        }
+
         public void InitLevel(Action<int> init){
             init.Invoke(_level);
         }
-
-		public void Update(){
+		public void Upgrade(){
 			if (IsMax())
 				return;
 			var scoreManager = _parent.GetComponent<ScoreManager> ();

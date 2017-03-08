@@ -13,8 +13,10 @@ using Saitama.NPCs.Bosses;
 
 namespace Saitama{
     public class Initialization : MonoController {
-        
+        public int frameRate = 60;
+
         void Setup(){
+            Application.targetFrameRate = frameRate;
             RequireMono<StandardShipController>(Vector3.zero, Quaternion.identity);
         }
 

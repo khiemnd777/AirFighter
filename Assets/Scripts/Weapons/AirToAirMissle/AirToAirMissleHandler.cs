@@ -9,6 +9,7 @@ namespace Saitama.Weapons.AirToAirMissle
     {
         public static string Prefab = "Prefabs/Missle projectile";
 
+        private MissleLaunchButton _missleLaunchBtn;
         private float _nextExecuteTime;
         private bool _isExecuted;
 
@@ -21,7 +22,7 @@ namespace Saitama.Weapons.AirToAirMissle
         public override void Init()
         {
             base.Init();
-
+            _missleLaunchBtn = GetMonoComponent<MissleLaunchButton>("SmartphoneController/MissleLaunchButton");
             _speed = 15000f;
             _lifeTime = 10f;
             _timeBetweenExecute = 1000f;
@@ -29,7 +30,7 @@ namespace Saitama.Weapons.AirToAirMissle
 
         public override void HoldTrigger()
         {
-            if (Input.GetMouseButtonDown(1))
+            if (_missleLaunchBtn.isTriggered)
             {
                 if (Time.time > _nextExecuteTime && !_isExecuted)
                 {
@@ -69,7 +70,7 @@ namespace Saitama.Weapons.AirToAirMissle
 
         public override void ReleaseTrigger()
         {
-            if (Input.GetMouseButtonUp(1))
+            if (!_missleLaunchBtn.isTriggered)
             {
                 if (OnTriggerRelease != null)
                 {

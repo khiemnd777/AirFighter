@@ -265,6 +265,76 @@ namespace Saitama
             return o;
         }
 
+        public IEnumerator OnLoadingPercent(Action<float> act, float deltaTime = 1f){
+            if (act == null)
+                yield return null;
+            var percent = .0f;
+            while (percent <= 1f)
+            {
+                percent += Time.fixedDeltaTime * deltaTime;
+                act.Invoke(percent);
+                yield return new WaitForFixedUpdate();
+            }
+            yield return null;
+        }
+
+        public IEnumerator OnLoadingPercent(Action<float> act, Func<bool> cond, float deltaTime = 1f){
+            if (cond == null)
+                yield return null;
+            if (!cond.Invoke())
+                yield return null;
+            if (act == null)
+                yield return null;
+            var percent = .0f;
+            while (percent <= 1f)
+            {
+                if (!cond.Invoke())
+                    break;
+                percent += Time.fixedDeltaTime * deltaTime;
+                act.Invoke(percent);
+                yield return new WaitForFixedUpdate();
+            }
+            yield return null;
+        }
+
+        public IEnumerator OnLoadingPercent(Action<float> act, Action post, float deltaTime = 1f){
+            if (act == null)
+                yield return null;
+            var percent = .0f;
+            while (percent <= 1f)
+            {
+                percent += Time.fixedDeltaTime * deltaTime;
+                act.Invoke(percent);
+                yield return new WaitForFixedUpdate();
+            }
+            if (post != null)
+            {
+                post.Invoke();
+            }
+            yield return null;
+        }
+
+        public IEnumerator OnLoadingPercent(Action<float> act, Action pre, Action post, float deltaTime = 1f){
+            if (act == null)
+                yield return null;
+            if (pre != null)
+            {
+                pre.Invoke();
+            }
+            var percent = .0f;
+            while (percent <= 1f)
+            {
+                percent += Time.fixedDeltaTime * deltaTime;
+                act.Invoke(percent);
+                yield return new WaitForFixedUpdate();
+            }
+            if (post != null)
+            {
+                post.Invoke();
+            }
+            yield return null;
+        }
+
         private T GetRecursiveComponent<T>(ICommonObject commonObject, string name, Action<T> predicate) where T : ICommonObject {
             var comp = commonObject.RequireOnly(name, predicate);
             if (comp == null && commonObject.Parent != null)

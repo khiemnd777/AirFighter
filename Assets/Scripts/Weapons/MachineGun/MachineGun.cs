@@ -9,6 +9,7 @@ namespace Saitama.Weapons.MachineGun
 	{
         public static string Prefab = "Prefabs/Gun projectile";
 
+        private GunFireButton _gunFireBtn;
         private float nextShotTime;
         
         public MachineGun(MonoBehaviour mono) 
@@ -19,14 +20,14 @@ namespace Saitama.Weapons.MachineGun
         public override void Init()
         {
             base.Init();
-
+            _gunFireBtn = GetMonoComponent<GunFireButton>("SmartphoneController/GunFireButton");
             _lifeTime = 3f;
             _speed = 3000f;
             _timeBetweenExecute = 100f;
         }
 
 		public override void HoldTrigger (){
-            if (Input.GetMouseButton(0))
+            if (_gunFireBtn.isTriggered)
             {
                 if (OnTriggerHold != null)
                 {

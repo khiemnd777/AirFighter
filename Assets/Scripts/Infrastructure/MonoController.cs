@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -227,6 +228,99 @@ namespace Saitama
             {
                 punchMethod.Invoke(this, null);
             }
+        }
+
+        protected IEnumerator OnLoadingPercent(Action<float> act, float deltaTime = 1f){
+            if (act == null)
+                yield return null;
+            var percent = .0f;
+            while (percent <= 1f)
+            {
+                percent += Time.fixedDeltaTime * deltaTime;
+                act.Invoke(percent);
+                yield return new WaitForFixedUpdate();
+            }
+            yield return null;
+        }
+
+        protected IEnumerator OnLoadingPercent(Action<float> act, Func<bool> cond, float deltaTime = 1f){
+            if (cond == null)
+                yield return null;
+            if (!cond.Invoke())
+                yield return null;
+            if (act == null)
+                yield return null;
+            var percent = .0f;
+            while (percent <= 1f)
+            {
+                if (!cond.Invoke())
+                    break;
+                percent += Time.fixedDeltaTime * deltaTime;
+                act.Invoke(percent);
+                yield return new WaitForFixedUpdate();
+            }
+            yield return null;
+        }
+
+        protected IEnumerator OnLoadingPercent(Action<float> act, Action post, float deltaTime = 1f){
+            if (act == null)
+                yield return null;
+            var percent = .0f;
+            while (percent <= 1f)
+            {
+                percent += Time.fixedDeltaTime * deltaTime;
+                act.Invoke(percent);
+                yield return new WaitForFixedUpdate();
+            }
+            if (post != null)
+            {
+                post.Invoke();
+            }
+            yield return null;
+        }
+
+        protected IEnumerator OnLoadingPercent(Action<float> act, Action post, Func<bool> cond, float deltaTime = 1f){
+            if (cond == null)
+                yield return null;
+            if (!cond.Invoke())
+                yield return null;
+            if (act == null)
+                yield return null;
+            var percent = .0f;
+            while (percent <= 1f)
+            {
+                if (!cond.Invoke())
+                    break;
+                percent += Time.fixedDeltaTime * deltaTime;
+                act.Invoke(percent);
+                yield return new WaitForFixedUpdate();
+            }
+            if (post != null)
+            {
+                post.Invoke();
+            }
+            yield return null;
+        }
+
+        protected IEnumerator OnLoadingPercent(Action<float> act, Action pre, Action post, float deltaTime = 1f){
+            if (act == null)
+                yield return null;
+            if (pre != null)
+            {
+                pre.Invoke();
+            }
+            var percent = .0f;
+            while (percent <= 1f)
+            {
+                percent += Time.fixedDeltaTime * deltaTime;
+                act.Invoke(percent);
+                yield return new WaitForFixedUpdate();
+            }
+            if (post != null)
+            {
+                post.Invoke();
+            }
+            yield return null;
         }
 
         void PrepareStart(ICommonObject commonObject){

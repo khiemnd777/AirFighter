@@ -20,10 +20,9 @@ public class Utility
 	}
 
 	public static Vector3 ScreenToWorldPoint(Camera camera, float zIndex = .1f){
-		var mousePosition = camera.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, zIndex));
+        var mousePosition = camera.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, zIndex));
 		var realX = mousePosition.x * (Screen.width < Screen.height ? ((float)Screen.height / (float)Screen.width) : 1.0f);
 		var realY = mousePosition.y * (Screen.width < Screen.height ? 1.0f : ((float)Screen.width / (float)Screen.height));
-
 		return new Vector3 (realX, realY, mousePosition.z);
 	}
 
@@ -111,32 +110,32 @@ public class Utility
         return ships.ToArray();
     }
 
-	public static Quaternion RotatePrincipalAxes(Vector2 mousePosition, float rotationSpeed, float deltaTime){
-		var yaw = mousePosition.x * deltaTime * rotationSpeed;
-		var pitch = mousePosition.y * deltaTime * rotationSpeed;
+	public static Quaternion RotatePrincipalAxes(Vector2 mousePosition, float rotationSpeed){
+		var yaw = mousePosition.x * rotationSpeed;
+		var pitch = mousePosition.y * rotationSpeed;
 		var rot = Quaternion.identity;
 		rot.eulerAngles = new Vector3 (-pitch, yaw, .0f);
 		return rot;
 	}
 
-	public static Quaternion CalculateYaw(Vector2 mousePosition, float rotationSpeed, float deltaTime){
-		var yaw = mousePosition.x * deltaTime * rotationSpeed;
+	public static Quaternion CalculateYaw(Vector2 mousePosition, float rotationSpeed){
+		var yaw = mousePosition.x * rotationSpeed;
 		var rot = Quaternion.identity;
 		rot.eulerAngles = new Vector3 (.0f, yaw, .0f);
 		return rot;
 	}
 
-	public static Quaternion CalculatePitch(Vector2 mousePosition, float rotationSpeed, float deltaTime){
-		var pitch = mousePosition.y * deltaTime * rotationSpeed;
+	public static Quaternion CalculatePitch(Vector2 mousePosition, float rotationSpeed){
+		var pitch = mousePosition.y * rotationSpeed;
 		var rot = Quaternion.identity;
 		rot.eulerAngles = new Vector3 (-pitch, .0f, .0f);
 		return rot;
 	}
 
-	public static Vector3 CalculateVelocity(Quaternion rotation, float ambientSpeed, float deltaTime){
+	public static Vector3 CalculateVelocity(Quaternion rotation, float ambientSpeed){
 		var forward = Vector3.forward;
 		forward = rotation * forward;
-		var velocity = forward * deltaTime * ambientSpeed;
+		var velocity = forward * ambientSpeed;
 		return velocity;
 	}
 

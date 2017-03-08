@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace Saitama.Weapons{
-	public class GunPivotTrackerSystem : CommonObject {
+    public class GunPivotTrackerSystem : Updater {
         
 		private readonly List<Gun> _guns;
 
@@ -19,6 +19,14 @@ namespace Saitama.Weapons{
             RequireMany<Gun>(g => {
                 SetGuns(g);
             });
+        }
+
+        void TwoPunch(){
+            RotateGunPivot (
+                LockTargetsNearest (
+                    FindTargetsInCrosshair ("Target", 1600, 10.25f)
+                )
+            ); 
         }
 
 		public void SetGuns(params Gun[] guns){

@@ -25,7 +25,7 @@ namespace Saitama.Weapons.MachineGun
                         targetIdentifier.Identify(target.gameObject, _damage);
                     });
                     // Kill all projectiles when it be in collision process
-                    DestroyImmediate(bullet.gameObject);
+                    Destroy(bullet.gameObject);
                 }
             };
         }

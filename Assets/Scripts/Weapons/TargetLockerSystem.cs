@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 namespace Saitama.Weapons{
-    public class TargetLockerSystem : CommonObject {
+    public class TargetLockerSystem : Updater {
         private RectTransform _targetLockerUI;
         private RectTransform _canvasUI;
         private RectTransform _crosshair;
@@ -33,6 +33,11 @@ namespace Saitama.Weapons{
                 });
             
             PrepareTargetLockerUIs();
+        }
+
+        void TwoPunch(){
+            LockTargets(
+                FindTargetsInCrosshair ("Target", 1600, 25.375f));
         }
 
         public GameObject GetTarget(){
