@@ -12,6 +12,7 @@ public class MissleLaunchButton : MonoController, IPointerDownHandler, IPointerU
     public bool isTriggered;
 
     void Setup(){
+        gameObject.SetActive(true);
         _smartphoneController = GetMonoComponent<RectTransform>("SmartphoneController");
         _btn = GetComponent<RectTransform>();
         var posX = _smartphoneController.rect.width / 2f - _btn.rect.width / 2f - 25f;

@@ -8,6 +8,7 @@ public class JoystickController : MonoController, IDragHandler, IPointerDownHand
 {
     private Vector2 _inputVector;
     private Vector2 _anchorVector;
+    private Quaternion _angle;
     private RectTransform _joystickController;
     private RectTransform _smartphoneController;
 
@@ -30,6 +31,14 @@ public class JoystickController : MonoController, IDragHandler, IPointerDownHand
         get
         {
             return _inputVector.y;
+        }
+    }
+
+    public Quaternion Angle 
+    {
+        get
+        {
+            return _angle;
         }
     }
 
@@ -58,8 +67,13 @@ public class JoystickController : MonoController, IDragHandler, IPointerDownHand
                 , out pos))
             {
                 pos = GetRealPosition(pos);
-                _inputVector = (pos - _anchorVector) / sensitive;
+                var dir = pos - _anchorVector;
+                _inputVector = dir / sensitive;
                 _inputVector = _inputVector.magnitude > 1.0f ? _inputVector.normalized : _inputVector;
+
+                _angle = Quaternion.LookRotation(dir, Vector3.back);
+                _angle.x = .0f;
+                _angle.y = .0f;
             }
         }
     }

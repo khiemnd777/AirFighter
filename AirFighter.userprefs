@@ -1,17 +1,14 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Controllers/Smartphone/GunFireButton.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Controllers/Smartphone/JoystickController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Controllers/Smartphone/MissleLaunchButton.cs" Line="38" Column="19" />
-      <File FileName="Assets/Scripts/Controllers/Smartphone/AccessoryController.cs" Line="38" Column="5" />
-      <File FileName="Assets/Scripts/Controllers/Smartphone/JoystickController.cs" Line="74" Column="48" />
-      <File FileName="Assets/Scripts/Weapons/AirToAirMissle/AirToAirMissleHandler.cs" Line="75" Column="35" />
-      <File FileName="Assets/Scripts/Weapons/Missle.cs" Line="20" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/Weapon.cs" Line="6" Column="5" />
-      <File FileName="Assets/Scripts/Controllers/Smartphone/GunFireButton.cs" Line="24" Column="28" />
-      <File FileName="Assets/Scripts/Weapons/MachineGun/MachineGunBullet.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/MachineGun/MachineGun.cs" Line="46" Column="4" />
-      <File FileName="Assets/Scripts/Weapons/Gun.cs" Line="6" Column="32" />
+      <File FileName="Assets/Scripts/Controllers/Smartphone/DirectorArrowMovement.cs" Line="24" Column="9" />
+      <File FileName="Assets/Scripts/Controllers/Smartphone/CursorArrowMovement.cs" Line="12" Column="5" />
+      <File FileName="Assets/Scripts/Controllers/Smartphone/JoystickController.cs" Line="68" Column="14" />
+      <File FileName="Assets/Scripts/Controllers/MouseController.cs" Line="15" Column="3" />
+      <File FileName="Assets/Scripts/Weapons/MissleHomingSystem.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/GunPivotTrackerSystem.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/TargetLockerSystem.cs" Line="29" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

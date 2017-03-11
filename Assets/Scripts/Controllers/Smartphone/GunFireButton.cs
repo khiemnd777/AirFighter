@@ -13,7 +13,7 @@ public class GunFireButton : MonoController, IPointerDownHandler, IPointerUpHand
 
     void Setup(){
         _smartphoneController = GetMonoComponent<RectTransform>("SmartphoneController");
-        _btn = GetComponent<RectTransform>();
+        _btn = GetComponent<RectTransform>();   
         var posX = _smartphoneController.rect.width / 2f - _btn.rect.width / 2f - 135f;
         var posY = _smartphoneController.rect.height / 2f - _btn.rect.height / 2f - 25f;
         _btn.localPosition = new Vector3(posX, -posY, 0f);

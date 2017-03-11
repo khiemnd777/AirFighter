@@ -55,6 +55,8 @@
      <Compile Include="Assets\Scripts\Controllers\MouseController.cs" />
      <Compile Include="Assets\Scripts\Controllers\ShipController.cs" />
      <Compile Include="Assets\Scripts\Controllers\Smartphone\AccessoryController.cs" />
+     <Compile Include="Assets\Scripts\Controllers\Smartphone\CursorArrowMovement.cs" />
+     <Compile Include="Assets\Scripts\Controllers\Smartphone\DirectorArrowMovement.cs" />
      <Compile Include="Assets\Scripts\Controllers\Smartphone\GunFireButton.cs" />
      <Compile Include="Assets\Scripts\Controllers\Smartphone\JoystickController.cs" />
      <Compile Include="Assets\Scripts\Controllers\Smartphone\MissleLaunchButton.cs" />
