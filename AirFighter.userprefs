@@ -1,14 +1,22 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Controllers/Smartphone/JoystickController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Ships/StandardShip/StandardShip.cs">
     <Files>
-      <File FileName="Assets/Scripts/Controllers/Smartphone/DirectorArrowMovement.cs" Line="24" Column="9" />
-      <File FileName="Assets/Scripts/Controllers/Smartphone/CursorArrowMovement.cs" Line="12" Column="5" />
-      <File FileName="Assets/Scripts/Controllers/Smartphone/JoystickController.cs" Line="68" Column="14" />
-      <File FileName="Assets/Scripts/Controllers/MouseController.cs" Line="15" Column="3" />
-      <File FileName="Assets/Scripts/Weapons/MissleHomingSystem.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/GunPivotTrackerSystem.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/TargetLockerSystem.cs" Line="29" Column="13" />
+      <File FileName="Assets/Scripts/Ships/StandardShip/StandardShipController.cs" Line="16" Column="41" />
+      <File FileName="Assets/Scripts/Effects/InfiniteStarfield.cs" Line="41" Column="14" />
+      <File FileName="Assets/Scripts/Ships/StandardShip/StandardShip.cs" Line="44" Column="68" />
+      <File FileName="Assets/Scripts/Constants.cs" Line="6" Column="2" />
+      <File FileName="Assets/Scripts/Controllers/Smartphone/JoystickController.cs" Line="90" Column="51" />
+      <File FileName="Assets/Scripts/Infrastructure/MonoController.cs" Line="283" Column="30" />
+      <File FileName="Assets/Scripts/Utility.cs" Line="113" Column="89" />
+      <File FileName="Assets/Scripts/Weapons/MachineGun/MachineGun.cs" Line="8" Column="2" />
+      <File FileName="Assets/Scripts/Weapons/Gun.cs" Line="6" Column="33" />
+      <File FileName="Assets/Scripts/Weapons/Weapon.cs" Line="37" Column="23" />
+      <File FileName="Assets/Scripts/Infrastructure/Updater.cs" Line="28" Column="9" />
+      <File FileName="Assets/Scripts/Infrastructure/CommonObject.cs" Line="253" Column="33" />
+      <File FileName="Assets/Scripts/FlyableControls/ShipControls/ShipControl.cs" Line="66" Column="63" />
+      <File FileName="Assets/Scripts/Flight.cs" Line="17" Column="23" />
+      <File FileName="Assets/Scripts/Weapons/GunPivotTrackerSystem.cs" Line="55" Column="82" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -18,8 +18,10 @@ public class CameraController : MonoController {
 
 	Rigidbody rigid;
     JoystickController _joystickController;
+    Transform _cachedTranform;
 
 	void Begin(){
+        _cachedTranform = transform;
 		rigid = GetComponent<Rigidbody> ();
         _joystickController = GetMonoComponent<JoystickController>("SmartphoneController/JoystickController");
 	}
@@ -27,16 +29,13 @@ public class CameraController : MonoController {
     void OnePunch()
     {
         wantedPosition = target.TransformPoint (0f, cameraHeight, -cameraDistance);
-        transform.position = Vector3.Lerp (transform.position, wantedPosition, damping);
+        _cachedTranform.position = Vector3.Lerp (_cachedTranform.position, wantedPosition, damping);
 
-        wantedRotation = Quaternion.LookRotation (target.position - transform.position, target.up);
-        transform.rotation = Quaternion.Lerp (transform.rotation, wantedRotation, rotationDamping);
+        wantedRotation = Quaternion.LookRotation (target.position - _cachedTranform.position, target.up);
+        _cachedTranform.rotation = Quaternion.Lerp (_cachedTranform.rotation, wantedRotation, rotationDamping);
 
-        if (_joystickController.isDragging)
-        {
-            var touchPosition = new Vector2(_joystickController.Horizontal, _joystickController.Vertical);
-            var principalRotation = Utility.RotatePrincipalAxes (touchPosition, rotationSpeed);
-            rigid.rotation *= principalRotation;
-        }
+        var touchPosition = new Vector2(_joystickController.Horizontal, _joystickController.Vertical);
+        var principalRotation = Utility.RotatePrincipalAxes (touchPosition, rotationSpeed);
+        rigid.rotation *= principalRotation;
     }
 }

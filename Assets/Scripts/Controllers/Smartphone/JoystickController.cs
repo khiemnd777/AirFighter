@@ -87,7 +87,7 @@ public class JoystickController : MonoController, IDragHandler, IPointerDownHand
 
         StartCoroutine(OnLoadingPercent((percent) => {
             _inputVector = Vector2.Lerp(_inputVector, Vector2.zero, percent);
-        }, () => _inputVector = Vector2.zero, () => !isDragging));
+        }, () => _inputVector = Vector2.zero, () => !isDragging, .5f));
     }
 
     public void OnPointerDown(PointerEventData eventData)

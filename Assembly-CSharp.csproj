@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scripts\Controllers\Smartphone\GunFireButton.cs" />
      <Compile Include="Assets\Scripts\Controllers\Smartphone\JoystickController.cs" />
      <Compile Include="Assets\Scripts\Controllers\Smartphone\MissleLaunchButton.cs" />
+     <Compile Include="Assets\Scripts\Effects\InfiniteStarfield.cs" />
      <Compile Include="Assets\Scripts\Enums.cs" />
      <Compile Include="Assets\Scripts\Extensions\ShipExtensions.cs" />
      <Compile Include="Assets\Scripts\Flight.cs" />

@@ -52,7 +52,7 @@ namespace Saitama.Weapons{
 
         public void RotateGunPivot(Gun gun, GameObject lockedTarget){
             if (lockedTarget == null) {
-				gun.Transform.localRotation = Quaternion.Euler (90.0f, 180.0f, 0.0f);
+                gun.Transform.localRotation = gun.Transform.parent.localRotation; //Quaternion.Euler (90.0f, 180.0f, 0.0f);
 				return;
 			}
             var wantedRotation = Quaternion.LookRotation (lockedTarget.transform.position - gun.Transform.position);

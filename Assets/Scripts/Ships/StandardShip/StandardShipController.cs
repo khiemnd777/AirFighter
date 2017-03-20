@@ -9,11 +9,11 @@ namespace Saitama.Ships
         public static string Prefab = "Prefabs/Flight";
 
         [Header("Ambient speed")]
-        public float ambientSpeed = 90.0f;
-        public float ambientMaxSpeed = 250.0f;
-        public float ambientMinSpeed = 45.0f;
+        public float ambientSpeed = 20.0f;
+        public float ambientMaxSpeed = 60.0f;
+        public float ambientMinSpeed = 20.0f;
         [Header("Rotation")]
-        public float rotationSpeed = Constants.RotationSpeed;
+        public float rotationSpeed = 2.5f;
         public float shiftedRotationExtraSpeed = 1.5f;
         public float rollSpeed = 25.0f;
         public float smoothZToZero = 100f;

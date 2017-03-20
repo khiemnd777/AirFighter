@@ -19,7 +19,7 @@ namespace Saitama.Ships
 
         public override void Init()
         {
-            var shipModel = GetChildMonoComponent<Transform>("Ship");
+            var shipModel = GetChildMonoComponent<Transform>("MAX");
 
             Require<ShipControl>();
             Require<AttackerIdentifier>();
@@ -32,36 +32,36 @@ namespace Saitama.Ships
             Require<MachineGun>("gun1", (gun) =>
                 {
                     gun.Transform.SetParent(shipModel);
-                    gun.Transform.localPosition = new Vector3(.04f, .0f, .0f);
-                    gun.Transform.localRotation = Quaternion.Euler(new Vector3(90f, .0f, -180f));
-                    gun.Transform.localScale = new Vector3(.02f, .02f, .02f);
+                    gun.Transform.localPosition = new Vector3(.005f, .025f, .0f);
+                    //gun.Transform.localRotation = Quaternion.Euler(new Vector3(0f, .0f, 0f));
+                    gun.Transform.localScale = new Vector3(.002f, .002f, .002f);
                     gun.Targets = LayerMask.GetMask("Flight", "Target");
                 });
 
             Require<MachineGun>("gun2", (gun) =>
                 {
                     gun.Transform.SetParent(shipModel);
-                    gun.Transform.localPosition = new Vector3(-.04f, .0f, .0f);
-                    gun.Transform.localRotation = Quaternion.Euler(new Vector3(90f, .0f, -180f));
-                    gun.Transform.localScale = new Vector3(.02f, .02f, .02f);
+                    gun.Transform.localPosition = new Vector3(-.005f, .025f, .0f);
+                    //gun.Transform.localRotation = Quaternion.Euler(new Vector3(0f, .0f, 0f));
+                    gun.Transform.localScale = new Vector3(.002f, .002f, .002f);
                     gun.Targets = LayerMask.GetMask("Flight", "Target");
                 });
 
             Require<AirToAirMissleHandler>("missle1", (missleHandler) =>
                 {
                     missleHandler.Transform.SetParent(shipModel);
-                    missleHandler.Transform.localPosition = new Vector3(.07f, .025f, .0f);
-                    missleHandler.Transform.localRotation = Quaternion.Euler(new Vector3(90f, .0f, -180f));
-                    missleHandler.Transform.localScale = new Vector3(.02f, .02f, .02f);
+                    missleHandler.Transform.localPosition = new Vector3(.009f, .025f, .0f);
+                    //missleHandler.Transform.localRotation = Quaternion.Euler(new Vector3(0f, .0f, 0f));
+                    missleHandler.Transform.localScale = new Vector3(.002f, .002f, .002f);
                     missleHandler.Targets = LayerMask.GetMask("Target");
                 });
             
             Require<AirToAirMissleHandler>("missle2", (missleHandler) =>
                 {
                     missleHandler.Transform.SetParent(shipModel);
-                    missleHandler.Transform.localPosition = new Vector3(-.07f, .025f, .0f);
-                    missleHandler.Transform.localRotation = Quaternion.Euler(new Vector3(90f, .0f, -180f));
-                    missleHandler.Transform.localScale = new Vector3(.02f, .02f, .02f);
+                    missleHandler.Transform.localPosition = new Vector3(-.009f, .025f, .0f);
+                    //missleHandler.Transform.localRotation = Quaternion.Euler(new Vector3(0f, .0f, 0f));
+                    missleHandler.Transform.localScale = new Vector3(.002f, .002f, .002f);
                     missleHandler.Targets = LayerMask.GetMask("Target");
                 });
 
