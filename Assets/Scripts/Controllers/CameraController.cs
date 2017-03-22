@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Saitama;
+using Saitama.Ships;
 
 public class CameraController : MonoController {
 	public Ray ray;
-	public Transform target;
+
+    [System.NonSerialized]
+	public Ship target;
+
 	public float cameraDistance = 9.5f;
 	public float cameraHeight = 2.0f;
     public float cameraLookAt = 2.0f;
@@ -16,26 +20,30 @@ public class CameraController : MonoController {
 	Vector3 wantedPosition;
 	Quaternion wantedRotation;
 
-	Rigidbody rigid;
+	Rigidbody _rigid;
     JoystickController _joystickController;
     Transform _cachedTranform;
 
 	void Begin(){
         _cachedTranform = transform;
-		rigid = GetComponent<Rigidbody> ();
+		_rigid = GetComponent<Rigidbody> ();
         _joystickController = GetMonoComponent<JoystickController>("SmartphoneController/JoystickController");
 	}
 
     void OnePunch()
     {
-        wantedPosition = target.TransformPoint (0f, cameraHeight, -cameraDistance);
-        _cachedTranform.position = Vector3.Lerp (_cachedTranform.position, wantedPosition, damping);
-
-        wantedRotation = Quaternion.LookRotation (target.position - _cachedTranform.position, target.up);
-        _cachedTranform.rotation = Quaternion.Lerp (_cachedTranform.rotation, wantedRotation, rotationDamping);
-
         var touchPosition = new Vector2(_joystickController.Horizontal, _joystickController.Vertical);
-        var principalRotation = Utility.RotatePrincipalAxes (touchPosition, rotationSpeed);
-        rigid.rotation *= principalRotation;
+
+        var yaw = Utility.CalculateYaw (touchPosition, target.RotationSpeed);
+        _rigid.rotation *= yaw;
+
+        var pitch = Utility.CalculatePitch (touchPosition, target.RotationSpeed);
+        _rigid.rotation *= pitch;
+
+        var velocity = Utility.CalculateVelocity(_rigid.rotation, target.AmbientSpeed);
+        _rigid.velocity = velocity;
+
+        wantedPosition = target.Transform.TransformPoint (0f, cameraHeight, -cameraDistance);
+        _cachedTranform.position = Vector3.Lerp(_cachedTranform.position, wantedPosition, damping);
     }
 }

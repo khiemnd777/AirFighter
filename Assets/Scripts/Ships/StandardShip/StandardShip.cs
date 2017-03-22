@@ -19,7 +19,7 @@ namespace Saitama.Ships
 
         public override void Init()
         {
-            var shipModel = GetChildMonoComponent<Transform>("MAX");
+            var shipModel = GetChildMonoComponent<Transform>("Ship");
 
             Require<ShipControl>();
             Require<AttackerIdentifier>();

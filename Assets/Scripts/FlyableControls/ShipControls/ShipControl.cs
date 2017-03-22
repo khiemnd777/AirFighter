@@ -63,7 +63,7 @@ namespace Saitama.FlyableControls.ShipControls
             _accessoryController = GetMonoComponent<AccessoryController>("SmartphoneController/AccessoryController");
             _transform = _mono.transform;
             _ship = (Ship) _parent;
-            _shipModel = GetChildMonoComponent<Transform>("MAX");
+            _shipModel = GetChildMonoComponent<Transform>("Ship");
 
             this.InitKeptValues ();
         }

@@ -52,6 +52,15 @@ namespace Saitama
             return (T) Resources.Load(path, typeof(T));
         }
 
+        public T GetChildMonoComponent<T>(string name) where T: UnityEngine.Component{
+            var t = transform.Find(name);
+            if (typeof(T).IsEqual(typeof(Transform)))
+            {
+                return t as T;
+            }
+            return t.gameObject.GetComponent<T>();
+        }
+
         private FieldInfo GetPrefabInfo<T>(){
             var t = typeof(T);
             return GetPrefabInfo(t);

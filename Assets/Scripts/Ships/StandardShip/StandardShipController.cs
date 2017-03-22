@@ -31,7 +31,7 @@ namespace Saitama.Ships
         public float missleTimeBetweenExecute = 1000f;
 
         void Begin(){
-            InstantiateCommonObject<StandardShip>(ss =>
+            var ship = InstantiateCommonObject<StandardShip>(ss =>
                 {
                     ss.AmbientSpeed = ambientSpeed;
                     ss.AmbientMaxSpeed = ambientMaxSpeed;
@@ -43,8 +43,16 @@ namespace Saitama.Ships
                     ss.ShiftAngleLeft = shiftAngleLeft;
                     ss.ShiftAngleRight = shiftAngleRight;
                 });
+            
             // assign specific target for main camera
-            GetMonoComponent<CameraController>("Main Camera").target = transform;
+            var cameraController = GetMonoComponent<CameraController>("Main Camera");
+            cameraController.target = ship;
+            cameraController.cameraDistance = 3f;
+            cameraController.cameraHeight = .75f;
+            cameraController.cameraLookAt = 0f;
+            cameraController.damping = .065f;
+            cameraController.rotationDamping = .1f;
+            cameraController.rotationSpeed = 4.75f;
         }
     }
 }
