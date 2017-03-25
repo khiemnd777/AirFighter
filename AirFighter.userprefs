@@ -1,11 +1,11 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeBossController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeSatellite.cs">
     <Files>
-      <File FileName="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeSatellite.cs" Line="20" Column="75" />
-      <File FileName="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeBossController.cs" Line="69" Column="33" />
+      <File FileName="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeSatellite.cs" Line="29" Column="48" />
+      <File FileName="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeBossController.cs" Line="142" Column="50" />
       <File FileName="Assets/Scripts/Weapons/AirToAirMissle/AirToAirMissle.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapons/MissleHomingSystem.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/MissleHomingSystem.cs" Line="27" Column="13" />
       <File FileName="Assets/Scripts/Weapons/AirToAirMissle/AirToAirMissleHandler.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
