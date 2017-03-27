@@ -11,9 +11,14 @@ namespace Saitama.Weapons.MachineGun
 
 		CollisionChecker _collisionChecker;
 
+        Transform _cachedTransform;
+        Rigidbody _rg;
+
         void Begin()
         {
-            transform.Rotate(Random.Range(-.5f, .5f), Random.Range(-.5f, .5f), .0f);
+            _rg = GetComponent<Rigidbody>();
+            _cachedTransform = transform;
+            _cachedTransform.Rotate(Random.Range(-.5f, .5f), Random.Range(-.5f, .5f), .0f);
             _collisionChecker = new CollisionChecker(_targets);
             _collisionChecker.OnHit += (bullet, colliders) => {
                 for(var inx = 0; inx < colliders.Length; inx++){
@@ -28,16 +33,17 @@ namespace Saitama.Weapons.MachineGun
                     Destroy(bullet.gameObject);
                 }
             };
+            _rg.velocity = Utility.CalculateVelocity(_rg.rotation, _speed);
         }
 
-        void OnePunch()
+        void TwoPunch()
         {
-            if (transform.parent != null)
+            if (_cachedTransform.parent != null)
             {
-                transform.parent = null;
+                _cachedTransform.parent = null;
             }
             var distance = _speed * Time.fixedDeltaTime;
-            transform.Translate(Vector3.forward * distance);
+//            _cachedTransform.Translate(Vector3.forward * distance);
             _collisionChecker.Check(this, distance / 2.5f);
         }
 	}

@@ -173,5 +173,30 @@ public class Utility
 			action.Invoke (hit);
 		}
 	}
+
+    public static Quaternion MoveRotation(Transform own, Transform target, float maxDegreesDelta){
+        var dist = target.position - own.position;
+        var targetRotation = Quaternion.LookRotation (dist, own.up);
+        return Quaternion.RotateTowards(own.rotation, targetRotation, maxDegreesDelta);
+    }
+
+    public static void MoveRotation(Rigidbody rigid, Transform own, Transform target, float maxDegreesDelta){
+        var dist = target.position - own.position;
+        var targetRotation = Quaternion.LookRotation (dist, own.up);
+        var rotationMoving = Quaternion.RotateTowards(own.rotation, targetRotation, maxDegreesDelta);
+        rigid.MoveRotation(rotationMoving);
+    }
+
+    public static void MoveRotation(Rigidbody rigid, Transform own, Vector3 dist, float maxDegreesDelta){
+        var targetRotation = Quaternion.LookRotation (dist, own.up);
+        var rotationMoving = Quaternion.RotateTowards(own.rotation, targetRotation, maxDegreesDelta);
+        rigid.MoveRotation(rotationMoving);
+    }
+
+    public static void RotateAround(Rigidbody rigid, Transform own, Transform target, Vector3 axis, float targetMagnitude, float velocity, float t){
+        own.RotateAround(target.position, axis, velocity * Time.deltaTime);
+        var dist = rigid.position - target.position;
+        rigid.position = Vector3.Lerp(rigid.position, target.position + dist.normalized * targetMagnitude, t / (dist.magnitude));
+    }
 }
 

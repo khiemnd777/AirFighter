@@ -27,19 +27,11 @@ namespace Saitama.Weapons
 		{
             var r = radius == 1.0f ? _radius : radius;
 			var transform = component.transform;
-			if (OnHit != null) {
-                var colliders = Physics.OverlapSphere (transform.position, r, _targets, queryTriggerInteraction);
-				OnHit.Invoke (component, colliders);
-			}
-		}
-
-        public virtual void Check(Vector3 position, float radius = 1.0f, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Collide){
-            var r = radius == 1.0f ? _radius : radius;
+            var colliders = Physics.OverlapSphere (transform.position, r, _targets, queryTriggerInteraction);
             if (OnHit != null)
             {
-                var colliders = Physics.OverlapSphere(position, r, _targets, queryTriggerInteraction);
-                OnHit.Invoke(null, colliders);
+                OnHit.Invoke(component, colliders);
             }
-        }
+		}
 	}
 }

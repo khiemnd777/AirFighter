@@ -175,7 +175,12 @@ namespace Saitama
         }
 
         private T GetCommonObjectComponent<T>(ICommonObject commonObject, string name, Action<T> predicate) where T : ICommonObject{
-            var comp = commonObject.RequireOnly(name, predicate);
+            if (commonObject == null)
+            {
+                commonObject = new DefaultCommonObject(this);
+            }
+            //var comp = commonObject.RequireOnly(name, predicate);
+            var comp = commonObject.Require<T>(name, predicate);
             if (comp == null && commonObject.Parent != null)
             {
                 GetCommonObjectComponent<T>(commonObject.Parent, name, predicate);

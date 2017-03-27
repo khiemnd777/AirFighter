@@ -81,6 +81,7 @@
      <Compile Include="Assets\Scripts\Infrastructure\Coroutines\InputUntil.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\Coroutines\WaitingFor.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\Coroutines\WaitingForFixedUpdate.cs" />
+     <Compile Include="Assets\Scripts\Infrastructure\DefaultCommonObject.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\EventEmitter.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\ICloneable.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\ICommonObject.cs" />
@@ -98,6 +99,7 @@
      <Compile Include="Assets\Scripts\NPCs\Bosses\Boss.cs" />
      <Compile Include="Assets\Scripts\NPCs\Bosses\CubeBoss\CubeBossController.cs" />
      <Compile Include="Assets\Scripts\NPCs\Bosses\CubeBoss\CubeSatellite.cs" />
+     <Compile Include="Assets\Scripts\NPCs\Bosses\CubeBoss\CubeSatelliteGun.cs" />
      <Compile Include="Assets\Scripts\NPCs\Bosses\IBoss.cs" />
      <Compile Include="Assets\Scripts\NPCs\Bosses\XFisher.cs" />
      <Compile Include="Assets\Scripts\NPCs\IChasing.cs" />

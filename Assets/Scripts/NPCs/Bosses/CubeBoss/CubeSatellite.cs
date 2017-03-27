@@ -11,14 +11,23 @@ public class CubeSatellite : MonoController {
     public Vector3 scale;
     public Vector3 mainScale;
     public float velocity = 200f;
+    [System.NonSerialized]
+    public bool hasTarget;
 
     private Rigidbody _rigid;
     private Transform _cachedTransform;
-    private bool hasTarget;
+    private CubeSatelliteGun _gun;
 
     void Begin(){
         _rigid = GetComponent<Rigidbody>();
         _cachedTransform = transform;
+        _gun = Require<CubeSatelliteGun>((gun) =>
+            {
+                gun.Transform.SetParent(_cachedTransform);
+                gun.Transform.localPosition = new Vector3(.0f, .0f, .0f);
+                gun.Transform.localRotation = Quaternion.Euler(new Vector3(.0f, .0f, 0f));
+                gun.Transform.localScale = new Vector3(1f, 1f, 1f);
+            });
     }
 
     void OnePunch(){
@@ -29,10 +38,7 @@ public class CubeSatellite : MonoController {
                 _cachedTransform.rotation = Random.rotation;
                 hasTarget = false;
             }
-            _cachedTransform.RotateAround(mainTarget.position, _cachedTransform.up, velocity * Time.deltaTime);
-            var dist = _rigid.position - mainTarget.position;
-            var targetMagnitude = mainScale.magnitude;
-            _rigid.position = Vector3.Lerp(_rigid.position, mainTarget.position + dist.normalized * targetMagnitude, 15f / (dist.magnitude));
+            Utility.RotateAround(_rigid, _cachedTransform, mainTarget, _cachedTransform.up, mainScale.magnitude, velocity, 15f);
         }
         else
         {
@@ -40,14 +46,35 @@ public class CubeSatellite : MonoController {
             var dist = target.transform.position - _cachedTransform.position;
             if (dist.magnitude <= target.localScale.magnitude * 2f)
             {
-                var side = Random.Range(-1, 1);
-                side = side == 0 ? 1 : side;
-                dist.Set(side * target.localScale.magnitude * 2f, side * target.localScale.magnitude * 2f, side * target.localScale.magnitude * 2f);
+                var sideX = Random.Range(-1, 1);
+                var sideY = Random.Range(-1, 1);
+                var sideZ = Random.Range(-1, 1);
+                sideX = sideX == 0 ? 1 : sideX;
+                sideY = sideY == 0 ? 1 : sideY;
+                sideZ = sideZ == 0 ? 1 : sideZ;
+                dist.Set(sideX * target.localScale.magnitude * 2f
+                    , sideY * target.localScale.magnitude * 2f
+                    , sideZ * target.localScale.magnitude * 2f);
             }
-            var targetRotation = Quaternion.LookRotation (dist, _cachedTransform.up);
-            _rigid.MoveRotation (Quaternion.RotateTowards(_cachedTransform.rotation, targetRotation, 7f));
+            Utility.MoveRotation(_rigid, _cachedTransform, dist, 7f);
         }
 
-        _rigid.velocity = _rigid.rotation * Vector3.forward * velocity;
+        _rigid.velocity = Utility.CalculateVelocity(_rigid.rotation, velocity);
+    }
+
+    void TwoPunch(){
+        GetFireTarget();
+    }
+
+    private void GetFireTarget(){
+        if (target == null)
+        {
+            _gun.Transform.localRotation = Quaternion.Euler (0.0f, 0.0f, 0.0f);
+            return;
+        }
+        var wantedRotation = Quaternion.LookRotation (target.transform.position - _gun.Transform.position);
+        //_gun.Transform.LookAt(target.position);
+        _gun.Transform.rotation = wantedRotation;
+        _gun.HoldTrigger();
     }
 }

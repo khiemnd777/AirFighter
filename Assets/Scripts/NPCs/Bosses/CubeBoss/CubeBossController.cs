@@ -58,11 +58,17 @@ public class CubeBossController : MonoController {
         BornSatellites();
         RotateInAir();
 
+        _collisionAlertChecker.Check(this);
         _collisionTargetChecker.Check(this);
+        //_collisionWeaponChecker.Check(this);
 
         Debug.DrawLine(_cachedTransform.position
             , _cachedTransform.position + Vector3.right * _model.localScale.magnitude * timeNumberCollisionTargetChecker
             , Color.white);
+
+        Debug.DrawLine(_cachedTransform.position
+            , _cachedTransform.position + Vector3.right * _model.localScale.magnitude * timeNumberCollisionAlertChecker
+            , Color.blue);
     }
 
     private void InitCollisionCheckers(){
@@ -70,26 +76,23 @@ public class CubeBossController : MonoController {
         _collisionAlertChecker = new CollisionChecker(targetAlert, _model.localScale.magnitude * timeNumberCollisionAlertChecker);
         _collisionAlertChecker.OnHit += (component, colliders) =>
             {
-                if(!colliders.Any()){
-                    foreach(var collider in colliders){
-                        
-                    }
-                }
+                _satellites.Where(x => !colliders.Select(c=>c.transform).Contains(x.target))
+                    .ToList()
+                    .ForEach(x => {
+                        x.target = null;
+                        x.scale = Vector3.zero;
+                    });
             };
 
         // Collision TARGET checker
         _collisionTargetChecker = new CollisionChecker(targetShips, _model.localScale.magnitude * timeNumberCollisionTargetChecker);
         _collisionTargetChecker.OnHit += (component, colliders) =>
             {
-                if(colliders.Any() && _satellites.Any(x => x.target == null)){
-                    if(Time.time > _nextSatelliteMoveToTarget){
-                        _nextSatelliteMoveToTarget = Time.time + timeSatelliteMoveToTarget;
-
-                        colliders = colliders.OrderBy(x => _random.Next()).ToArray();
-                        var satellite = _satellites.FirstOrDefault(x => x.target == null);
-                        satellite.target = colliders[0].transform;
-                        satellite.scale = colliders[0].transform.localScale;  
-                    }
+                if(colliders.Any() && _satellites.Any(x => !x.hasTarget)){
+                    colliders = colliders.OrderBy(x => _random.Next()).ToArray();
+                    var satellite = _satellites.FirstOrDefault(x => !x.hasTarget);
+                    satellite.target = colliders[0].transform;
+                    satellite.scale = colliders[0].transform.localScale;
                 }
             };
 
@@ -97,8 +100,7 @@ public class CubeBossController : MonoController {
         _collisionWeaponChecker = new CollisionChecker(targetWeapons, _model.localScale.magnitude * timeNumberCollisionWeaponChecker);
         _collisionWeaponChecker.OnHit += (component, colliders) =>
             {
-                if(colliders.Any())
-                    Debug.Log(colliders[0]);
+                
             };
     }
 
