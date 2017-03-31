@@ -14,16 +14,23 @@ public class CubeBossController : MonoController {
     public LayerMask targetAlert;
     public LayerMask targetShips;
     public LayerMask targetWeapons;
-    public float timeNumberCollisionAlertChecker = 8f;
-    public float timeNumberCollisionTargetChecker = 4f;
-    public float timeNumberCollisionWeaponChecker = 4f;
+    public float rangeAlertChecker = 8f;
+    public float rangeTargetChecker = 4f;
+    public float rangeWeaponChecker = 4f;
+
+    [Header("Satellite feature")]
     public float satelliteVelocity = 100f;
+    public float bulletLifeTime = 1f;
+    public float bulletSpeed = 600f;
+    public float timeBetweenBulletShoot = 750f;
+    public float rangeShootTarget;
+    public int satelliteBulletRemain = 20;
+    public LayerMask satelliteTargets;
 
     private List<CubeSatellite> _satellites;
     private float _nextSatelliteIsBorn;
     private float _nextSatelliteMoveToTarget;
     private Transform _cachedTransform;
-    private Transform _model;
     private Rigidbody _rigid;
     private int _spawnNumberInTime;
     private float _maxNumber;
@@ -41,7 +48,6 @@ public class CubeBossController : MonoController {
         _cachedTransform = transform;
         _nextSatelliteIsBorn = Time.time + timeBornSatellite;
         _nextSatelliteMoveToTarget = Time.time + timeSatelliteMoveToTarget;
-        _model = GetChildMonoComponent<Transform>("Cube");
         _rigid = GetComponent<Rigidbody>();
 
         // Initialize collision checkers
@@ -63,17 +69,17 @@ public class CubeBossController : MonoController {
         //_collisionWeaponChecker.Check(this);
 
         Debug.DrawLine(_cachedTransform.position
-            , _cachedTransform.position + Vector3.right * _model.localScale.magnitude * timeNumberCollisionTargetChecker
+            , _cachedTransform.position + Vector3.right * rangeTargetChecker
             , Color.white);
 
         Debug.DrawLine(_cachedTransform.position
-            , _cachedTransform.position + Vector3.right * _model.localScale.magnitude * timeNumberCollisionAlertChecker
+            , _cachedTransform.position + Vector3.up * rangeAlertChecker
             , Color.blue);
     }
 
     private void InitCollisionCheckers(){
         // Collision ALERT checker
-        _collisionAlertChecker = new CollisionChecker(targetAlert, _model.localScale.magnitude * timeNumberCollisionAlertChecker);
+        _collisionAlertChecker = new CollisionChecker(targetAlert, rangeAlertChecker);
         _collisionAlertChecker.OnHit += (component, colliders) =>
             {
                 _satellites.Where(x => !colliders.Select(c=>c.transform).Contains(x.target))
@@ -85,7 +91,7 @@ public class CubeBossController : MonoController {
             };
 
         // Collision TARGET checker
-        _collisionTargetChecker = new CollisionChecker(targetShips, _model.localScale.magnitude * timeNumberCollisionTargetChecker);
+        _collisionTargetChecker = new CollisionChecker(targetShips, rangeTargetChecker);
         _collisionTargetChecker.OnHit += (component, colliders) =>
             {
                 if(colliders.Any() && _satellites.Any(x => !x.hasTarget)){
@@ -97,7 +103,7 @@ public class CubeBossController : MonoController {
             };
 
         // Collision WEAPON checker
-        _collisionWeaponChecker = new CollisionChecker(targetWeapons, _model.localScale.magnitude * timeNumberCollisionWeaponChecker);
+        _collisionWeaponChecker = new CollisionChecker(targetWeapons, rangeWeaponChecker);
         _collisionWeaponChecker.OnHit += (component, colliders) =>
             {
                 
@@ -130,11 +136,17 @@ public class CubeBossController : MonoController {
     }
 
     private void InstantiateSatellite(){
-        var satellitePosition = Random.insideUnitSphere * _model.localScale.magnitude + _cachedTransform.position;
+        var satellitePosition = Random.insideUnitSphere * _cachedTransform.localScale.magnitude + _cachedTransform.position;
         var satellite = RequireMono<CubeSatellite>(satellitePosition, Random.rotation);
         satellite.mainTarget = transform;
-        satellite.mainScale = _model.localScale;
         satellite.velocity = satelliteVelocity;
+        satellite.bulletLifeTime = bulletLifeTime;
+        satellite.bulletSpeed = bulletSpeed;
+        satellite.satelliteTargets = satelliteTargets;
+        satellite.timeBetweenBulletShoot = timeBetweenBulletShoot;
+        satellite.rangeShootTarget = rangeShootTarget;
+        satellite.bulletRemain = satelliteBulletRemain;
+
         _satellites.Add(satellite);
     }
 

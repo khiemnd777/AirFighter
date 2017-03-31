@@ -12,6 +12,8 @@ namespace Saitama
 		bool IsActive { get; }
         string Name { get; set; }
 
+        bool IsInLayerMask(int layer, LayerMask layermask);
+
         // MonoComponents
         T GetMonoComponent<T>(string name) where T : UnityEngine.Component;
         T GetChildMonoComponent<T>(string name) where T: UnityEngine.Component;

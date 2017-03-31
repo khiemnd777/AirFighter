@@ -26,6 +26,10 @@ namespace Saitama.Weapons
 
 		public abstract void HoldTrigger ();
 
+        public virtual void HoldTrigger (Func<bool> callback){
+            
+        }
+
 		public virtual void ReleaseTrigger(){
 			if (OnTriggerRelease != null) {
 				OnTriggerRelease.Invoke ();

@@ -15,20 +15,34 @@ public class CubeSatelliteGun : MachineGun
 
     public override void Init()
     {
-        _lifeTime = 2f;
-        _speed = 500f;
-        _timeBetweenExecute = 200f;
+        
     }
 
     public override void HoldTrigger (){
         if (Time.time > nextShotTime)
         {
-            var machineGunBullet = RequireMono<MachineGunBullet>(_transform.position, _transform.rotation, _transform);
-            machineGunBullet.LifeTime = _lifeTime;
-            machineGunBullet.Speed = _speed;
-            Destroy(machineGunBullet.gameObject, _lifeTime);
+            PrepareFire();
             nextShotTime = Time.time + _timeBetweenExecute / 1000f;
         }
+    }
+
+    public override void HoldTrigger (Func<bool> callback){
+        if (Time.time > nextShotTime)
+        {
+            if (callback != null && !callback.Invoke())
+            {
+                return;
+            }
+            PrepareFire();
+            nextShotTime = Time.time + _timeBetweenExecute / 1000f;
+        }
+    }
+
+    private void PrepareFire(){
+        var machineGunBullet = RequireMono<MachineGunBullet>(_transform.position, _transform.rotation, _transform);
+        machineGunBullet.LifeTime = _lifeTime;
+        machineGunBullet.Speed = _speed;
+        Destroy(machineGunBullet.gameObject, _lifeTime);
     }
 
     public override void Update()

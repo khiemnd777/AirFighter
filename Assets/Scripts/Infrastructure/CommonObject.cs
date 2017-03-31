@@ -70,6 +70,11 @@ namespace Saitama
 			
 		}
 
+        public bool IsInLayerMask(int layer, LayerMask layermask)
+        {
+            return layermask == (layermask | (1 << layer));
+        }
+
         // MonoComponents
         public T GetMonoComponent<T>(string name) where T : UnityEngine.Component{
             return GameObject.Find(name).GetComponent<T>();

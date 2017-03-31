@@ -13,6 +13,11 @@ namespace Saitama
 
         public ICommonObject CommonObject { get { return _commonObject; } set { _commonObject = value; } }
 
+        public bool IsInLayerMask(int layer, LayerMask layermask)
+        {
+            return layermask == (layermask | (1 << layer));
+        }
+
         protected T InstantiateCommonObject<T>(Action<T> predicate, params object[] attributes) where T : ICommonObject{
             var attrs = new List<object>{ this };
             if (attributes != null)
