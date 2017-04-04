@@ -89,6 +89,7 @@
      <Compile Include="Assets\Scripts\Infrastructure\ITransformable.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\IUpdatable.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\MonoController.cs" />
+     <Compile Include="Assets\Scripts\Infrastructure\MonoPerController.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\RawComponent.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\Singleton.cs" />
      <Compile Include="Assets\Scripts\Infrastructure\TypeExtensions.cs" />
@@ -98,6 +99,7 @@
      <Compile Include="Assets\Scripts\LevelSystem\ScoreManager.cs" />
      <Compile Include="Assets\Scripts\NPCs\Bosses\Boss.cs" />
      <Compile Include="Assets\Scripts\NPCs\Bosses\CubeBoss\CubeBossController.cs" />
+     <Compile Include="Assets\Scripts\NPCs\Bosses\CubeBoss\CubeMissleHandler.cs" />
      <Compile Include="Assets\Scripts\NPCs\Bosses\CubeBoss\CubeSatellite.cs" />
      <Compile Include="Assets\Scripts\NPCs\Bosses\CubeBoss\CubeSatelliteGun.cs" />
      <Compile Include="Assets\Scripts\NPCs\Bosses\IBoss.cs" />

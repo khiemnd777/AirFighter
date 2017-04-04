@@ -5,7 +5,7 @@ using UnityEngine;
 using Saitama;
 using Saitama.Weapons;
 
-public class CubeSatellite : MonoController {
+public class CubeSatellite : MonoPerController {
     public static string Prefab = "Prefabs/CubeSatellite";
 
     public Transform target;
@@ -61,12 +61,19 @@ public class CubeSatellite : MonoController {
         _collisionShootChecker.Check(this);
     }
 
-    void OnTriggerEnter(Collider other){
+    void OnDeath(){
+        if (_cachedTransform.gameObject != null)
+        {
+            Destroy(_cachedTransform.gameObject);
+        }
+    }
+
+    void OnTriggerEnter(Collider other) {
         if (other == null)
             return;
         if (bulletRemain == 0 && IsInLayerMask(other.gameObject.layer, satelliteTargets))
         {
-            Destroy(_cachedTransform.gameObject);
+            health = 0;
         }
     }
 

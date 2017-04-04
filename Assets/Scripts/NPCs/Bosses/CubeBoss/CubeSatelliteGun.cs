@@ -39,9 +39,10 @@ public class CubeSatelliteGun : MachineGun
     }
 
     private void PrepareFire(){
-        var machineGunBullet = RequireMono<MachineGunBullet>(_transform.position, _transform.rotation, _transform);
+        var machineGunBullet = RequireMono<MachineGunBullet>(_transform.position, _transform.rotation);
         machineGunBullet.LifeTime = _lifeTime;
         machineGunBullet.Speed = _speed;
+        machineGunBullet.Targets = _targets;
         Destroy(machineGunBullet.gameObject, _lifeTime);
     }
 

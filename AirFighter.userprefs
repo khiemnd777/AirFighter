@@ -1,17 +1,26 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeSatellite.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeBossController.cs">
     <Files>
-      <File FileName="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeBossController.cs" Line="147" Column="9" />
-      <File FileName="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeSatellite.cs" Line="63" Column="138" />
-      <File FileName="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeSatelliteGun.cs" Line="5" Column="38" />
-      <File FileName="Assets/Scripts/Infrastructure/CommonObject.cs" Line="167" Column="36" />
+      <File FileName="Assets/Scripts/Builders/ShipBuilders/ShipBuilder.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Controllers/Smartphone/AccessoryController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Infrastructure/TypeExtensions.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeBossController.cs" Line="181" Column="47" />
+      <File FileName="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeSatellite.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeSatelliteGun.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Infrastructure/CommonObject.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Utility.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Infrastructure/MonoController.cs" Line="83" Column="9" />
-      <File FileName="Assets/Scripts/Weapons/MachineGun/MachineGun.cs" Line="41" Column="44" />
-      <File FileName="Assets/Scripts/Weapons/Gun.cs" Line="6" Column="36" />
-      <File FileName="Assets/Scripts/Weapons/Weapon.cs" Line="6" Column="5" />
-      <File FileName="Assets/Scripts/Weapons/Bullet.cs" Line="12" Column="9" />
+      <File FileName="Assets/Scripts/Infrastructure/MonoController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/MachineGun/MachineGun.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/Gun.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/Weapon.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/Bullet.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/NPCs/Bosses/CubeBoss/CubeMissleHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/AirToAirMissle/AirToAirMissleHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/AirToAirMissle/AirToAirMissle.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/MachineGun/MachineGunBullet.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/MissleHomingSystem.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/MissleHandler.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -43,15 +43,8 @@ namespace Saitama.Weapons.AirToAirMissle
             {
                 transform.parent = null;
             }
-            if (Time.time > _timeSpeedUp)
-            {
-                _missleSpeedOnExecute = Mathf.Max(_speed, _missleSpeedOnExecute);
-            }
-            var distance = Time.fixedDeltaTime * _missleSpeedOnExecute;
             _collisionChecker.Check(this, transform.localScale.magnitude);
-            var pos = Vector3.forward;
-            pos = _rigidbody.rotation * pos;
-            _rigidbody.velocity = pos * distance;
+            _rigidbody.velocity = Utility.CalculateVelocity(_rigidbody.rotation, _speed);
         }
 	}
 }
